@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>位域 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>位域</h1>
+    </header>
+
+    <section>
+      <h2 id="位域">位域</h2>
+<h4 id="引入">引入</h4>
+<span id="more"></span>
+<blockquote>
+<p>有些信息在储存时，并不需要占用一个完整的字节，而只需占几个或一个二进制位，例如存放一个开关常量，只有0和1两种状态，用一个二进制位即可满足要求，无需浪费空间，并且可以使处理更加简便，所以C语言提供了一种数据结构，成为位域(或位段)。这样就可以把几个不同的对象用一个字节的二进制位域来表示。所谓“位域”就是是把一个字节中的二进位划分为几个不同的区域，并说明每个区域的位数。</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">temp</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a:<span class="number">8</span>;</span><br><span class="line">    <span class="type">int</span> b:<span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> c:<span class="number">6</span>;</span><br><span class="line">&#125;data;</span><br><span class="line"><span class="comment">//在上面的代码中，data占2个字节（16位）。</span></span><br></pre></td></tr></table></figure>
+<h4 id="特性1">特性1</h4>
+<blockquote>
+<p>一个位域必须存储在同一个字节中，不能跨两个字节。如果一个字节所剩空间不够存放另一个位域时，应从下一单元起存放该位域。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">temp</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a:<span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> b:<span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> c:<span class="number">5</span>;</span><br><span class="line">&#125;data;</span><br><span class="line"><span class="comment">//以上三个位域都各自占据一个字节的5位</span></span><br></pre></td></tr></table></figure>
+<h4 id="特性2">特性2</h4>
+<blockquote>
+<p>可以有意使某位域从下一单元开始。(方法：使用一个空位域在这之前)</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">temp</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> a:<span class="number">4</span></span><br><span class="line">    <span class="type">char</span> :<span class="number">0</span> <span class="comment">//空域</span></span><br><span class="line">    <span class="type">char</span> b:<span class="number">4</span> <span class="comment">//从下一单元开始存放</span></span><br><span class="line">    <span class="type">char</span> c:<span class="number">4</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//其中，a占第一个字节的4位，后4位填零不用，b从第二个字节开始，占4位，c占剩下4位。</span></span><br></pre></td></tr></table></figure>
+<h4 id="特性3">特性3</h4>
+<blockquote>
+<p>位域可以无位域名，这时它只用来作填充或调整位置。无名的位域是不能使用的。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">temp</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> a:<span class="number">4</span></span><br><span class="line">    <span class="type">char</span> :<span class="number">2</span> <span class="comment">//空域</span></span><br><span class="line">    <span class="type">char</span> b:<span class="number">4</span> <span class="comment">//从下一单元开始存放</span></span><br><span class="line">    <span class="type">char</span> c:<span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

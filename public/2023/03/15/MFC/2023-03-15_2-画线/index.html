@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2-画线 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2-画线</h1>
+    </header>
+
+    <section>
+      <h2 id="画线">画线</h2>
+<blockquote>
+<p>首先在View增加消息OnLButtonDown和OnLButtonUp</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="1-在View类中添加点成员用于保存鼠标按下和松开接收到的Point参数">1.在View类中添加点成员用于保存鼠标按下和松开接收到的Point参数</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//View类中</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	CPoint m_start;</span><br><span class="line">	CPoint m_stop;</span><br><span class="line"></span><br><span class="line"><span class="comment">//LBottonDown函数中</span></span><br><span class="line">m_start = point; </span><br><span class="line"></span><br><span class="line"><span class="comment">//LBottonUp函数中</span></span><br><span class="line">m_stop = point;</span><br></pre></td></tr></table></figure>
+<h4 id="2-ScreenPoint和ClientPoint">2.ScreenPoint和ClientPoint</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>ScreenPoint：屏幕坐标，代表整个屏幕的坐标值</p>
+</li>
+<li class="lvl-2">
+<p>ClientPoint：用户坐标，代表当前窗口的坐标值</p>
+</li>
+</ul>
+<h4 id="3-注意消息传递">3.注意消息传递</h4>
+<blockquote>
+<p>除了View不需要继续往下传递消息，其它都需要继续往下传递消息。</p>
+</blockquote>
+<h4 id="4-获取设备上下文">4.获取设备上下文</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">CDC* pDC = <span class="built_in">GetDC</span>();			<span class="comment">//获取设备上下文</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>设备上下文是指当前窗口的各种参数，并用一个指针指向这些参数</p>
+</blockquote>
+<h4 id="5-画线">5.画线</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">pDC-&gt;<span class="built_in">MoveTo</span>(m_start);</span><br><span class="line">pDC-&gt;<span class="built_in">LineTo</span>(m_stop);</span><br></pre></td></tr></table></figure>
+<h4 id="6-释放上下文">6.释放上下文</h4>
+<blockquote>
+<p>用完上下文一定要释放，让其它使用者也能获取到。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ReleaseDC</span>(pDC);</span><br></pre></td></tr></table></figure>
+<h4 id="7-绘制过程不能显示的问题解决">7.绘制过程不能显示的问题解决</h4>
+<h5 id="7-1增加成员绘制状态">7.1增加成员绘制状态</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">BOOL m_status;		<span class="comment">//绘制状态</span></span><br></pre></td></tr></table></figure>
+<h5 id="7-2增加鼠标移动消息">7.2增加鼠标移动消息</h5>
+<blockquote>
+<p>OnMouseMove消息</p>
+</blockquote>
+<h5 id="7-3在鼠标移动过程中更新中间点">7.3在鼠标移动过程中更新中间点</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (m_status)</span><br><span class="line">&#123;</span><br><span class="line">	m_cur = point;</span><br><span class="line">	<span class="built_in">InvalidateRect</span>(<span class="literal">NULL</span>);			<span class="comment">//重绘函数，调用OnDraw</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="7-4将绘制过程放到OnDraw函数中">7.4将绘制过程放到OnDraw函数中</h5>
+<blockquote>
+<p>OnDraw每次需要重绘都会被调用，因此将绘制放到OnDraw中，即使窗口被放大缩小，线条不会消失而是重绘。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (m_status)</span><br><span class="line">&#123;</span><br><span class="line">	pDC-&gt;<span class="built_in">MoveTo</span>(m_start);</span><br><span class="line">	pDC-&gt;<span class="built_in">LineTo</span>(m_cur);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	pDC-&gt;<span class="built_in">MoveTo</span>(m_start);</span><br><span class="line">	pDC-&gt;<span class="built_in">LineTo</span>(m_stop);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="8-绘制多条线">8.绘制多条线</h4>
+<blockquote>
+<p>用一个列表存储以往线条，再在OnDraw里绘制列表中所有的线即可。</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

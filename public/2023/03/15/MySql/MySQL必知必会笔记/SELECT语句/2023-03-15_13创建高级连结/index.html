@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>13创建高级连结 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>13创建高级连结</h1>
+    </header>
+
+    <section>
+      <h2 id="创建高级连结">创建高级连结</h2>
+<h4 id="1-使用表别名">1.使用表别名</h4>
+<span id="more"></span>
+<blockquote>
+<p>理由：</p>
+<p>1.缩短SQL语句</p>
+<p>2.允许在单条SQL语句中使用多次相同的表</p>
+</blockquote>
+<h5 id="1-1创建方法">1.1创建方法</h5>
+<blockquote>
+<p>使用AS关键字</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT cust_name, cust_contacts</span><br><span class="line">From Customers as C, Orders as O, OrderItems as OI</span><br><span class="line">Where C.cust_id = O.cust_id</span><br><span class="line">	AND OI.order_name = O.order_name</span><br><span class="line">	AND prod_id = &#x27;RGAN01&#x27;;</span><br></pre></td></tr></table></figure>
+<h4 id="2-使用不同类型的连结">2.使用不同类型的连结</h4>
+<h5 id="2-1自连结">2.1自连结</h5>
+<blockquote>
+<p>对同一张表进行两次嵌套查询时，可以使用子查询，也可以使用给每次查询的表起别名的自连结来防止二义性。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT c1.cust_id, c1.cust_name, c1.cust_contact</span><br><span class="line">From Customers as c1, Customers as c2</span><br><span class="line">Where c1.cust_name = c2.cust_name</span><br><span class="line">	AND c2.cust_contact = &#x27;Jim Jones&#x27;;</span><br></pre></td></tr></table></figure>
+<h5 id="2-2自然连结">2.2自然连结</h5>
+<blockquote>
+<p>无论何时对表进行连结，至少有一个列出现在不止一个表中（被连结的列）。</p>
+<p>然而检索结果中，相同的列只出现一次，这就是自然连结，由SELECT语句选择时用户自主完成。（即每一列都是唯一的，不允许第二次出现）</p>
+</blockquote>
+<h5 id="2-3外部连结">2.3外部连结</h5>
+<blockquote>
+<p>在两个表的关联列内容并不完全一致时，即其中一个列有另一个没有的内容时，使用外部连结来使其显示而不是忽略。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT Customers.cust_id, Orders.order_num</span><br><span class="line">From Customers LEFT OUTER JOIN Orders</span><br><span class="line">	ON Customers.cust_id = Orders.cust_id;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在From子句中使用关键字OUTER JOIN。使用LEFT或RIGHT来注明以哪一张表为基准。（即确定显示哪一张表的所有信息）。</p>
+</blockquote>
+<p><strong>另一种简化语法</strong></p>
+<blockquote>
+<p>在where中使用<code>*=</code>或<code>=*</code>注明外部连结的左右基准</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT Customers.cust_id, Orders.order_num</span><br><span class="line">From Customers Orders</span><br><span class="line">where Customers.cust_id *= Orders.cust_id;</span><br></pre></td></tr></table></figure>
+<p><strong>全外部连结</strong></p>
+<blockquote>
+<p>找出两张表中的所有信息，即使在另一张表中不存在。</p>
+<p>方法：将关键字中的LEFT或RIGHT改为FULL。</p>
+</blockquote>
+<h4 id="3-使用带聚集的连结">3.使用带聚集的连结</h4>
+<blockquote>
+<p>聚集函数可以从单个表汇集数据，也可以和连结一起使用。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT Customers.cust_id, COUNT(Orders.order_num) AS num_order</span><br><span class="line">From Customers INNER JOIN Orders </span><br><span class="line">	ON Customers.cust_id = Orders.cust_id</span><br><span class="line">Group by Customers.cust_id;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

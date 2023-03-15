@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>17创建和操纵表 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>17创建和操纵表</h1>
+    </header>
+
+    <section>
+      <h2 id="创建和操纵表">创建和操纵表</h2>
+<h4 id="1-创建表">1.创建表</h4>
+<span id="more"></span>
+<h5 id="1-1表创建基础">1.1表创建基础</h5>
+<blockquote>
+<p>使用CREATE TABLE创建表</p>
+<p>满足条件：</p>
+<p>1.新表的名字</p>
+<p>2.表列的名字和定义</p>
+<p>3.可能需要表的位置</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE Products</span><br><span class="line">(</span><br><span class="line">    prod_id 	CHAR(10)	NOT NULL,</span><br><span class="line">    vend_id		CHAR(10)	NOT NULL,</span><br><span class="line">    prod_name	CHAR(254)	NOT NULL,</span><br><span class="line">    prod_price	DECIMAL(8,2)	NOT NULL,</span><br><span class="line">    prod_desc	VARCHAR(1000)	NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h5 id="1-2使用NULL值">1.2使用NULL值</h5>
+<blockquote>
+<p>对创建表时的指定列，如果设定使用NULL值，则可以在初始化行时不输入值，否则必须输入值。</p>
+</blockquote>
+<p><strong>注：默认NULL</strong></p>
+<h5 id="1-3指定默认值">1.3指定默认值</h5>
+<blockquote>
+<p>对一个列可以使用DEFAULT关键字加上默认值来指定如果插入时没输入值的情况。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE Products</span><br><span class="line">(</span><br><span class="line">    prod_id 	CHAR(10)	NOT NULL,</span><br><span class="line">    vend_id		CHAR(10)	NOT NULL,</span><br><span class="line">    prod_name	CHAR(254)	NOT NULL,</span><br><span class="line">    prod_price	DECIMAL(8,2)	NOT NULL	DEFAULT 100,</span><br><span class="line">    prod_desc	VARCHAR(1000)	NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用来对日期进行默认当前值的设定，使用CURRENT_DATE()函数</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE IF NOT EXISTS tasks (</span><br><span class="line">  task_id INT(11) NOT NULL AUTO_INCREMENT,	#自增</span><br><span class="line">  subject VARCHAR(45) DEFAULT NULL,</span><br><span class="line">  start_date DATE DEFAULT NULL,</span><br><span class="line">  end_date DATE DEFAULT NULL,</span><br><span class="line">  description VARCHAR(200) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (task_id)		#主键</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="2-更新表">2.更新表</h4>
+<blockquote>
+<p>ALTER TABLE语句</p>
+</blockquote>
+<blockquote>
+<p>一般支持增加列，使用ADD子句</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ALTER TABLE Vendors</span><br><span class="line">ADD vend_phone CHAR(20);</span><br></pre></td></tr></table></figure>
+<h4 id="3-删除表">3.删除表</h4>
+<blockquote>
+<p>使用DROP TABLE语句</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DROP TABLE Ventors;</span><br></pre></td></tr></table></figure>
+<h4 id="4-重命名表">4.重命名表</h4>
+<blockquote>
+<p>RENAME TABLE语句</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">RENAME TABLE old_table_name TO new_table_name;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

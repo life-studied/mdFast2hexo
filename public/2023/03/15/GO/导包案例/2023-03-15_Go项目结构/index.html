@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Go项目结构 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Go项目结构</h1>
+    </header>
+
+    <section>
+      <h2 id="Go项目结构">Go项目结构</h2>
+<h4 id="总览">总览</h4>
+<span id="more"></span>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">--Project path</span></span><br><span class="line"><span class="comment">  --bin     可执行文件</span></span><br><span class="line"><span class="comment">  --build   编译构建结果</span></span><br><span class="line"><span class="comment">  --cmd     代码，甚至可以只有一个main</span></span><br><span class="line"><span class="comment">    --具体包名</span></span><br><span class="line"><span class="comment">  --config  配置文件</span></span><br><span class="line"><span class="comment">  --docs    文档文件</span></span><br><span class="line"><span class="comment">  --example 样例应用程序</span></span><br><span class="line"><span class="comment">  --internal  不便在cmd做展示的、需要隐藏的、需要加密的代码</span></span><br><span class="line"><span class="comment">  --pkg     外部应用程序使用的代码库</span></span><br><span class="line"><span class="comment">  --script  脚本</span></span><br><span class="line"><span class="comment">  --test    测试代码</span></span><br><span class="line"><span class="comment">  --tools   编写的工具，可以从pkg、internal引入代码</span></span><br><span class="line"><span class="comment">  --vender  应用程序依赖项</span></span><br><span class="line"><span class="comment">  go.mod</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="案例">案例</h4>
+<p><img src="picture/%E6%A1%88%E4%BE%8B.png" alt=""></p>
+<p>步骤：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在根目录下使用<code>go init mod &lt;modname&gt;</code></p>
+</li>
+</ul>
+<p><img src="picture/initmod.png" alt=""></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>将main包放到cmd目录下，将项目内部使用的包放到internal目录下</p>
+</li>
+<li class="lvl-2">
+<p>main导入包时，以下图的方式</p>
+</li>
+</ul>
+<p><img src="picture/import.png" alt=""></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

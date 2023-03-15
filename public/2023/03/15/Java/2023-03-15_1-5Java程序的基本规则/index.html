@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-5Java程序的基本规则 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-5Java程序的基本规则</h1>
+    </header>
+
+    <section>
+      <h2 id="1-5Java程序的基本规则">1.5Java程序的基本规则</h2>
+<h4 id="1-5-1Java程序的组织形式">1.5.1Java程序的组织形式</h4>
+<span id="more"></span>
+<blockquote>
+<p>Java程序必须以类的形式存在，不允许存在独立的可执行语句和方法。</p>
+</blockquote>
+<p><strong>最简单的Java类</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这个最简单的类没有main方法，程序不能找到入口函数。类本身正确，但是不能被解释器正常解释。</p>
+</blockquote>
+<h4 id="1-5-2Java源程序的命名规则">1.5.2Java源程序的命名规则</h4>
+<p>规则如下：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>扩展名：.java</p>
+</li>
+<li class="lvl-2">
+<p>源文件的文件名可以是任意的。</p>
+<ul class="lvl-2">
+<li class="lvl-6">如果有一个public类，则文件名必须与该类名相同</li>
+<li class="lvl-6">由此，一个文件只能有一个public类</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-5-3一些问题">1.5.3一些问题</h4>
+<blockquote>
+<p>当使用java命令直接运行一个java类时，这个java类必须包含一个main方法，且main方法必须用public和static修饰，且必须是void返回值。</p>
+</blockquote>
+<h4 id="1-5-4编译">1.5.4编译</h4>
+<p><img src="picture/%E7%BC%96%E8%AF%91java%E7%A8%8B%E5%BA%8F.png" alt=""></p>
+<blockquote>
+<p>编译使用javac命令，后面跟文件名 。</p>
+<p>执行时用java命令，后面跟类名。</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

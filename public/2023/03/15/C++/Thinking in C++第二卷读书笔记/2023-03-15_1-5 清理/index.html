@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-5 清理 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-5 清理</h1>
+    </header>
+
+    <section>
+      <h2 id="1-5-清理">1.5 清理</h2>
+<h4 id="1-5-1-引入">1.5.1 引入</h4>
+<span id="more"></span>
+<blockquote>
+<p>下面这个例子，演示了构造函数中抛出异常，析构函数不会被调用（因为构造没有完成）。同时演示了创建对象数组时抛出异常的情况。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Trace</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> count;</span><br><span class="line">    <span class="type">int</span> objId;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Trace</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        objId = count++;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;constructing Trace #&quot;</span> &lt;&lt; objId &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">if</span> (objId == <span class="number">3</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Trace</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;destructing Trace #&quot;</span> &lt;&lt; objId &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> Trace::count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> </span><br><span class="line">    &#123;</span><br><span class="line">        Trace n1;</span><br><span class="line">        Trace array[<span class="number">5</span>];		<span class="comment">//在构造array[2]时抛出异常，array[2]并没有完成构造，因此不会被析构</span></span><br><span class="line">        Trace n2;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(<span class="type">int</span> i)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;catch &quot;</span>&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*output:</span></span><br><span class="line"><span class="comment">constructing Trace #0</span></span><br><span class="line"><span class="comment">constructing Trace #1</span></span><br><span class="line"><span class="comment">constructing Trace #2</span></span><br><span class="line"><span class="comment">constructing Trace #3</span></span><br><span class="line"><span class="comment">destructing Trace #2</span></span><br><span class="line"><span class="comment">destructing Trace #1</span></span><br><span class="line"><span class="comment">destructing Trace #0</span></span><br><span class="line"><span class="comment">catch 3</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-5-2-资源管理（important）">1.5.2 资源管理（important）</h4>
+<blockquote>
+<p>由于构造函数因异常而未完成，会不调用析构函数。因此会出现资源泄露的情况。下面是一个UseResource析构未调用，导致Cat析构也同样未能正常调用，出现悬挂指针的情况。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstddef&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Cat</span>() &#123; cout &lt;&lt; <span class="string">&quot;Cat()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    ~<span class="built_in">Cat</span>() &#123; cout &lt;&lt; <span class="string">&quot;~Cat()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="type">size_t</span> sz)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;allocating a dog.&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">throw</span> <span class="number">47</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="type">void</span> *p)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;deallocating a dog.&quot;</span> &lt;&lt; endl;</span><br><span class="line">        ::<span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(p)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UseSources</span></span><br><span class="line">&#123;</span><br><span class="line">    Cat *bp;</span><br><span class="line">    Dog *op;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UseSources</span>(<span class="type">int</span> count = <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;UserSources()&quot;</span> &lt;&lt; endl;</span><br><span class="line">        bp = <span class="keyword">new</span> Cat[count];</span><br><span class="line">        op = <span class="keyword">new</span> Dog;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">UseSources</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;~UseResource()&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">delete</span>[] bp;</span><br><span class="line">        <span class="keyword">delete</span> op;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span>** argv)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">UseSources <span class="title">ur</span><span class="params">(<span class="number">3</span>)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(<span class="type">int</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;inside handler&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*output:</span></span><br><span class="line"><span class="comment">UserSources()</span></span><br><span class="line"><span class="comment">Cat()</span></span><br><span class="line"><span class="comment">Cat()</span></span><br><span class="line"><span class="comment">Cat()</span></span><br><span class="line"><span class="comment">allocating a dog.</span></span><br><span class="line"><span class="comment">inside handler</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-5-3-使所有事物都成为对象">1.5.3 使所有事物都成为对象</h4>
+<h5 id="1-资源获得式初始化（RAII技术）（important）">1. 资源获得式初始化（RAII技术）（important）</h5>
+<blockquote>
+<p>该技术保证每一个对象的资源分配都具有原子性。方法是构建一个类模板，将指针嵌入这个类中。此例中，类是自定义的，但是C++提供了auto_ptr来减少工作量。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstddef&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="type">int</span> sz = <span class="number">1</span>&gt;</span><br><span class="line"><span class="keyword">class</span> PWrap</span><br><span class="line">&#123;</span><br><span class="line">    T *ptr;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">RangeError</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">PWrap</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        ptr = <span class="keyword">new</span> T[sz];</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;PWarp constructor&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">PWrap</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span>[] ptr;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;PWarp destructor&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    T &amp;<span class="keyword">operator</span>[](<span class="type">int</span> i) <span class="keyword">throw</span>(RangeError)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= <span class="number">0</span> &amp;&amp; i &lt; sz)</span><br><span class="line">            <span class="keyword">return</span> ptr[i];</span><br><span class="line">        <span class="keyword">throw</span> <span class="built_in">RangeError</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Cat</span>() &#123; cout &lt;&lt; <span class="string">&quot;Cat()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    ~<span class="built_in">Cat</span>() &#123; cout &lt;&lt; <span class="string">&quot;~Cat()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">g</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">void</span> *<span class="keyword">operator</span> <span class="keyword">new</span>[](<span class="type">size_t</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Allocating a Dog&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">throw</span> <span class="number">47</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="type">void</span> *p)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Deallocating a Dog&quot;</span> &lt;&lt; endl;</span><br><span class="line">        ::<span class="keyword">operator</span> <span class="keyword">delete</span>[](p);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UseResources</span></span><br><span class="line">&#123;</span><br><span class="line">    PWrap&lt;Cat, <span class="number">3</span>&gt; cats;				<span class="comment">//通过将指针嵌入这个PWrap&lt;Cat, 3&gt;类中</span></span><br><span class="line">    								<span class="comment">//即使下面PWrap&lt;Dog&gt;类里的Dog构造时抛出异常</span></span><br><span class="line">    								<span class="comment">//这个PWrap&lt;Cat, 3&gt;类的构造也正常完成了</span></span><br><span class="line">    								<span class="comment">//就避免了不调用这个PWrap&lt;Cat, 3&gt;类析构使Cat资源泄露的问题</span></span><br><span class="line">    PWrap&lt;Dog&gt; dog;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UseResources</span>() &#123; cout &lt;&lt; <span class="string">&quot;UseResources()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    ~<span class="built_in">UseResources</span>() &#123; cout &lt;&lt; <span class="string">&quot;~UseResources()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; cats[<span class="number">1</span>].<span class="built_in">g</span>(); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        UseResources ur;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span> (<span class="type">int</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;inside handler&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span> (...)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;inside catch(...)&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Cat()</span></span><br><span class="line"><span class="comment">Cat()</span></span><br><span class="line"><span class="comment">Cat()</span></span><br><span class="line"><span class="comment">PWarp constructor</span></span><br><span class="line"><span class="comment">Allocating a Dog</span></span><br><span class="line"><span class="comment">~Cat()</span></span><br><span class="line"><span class="comment">~Cat()</span></span><br><span class="line"><span class="comment">~Cat()</span></span><br><span class="line"><span class="comment">PWarp destructor</span></span><br><span class="line"><span class="comment">inside handler</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-使用auto-ptr代替自定义类">2.使用auto_ptr代替自定义类</h5>
+<blockquote>
+<p>C++提供了封装指针的类来减少工作量。(本代码不重要)</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstddef&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TraceHeap</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="type">size_t</span> sz)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">void</span> *p = ::<span class="keyword">operator</span> <span class="built_in">new</span>(sz);</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Allocating TraceHeap object on the heap&quot;</span></span><br><span class="line">             &lt;&lt; <span class="string">&quot; at address &quot;</span> &lt;&lt; p &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="type">void</span> *p)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Deleting TraceHeap object at address &quot;</span></span><br><span class="line">             &lt;&lt; p &lt;&lt; endl;</span><br><span class="line">        ::<span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(p)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">TraceHeap</span>(<span class="type">int</span> i) : <span class="built_in">i</span>(i)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getVal</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> i; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">auto_ptr&lt;TraceHeap&gt; <span class="title">pMyObject</span><span class="params">(<span class="keyword">new</span> TraceHeap(<span class="number">5</span>))</span></span>;</span><br><span class="line">    cout &lt;&lt; pMyObject-&gt;<span class="built_in">getVal</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="1-5-4-函数级的try块">1.5.4 函数级的try块</h4>
+<blockquote>
+<p>C++允许在函数级就使用try块，将函数体作为try的内容。下面是一个构造函数使用函数级try块的例子。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">BaseExcept</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">Base</span>(<span class="type">int</span> i) : <span class="built_in">i</span>(i) &#123; <span class="keyword">throw</span> <span class="built_in">BaseExcept</span>(); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">DerivedExcept</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">const</span> <span class="type">char</span> *msg;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">DerivedExcept</span>(<span class="type">const</span> <span class="type">char</span> *msg) : <span class="built_in">msg</span>(msg) &#123;&#125;</span><br><span class="line">        <span class="function"><span class="type">const</span> <span class="type">char</span> *<span class="title">what</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> msg; &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">Derived</span>(<span class="type">int</span> j)</span><br><span class="line">    <span class="keyword">try</span> : <span class="built_in">Base</span>(j)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;This won&#x27;t print&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span> (Base::BaseExcept &amp;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="built_in">DerivedExcept</span>(<span class="string">&quot;Base Subobject throw&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">Derived</span>(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span> (Derived::DerivedExcept &amp;d)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; d.<span class="built_in">what</span>() &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

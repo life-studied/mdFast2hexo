@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-8别名 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-8别名</h1>
+    </header>
+
+    <section>
+      <h2 id="1-8别名">1.8别名</h2>
+<blockquote>
+<p>别名就是将一个长命令新建一个名字。使用alias命令创建别名。</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="1-8-1-实战演练">1.8.1 实战演练</h4>
+<h5 id="1-创建别名">1.创建别名</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alias new_command=&#x27;command sequence&#x27;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例如，下面使用install命令代替原先复杂的长命令</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alias install = yum -y install</span><br></pre></td></tr></table></figure>
+<h5 id="2-永久将别名存入终端">2.永久将别名存入终端</h5>
+<blockquote>
+<p>终端关闭后，别名命令会消失。</p>
+<p>解决方案：将别名命令存入<code>~/.bashrc</code>中</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &#x27;alias cmd=&quot;command seq&quot;&#x27; &gt;&gt; ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h5 id="3-删除别名">3.删除别名</h5>
+<blockquote>
+<p>使用unalias命令，或者将命令再次设置为空（<code>alias example=</code>）</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">unalias cmd</span><br></pre></td></tr></table></figure>
+<p>**注意：**创建别名时，如果已经有同名的别名存在，那么原有的别名设置将被新的设置取代。</p>
+<h4 id="1-8-2-补充内容">1.8.2 补充内容</h4>
+<blockquote>
+<p>如果身份为特权用户，别名也会造成安全问题。为了避免对系统造成危害，你应该将命令转义。</p>
+</blockquote>
+<h5 id="1-对别名进行转义">1.对别名进行转义</h5>
+<blockquote>
+<p>创建一个和原生命令同名的别名很容易，你不应该以特权用户的身份运行别名化的命令。我们可以转义要使用的命令，忽略当前定义的别名。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">\command</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>字符<code>\</code>可以转义命令，从而执行原本的命令。在不可信环境下执行特权命令时，在命令前加上<code>\</code>来忽略可能存在的别名总是一种良好的安全实践。这是因为攻击者可能已经将一些别有用心的命令利用别名伪装成了特权命令，让特权用户误输入这种命令，借此来盗取用户输入的重要信息。</p>
+</blockquote>
+<h5 id="2-列举别名">2.列举别名</h5>
+<blockquote>
+<p><code>-p</code>参数能列举出所有已经设定好的别名命令</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alias -p</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

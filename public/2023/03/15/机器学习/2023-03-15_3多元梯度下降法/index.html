@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3多元梯度下降法 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3多元梯度下降法</h1>
+    </header>
+
+    <section>
+      <h2 id="多元梯度下降法">多元梯度下降法</h2>
+<blockquote>
+<p>代价函数</p>
+</blockquote>
+<span id="more"></span>
+<p><img src="picture/%E5%A4%9A%E5%85%83%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0.png" alt=""></p>
+<blockquote>
+<p>多元函数的梯度下降</p>
+</blockquote>
+<p><img src="picture/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%EF%BC%88%E5%A4%9A%E5%85%83%EF%BC%89.png" alt=""></p>
+<blockquote>
+<p>特征缩放</p>
+<p>将特征量缩放至-1与1之间范围来使梯度下降更快捷</p>
+</blockquote>
+<p><img src="picture/%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BE.png" alt=""></p>
+<blockquote>
+<p>均值归一化</p>
+<p>使每个特征量的平均值都是0</p>
+</blockquote>
+<p><img src="picture/%E5%9D%87%E5%80%BC%E5%BD%92%E4%B8%80%E5%8C%96.png" alt=""></p>
+<h5 id="学习率选择">学习率选择</h5>
+<blockquote>
+<p>可以小，但不能大</p>
+<p>为了保证效率，绘制J(o)-迭代次数曲线，观察是否收敛</p>
+</blockquote>
+<p><img src="picture/%E8%BF%AD%E4%BB%A3%E6%9B%B2%E7%BA%BF.png" alt=""></p>
+<blockquote>
+<p>3倍为基础，尝试选择学习率</p>
+</blockquote>
+<p><img src="picture/%E5%AD%A6%E4%B9%A0%E7%8E%87%E9%80%89%E6%8B%A9%E7%9A%84%E5%80%8D%E6%95%B0.png" alt=""></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

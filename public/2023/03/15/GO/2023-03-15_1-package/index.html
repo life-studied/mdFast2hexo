@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-package | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-package</h1>
+    </header>
+
+    <section>
+      <h2 id="package">package</h2>
+<blockquote>
+<p>Go语言是使用包来组织源代码的，包（package）是多个 Go 源码的集合，是一种高级的代码复用方案。Go语言中为我们提供了很多内置包，如 fmt、os、io 等。</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>任何源代码文件必须属于某个包，同时源码文件的第一行有效代码必须是<code>package pacakgeName </code>语句，通过该语句声明自己所在的包。</p>
+</blockquote>
+<h4 id="1-声明包">1.声明包</h4>
+<blockquote>
+<p>每一个go文件必须声明其所在的包名，同一个文件夹下的文件，包名必须一致。一般与文件夹名称一致，可以不一样。</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> packageName</span><br></pre></td></tr></table></figure>
+<h4 id="2-导入包">2.导入包</h4>
+<blockquote>
+<p>导入包的包名必须是所在包文件夹的名称，而不是包名（虽然它们有时一致）。同时导入后必须使用该包中的内容，不然也会报错。</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;文件夹名&quot;</span></span><br><span class="line"><span class="keyword">import</span> 包名<span class="string">&quot;文件夹名&quot;</span>		<span class="comment">//或者通过这种方式显式的说明包名</span></span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line">	<span class="string">&quot;文件夹名1&quot;</span></span><br><span class="line">    <span class="string">&quot;文件夹名2&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>自定义包必须在GOPATH所在目录下，才能在import时被找到</p>
+</li>
+<li class="lvl-2">
+<p>使用包内函数时，函数首字母必须是大写才能被外部使用</p>
+</li>
+<li class="lvl-2">
+<p>调用自定义包时使用 <code>包名 . 函数名</code> 的方式</p>
+</li>
+</ul>
+<p><strong>案例</strong></p>
+<p><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/5123.html">Go语言自定义包 (biancheng.net)</a></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

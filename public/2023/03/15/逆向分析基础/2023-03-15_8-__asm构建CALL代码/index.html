@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>8-__asm构建CALL代码 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>8-__asm构建CALL代码</h1>
+    </header>
+
+    <section>
+      <h2 id="asm构建CALL代码">__asm构建CALL代码</h2>
+<blockquote>
+<p>思路：</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>在别的进程直接写入汇编太麻烦（因为是插入的机器码）</p>
+<p>-&gt;在本地写C++的内联汇编放入函数中-&gt;将内联汇编的函数首地址作为写入函数的地址传入-&gt;将函数的汇编写入目标进程</p>
+</blockquote>
+<h4 id="注意问题">注意问题</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>程序改为release模式下执行</p>
+</li>
+<li class="lvl-2">
+<p>安全检查关闭：由于安全检查会在函数前加入堆栈平衡的检测代码，影响最后的汇编指令结果，因此必须关闭</p>
+</li>
+<li class="lvl-2">
+<p>优化，如果程序出现问题，关闭试试</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">DWORD __stdcall <span class="title">ThreadFunction</span><span class="params">(LPVOID lpThreadParameter)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> index = <span class="number">2</span>;</span><br><span class="line">    <span class="type">unsigned</span> damage = <span class="number">99999</span>;</span><br><span class="line">    <span class="type">unsigned</span> dcall = <span class="number">0x41fd40</span>;</span><br><span class="line">    <span class="type">unsigned</span> dBeActer = <span class="number">0x4cef08</span>;</span><br><span class="line">    __asm</span><br><span class="line">    &#123;</span><br><span class="line">        push index			<span class="comment">//参数1入栈</span></span><br><span class="line">       	push damage			<span class="comment">//参数2入栈</span></span><br><span class="line">        mov ecx,dBeActer	<span class="comment">//this指针传入寄存器</span></span><br><span class="line">        call dcall			<span class="comment">//调用程序内置函数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用WriteMemory函数将该函数的汇编指令写入到目标进程中，同时保存写入地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用CreateRemoteThread函数创建线程并立刻执行写入地址的汇编代码</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

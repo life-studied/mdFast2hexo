@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2-2Web和HTTP | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2-2Web和HTTP</h1>
+    </header>
+
+    <section>
+      <h2 id="2-2Web和HTTP">2.2Web和HTTP</h2>
+<h4 id="2-2-1HTTP概况">2.2.1HTTP概况</h4>
+<span id="more"></span>
+<blockquote>
+<p>Web的应用层协议是<strong>超文本传输协议</strong>（HTTP）</p>
+<p>由两个程序实现：一个客户端程序和一个服务器程序。通过交换HTTP报文进行会话</p>
+</blockquote>
+<p>Web术语：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Web页面：由对象组成。</p>
+</li>
+<li class="lvl-2">
+<p>对象：一个对象是一个文件，都可通过一个URL寻址。</p>
+</li>
+<li class="lvl-2">
+<p>HTML基本文件：通过对象的URL地址引用页面中的其他对象。</p>
+</li>
+<li class="lvl-2">
+<p>Web浏览器：实现了HTTP的客户端</p>
+</li>
+<li class="lvl-2">
+<p>Web服务器：实现了HTTP的服务器端</p>
+</li>
+</ul>
+<hr>
+<p>HTTP使用TCP作为它的支撑运输协议</p>
+<h4 id="2-2-2非持续连接和持续连接">2.2.2非持续连接和持续连接</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>非持续连接：每一个请求/响应对是经一个单独的TCP连接发送</p>
+</li>
+<li class="lvl-2">
+<p>持续连接：所有的请求及其响应经相同的TCP连接发送</p>
+</li>
+</ul>
+<h5 id="1-采用非持续连接的HTTP">1.采用非持续连接的HTTP</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>往返时间：一个短分组从客户端到服务器再回到客户端所花费的时间</p>
+</li>
+</ul>
+<blockquote>
+<p>总共花费的时间是两次往返时间加上服务器传输HTML文件的时间</p>
+</blockquote>
+<h5 id="2-采用持续连接的HTTP">2.采用持续连接的HTTP</h5>
+<p>服务器在发送响应之后保持该TCP连接打开。相同的客户与服务器之间的后续请求与响应报文能够通过相同的连接进行传送。</p>
+<h4 id="2-2-3HTTP报文格式">2.2.3HTTP报文格式</h4>
+<h5 id="1-HTTP请求报文">1.HTTP请求报文</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>第一行：请求行</p>
+<ul class="lvl-2">
+<li class="lvl-6">包含三个字段：方法字段、URL字段、HTTP版本字段
+<ul class="lvl-4">
+<li class="lvl-10">方法字段的值：GET、POST、HEAD、PUT、DELETE</li>
+<li class="lvl-10">URL字段带有请求对象的标识</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>后续行：首部行</p>
+</li>
+<li class="lvl-2">
+<p>最后部分行：实体体</p>
+<ul class="lvl-2">
+<li class="lvl-6">POST报文时需要用户在表单字段中的输入值</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-HTTP响应报文">2.HTTP响应报文</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>第一行：状态行</p>
+<ul class="lvl-2">
+<li class="lvl-6">包含三个字段：协议版本字段、状态码和相应状态信息</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>后续行：首部行</p>
+</li>
+<li class="lvl-2">
+<p>最后部分行：实体体</p>
+</li>
+</ul>
+<h4 id="2-2-4用户与服务器的交互：cookie">2.2.4用户与服务器的交互：cookie</h4>
+<p>cookie技术的四个组件：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>HTTP响应报文中带有一个cookie首部行</p>
+</li>
+<li class="lvl-2">
+<p>HTTP请求报文中带有一个cookie首部行</p>
+</li>
+<li class="lvl-2">
+<p>用户端系统中保留一个cookie文件</p>
+</li>
+<li class="lvl-2">
+<p>Web站点的一个后端服务器</p>
+</li>
+</ul>
+<h4 id="2-2-5Web缓存">2.2.5Web缓存</h4>
+<blockquote>
+<p>Web缓存器又叫代理服务器，是能够代表初始Web服务器来满足HTTP请求的网络实体</p>
+</blockquote>
+<p>过程如下：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>浏览器建立一个到Web缓存器的TCP连接，并向Web缓存器中的对象发送一个HTTP请求</p>
+</li>
+<li class="lvl-2">
+<p>Web缓存器进行检查，看看本地是否存储了该对象的副本，如果有则用响应报文返回对象</p>
+</li>
+<li class="lvl-2">
+<p>如果没有，则打开一个与该对象的初始服务器的TCP连接，向其发送一个对该对象的HTTP请求。初始服务器向其发送响应报文</p>
+</li>
+<li class="lvl-2">
+<p>Web缓存器在本地保留一份副本，并向用户发送响应报文</p>
+</li>
+</ul>
+<p><strong>好处</strong></p>
+<p>1.大大减少对用户请求的响应时间</p>
+<p>2.整体上大大减轻因特网上的Web流量，改善应用性能</p>
+<h4 id="2-2-6条件GET方法">2.2.6条件GET方法</h4>
+<blockquote>
+<p>为了保证高速缓存器中的内容不是陈旧的，HTTP协议设置了一种机制，<strong>条件GET方法</strong></p>
+</blockquote>
+<p>如果：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>请求报文中使用了GET方法</p>
+</li>
+<li class="lvl-2">
+<p>请求报文中包含了一个If-Modified-Since首部行</p>
+</li>
+</ul>
+<p>则称为条件GET请求报文</p>
+<h5 id="过程">过程</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>缓存器向初始服务器发送请求报文</p>
+</li>
+<li class="lvl-2">
+<p>初始服务器返回响应报文</p>
+</li>
+<li class="lvl-2">
+<p>缓存器存储对象和时间</p>
+</li>
+<li class="lvl-2">
+<p>浏览器向缓存器发送请求报文</p>
+</li>
+<li class="lvl-2">
+<p>缓存器向初始服务器发送含有条件GET方法的请求报文</p>
+</li>
+<li class="lvl-2">
+<p>初始服务器返回不含对象的响应报文（告知未被修改）</p>
+</li>
+<li class="lvl-2">
+<p>缓存器返回缓存对象的响应报文</p>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

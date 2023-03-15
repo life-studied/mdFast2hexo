@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1OS总览 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1OS总览</h1>
+    </header>
+
+    <section>
+      <h2 id="OS总览">OS总览</h2>
+<h4 id="程序生成过程">程序生成过程</h4>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>预处理过程：将需要引用的内容插入到源文件中，形成.i文件</p>
+<ul class="lvl-2">
+<li class="lvl-6">gcc -e xxx.c -o xxx.i</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>编译阶段：将.i文件翻译成汇编程序</p>
+<ul class="lvl-2">
+<li class="lvl-6">gcc -s xxx.i -o xxx.s</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>汇编阶段：汇编器将.s文件翻译成机器语言指令</p>
+<ul class="lvl-2">
+<li class="lvl-6">gcc -c xxx.s -o xxx.o</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>链接阶段：将.o文件与一些预编译的库文件链接在一起，形成可执行文件</p>
+</li>
+</ul>
+<h4 id="操作系统如何区分和识别代码">操作系统如何区分和识别代码</h4>
+<blockquote>
+<p>根据“语境”来分析</p>
+</blockquote>
+<h4 id="计算机整体的架构">计算机整体的架构</h4>
+<p><img src="picture/%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84.png" alt=""></p>
+<p>用户态和内核态运行在CPU中，通过程序状态寄存器控制这两种状态</p>
+<p>在内核态的情况下，能够运行任何指令，开放硬件的一切</p>
+<p>在用户态的情况下，部分功能不能运行，对指令有所限制</p>
+<p>为了获取操作系统的服务，必须要调用操作系统对外的接口</p>
+<h4 id="硬件作用">硬件作用</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>寄存器</p>
+<ul class="lvl-2">
+<li class="lvl-6">通用寄存器：用于保存变量和临时结果
+<ul class="lvl-4">
+<li class="lvl-10">程序计数器：用于存储指向下一条指令的地址</li>
+<li class="lvl-10">用于保存堆栈指针</li>
+<li class="lvl-10">程序状态寄存器：用于维护long型的数据集合，跟踪当前系统的状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>CPU：执行指令（从寄存器读取）</p>
+</li>
+</ul>
+<h4 id="存储层次结构">存储层次结构</h4>
+<p><img src="picture/%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png" alt=""></p>
+<h4 id="指令集架构">指令集架构</h4>
+<blockquote>
+<p>CPU处理指令的规则（人为编写的）</p>
+</blockquote>
+<p>用于描述机器代码所执行的效果</p>
+<h4 id="处理器的微体系结构">处理器的微体系结构</h4>
+<p>用于描述处理器的具体实现</p>
+<h4 id="CPU流水线">CPU流水线</h4>
+<p>CPU为了提升性能，将功能分为：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>取指单元</p>
+</li>
+<li class="lvl-2">
+<p>解码单元</p>
+</li>
+<li class="lvl-2">
+<p>执行单元</p>
+</li>
+</ul>
+<h4 id="局部性原理">局部性原理</h4>
+<blockquote>
+<p>缓存造成性能的提升</p>
+</blockquote>
+<h5 id="时间重复性">时间重复性</h5>
+<p>某一个内存多次被重复引用</p>
+<h5 id="空间重复性">空间重复性</h5>
+<p>某一个内存附近的内存被引用</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

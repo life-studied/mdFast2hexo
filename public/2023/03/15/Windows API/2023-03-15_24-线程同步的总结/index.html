@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>24-线程同步的总结 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>24-线程同步的总结</h1>
+    </header>
+
+    <section>
+      <h2 id="线程同步的总结">线程同步的总结</h2>
+<p>Windows 线程同步的方式主要有四种：</p>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>互斥对象 Mutex</p>
+</li>
+<li class="lvl-2">
+<p>事件对象 event</p>
+</li>
+<li class="lvl-2">
+<p>关键代码段criticalSection</p>
+</li>
+<li class="lvl-3">
+<p>信号量</p>
+</li>
+</ul>
+<p>对于四种线程同步的方式，它们之间的区别：</p>
+<p>● 互斥对象和事件以及信号量都属于内核对象，利用内核对象进行线程同步时，速度较慢，但利用互斥对象和事件对象这样的内核对象，可以在多个进程中的各个线程间进行同步。</p>
+<p>● 关键代码段工作在用户方式下，同步速度较快，但在使用关键代码段时，很容易进入死锁状态，因为在等待进入关键代码段时无法设定超时值。</p>
+<hr>
+<h4 id="总结">总结</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>用户级别的：关键代码段，只能本进程中</p>
+</li>
+<li class="lvl-2">
+<p>内核级别的：互斥量/事件/信号量，可以跨进程</p>
+</li>
+</ul>
+<blockquote>
+<p>通常，在编写多线程程序并需要实现线程同步时，首选关键代码段，由于它的使用比较简单，如果是在 MFC 程序中使用的话，可以在类的构造函数 Init 中调用 InitializeCriticalSection 函数，在该类的析构函数中调用 DeleteCriticalSection 函数，在所需保护的代码前面调用EnterCriticalSection 函数，在访问完所需保护的资源后，调用 LeaveCriticalSection 函数。可见，关键代码段在使用上是非常方便的，但有几点需要注意：A 在程序中调用了 EnterCriticalSection 后，要相应的调用 LeaveCriticalSection 函数，否则其他等待该临界区对象所有权的线程将无法执行。B 如果访问关键代码段时，使用了多个临界区对象，就要注意防止线程死锁的发生。另外，如果需要在多个进程间的各个线程间实现同步的话，可以使用互斥对象和事件对象或者信号量。</p>
+</blockquote>
+<h4 id="什么是线程安全？">什么是线程安全？</h4>
+<blockquote>
+<p>假如你的代码在多线程执行和单线程执行永远是完全一样的结果，那么你的代码是线程安全的。</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>22-线程同步：关键代码段 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>22-线程同步：关键代码段</h1>
+    </header>
+
+    <section>
+      <h2 id="线程同步：关键代码段">线程同步：关键代码段</h2>
+<blockquote>
+<p>关键代码段，也称为临界区，工作在用户方式下。它是指一个小代码段，在代码能够执行前，它必须独占对某些资源的访问权。通常把多线程中访问同一种资源的那部分代码当做关键代码段。</p>
+</blockquote>
+<span id="more"></span>
+<p>注意：关键代码段不是内核对象，只是用户态下保证资源只能被独立访问的代码加锁。</p>
+<blockquote>
+<p>步骤：先创建关键代码段（本质是一个结构体），再在需要加锁的代码前进入临界区，在结束该段代码后离开临界区，能让其它线程能够进入（同一代码段标识的）临界区。</p>
+</blockquote>
+<h4 id="1-初始化关键代码段InitializeCriticalSection">1.初始化关键代码段InitializeCriticalSection</h4>
+<blockquote>
+<p>先声明结构体CRITICAL_SECTION，再将其地址传入</p>
+</blockquote>
+<p>参数：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一个指向 CRITICAL_SECTION 结构体的指针</p>
+</li>
+</ul>
+<h4 id="2-进入关键代码段EnterCriticalSection">2.进入关键代码段EnterCriticalSection</h4>
+<p>参数：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一个指向 CRITICAL_SECTION 结构体的指针</p>
+</li>
+</ul>
+<h4 id="3-退出关键代码段LeaveCriticalSection">3.退出关键代码段LeaveCriticalSection</h4>
+<p>参数：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一个指向 CRITICAL_SECTION 结构体的指针</p>
+</li>
+</ul>
+<h4 id="4-删除临界区DeleteCriticalSection">4.删除临界区DeleteCriticalSection</h4>
+<p>参数：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一个指向 CRITICAL_SECTION 结构体的指针</p>
+</li>
+</ul>
+<p><strong>案例</strong></p>
+<blockquote>
+<p>创建临界区结构体，在关键代码段前加锁，离开后解锁</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;process.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> iTickets = <span class="number">5000</span>;</span><br><span class="line">CRITICAL_SECTION g_cs;</span><br><span class="line"><span class="comment">// A窗口 B窗口</span></span><br><span class="line"><span class="function">DWORD WINAPI <span class="title">SellTicketA</span><span class="params">(<span class="type">void</span>* lpParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">EnterCriticalSection</span>(&amp;g_cs);<span class="comment">//进入临界区</span></span><br><span class="line">		<span class="keyword">if</span> (iTickets &gt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">Sleep</span>(<span class="number">1</span>);</span><br><span class="line">			iTickets--;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;A remain %d\n&quot;</span>, iTickets);</span><br><span class="line">			<span class="built_in">LeaveCriticalSection</span>(&amp;g_cs);<span class="comment">//离开临界区</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">LeaveCriticalSection</span>(&amp;g_cs);<span class="comment">//离开临界区</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">DWORD WINAPI <span class="title">SellTicketB</span><span class="params">(<span class="type">void</span>* lpParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">EnterCriticalSection</span>(&amp;g_cs);<span class="comment">//进入临界区</span></span><br><span class="line">		<span class="keyword">if</span> (iTickets &gt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">Sleep</span>(<span class="number">1</span>);</span><br><span class="line">			iTickets--;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;B remain %d\n&quot;</span>, iTickets);</span><br><span class="line">			<span class="built_in">LeaveCriticalSection</span>(&amp;g_cs);<span class="comment">//离开临界区</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">LeaveCriticalSection</span>(&amp;g_cs);<span class="comment">//离开临界区</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE hThreadA, hThreadB;</span><br><span class="line">	hThreadA = <span class="built_in">CreateThread</span>(<span class="literal">NULL</span>, <span class="number">0</span>, SellTicketA, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>); <span class="comment">//2</span></span><br><span class="line">	hThreadB = <span class="built_in">CreateThread</span>(<span class="literal">NULL</span>, <span class="number">0</span>, SellTicketB, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>); <span class="comment">//2</span></span><br><span class="line">	<span class="built_in">CloseHandle</span>(hThreadA); <span class="comment">//1</span></span><br><span class="line">	<span class="built_in">CloseHandle</span>(hThreadB); <span class="comment">//1</span></span><br><span class="line">	<span class="built_in">InitializeCriticalSection</span>(&amp;g_cs); <span class="comment">//初始化关键代码段</span></span><br><span class="line">	<span class="built_in">Sleep</span>(<span class="number">40000</span>);</span><br><span class="line">	<span class="built_in">DeleteCriticalSection</span>(&amp;g_cs);<span class="comment">//删除临界区</span></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

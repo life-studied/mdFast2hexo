@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-1在程序开头添加对话框 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-1在程序开头添加对话框</h1>
+    </header>
+
+    <section>
+      <h2 id="在程序开头添加对话框">在程序开头添加对话框</h2>
+<h4 id="1-使用LordPE修改PE文件的属性">1.使用LordPE修改PE文件的属性</h4>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>使用LordPE打开PE文件：</p>
+</li>
+</ul>
+<p><img src="picture/%E6%89%93%E5%BC%80PE%E6%96%87%E4%BB%B6.png" alt=""></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>打开分区</p>
+</li>
+</ul>
+<p><img src="picture/%E6%89%93%E5%BC%80%E5%88%86%E5%8C%BA.png" alt=""></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>add new Section header</p>
+</li>
+</ul>
+<p>![](picture/add new section.png)</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>edit the new Section header</p>
+<ul class="lvl-2">
+<li class="lvl-6">VOffset：该Section映射在虚拟内存中的地址</li>
+<li class="lvl-6">VSize：该Section映射在虚拟内存中的长度</li>
+<li class="lvl-6">ROffset：该文件的</li>
+</ul>
+</li>
+</ul>
+<p>![](picture/edit the new Section header.png)</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>修改文件大小属性</p>
+</li>
+</ul>
+<p>![](picture/edit the SizeOfImage.png)</p>
+<h4 id="2-使用C32Asm为文件增加size">2.使用C32Asm为文件增加size</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>将PE文件拖入应用（十六进制模式）</p>
+</li>
+<li class="lvl-2">
+<p>来到文件最后，点击最后的数据，然后点击编辑——插入数据，插入0x200大小，即512</p>
+</li>
+</ul>
+<p>![](picture/insert the data.png)</p>
+<p>![](picture/insert success.png)</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>保存</p>
+</li>
+</ul>
+<h4 id="3-使用OD注入对话框代码（在此之前使用LordPE修改PE入口点地址）">3.使用OD注入对话框代码（在此之前使用LordPE修改PE入口点地址）</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>使用OD打开PE文件，可以看到入口点地址（虚拟地址0x404340）( = ImageBase + EntryPoint)</p>
+</li>
+</ul>
+<p><img src="picture/StartOfPoint.png" alt=""></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>使用LordPE修改入口点地址为新增Section地址</p>
+</li>
+</ul>
+<p>![](picture/edit the EntryPoinnt.png)</p>
+<p>![](picture/OD check the EntryPoint.png)</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>使用ctrl+G转到地址0x00436020，选中第一行，按下空格，输入Hello World!!</p>
+</li>
+<li class="lvl-2">
+<p>再选中第二行，输入Hello</p>
+</li>
+</ul>
+<p>![](picture/add the pragma.png)</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在0x436000处，修改汇编代码</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">push 0</span><br><span class="line">push 436030</span><br><span class="line">push 436020</span><br><span class="line">push 0</span><br><span class="line">call MessageBoxA</span><br><span class="line">jmp 404340</span><br></pre></td></tr></table></figure>
+<p>![](picture/edit the code.png)</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>选中修改的区域，右击，复制到可执行文件——选择</p>
+</li>
+</ul>
+<p>![](picture/choose the edit code.png)</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在打开的文件窗口中右击——保存文件——覆盖</p>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

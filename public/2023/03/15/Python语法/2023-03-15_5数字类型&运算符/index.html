@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>5数字类型&amp;运算符 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>5数字类型&amp;运算符</h1>
+    </header>
+
+    <section>
+      <h2 id="数字类型-运算符">数字类型&amp;运算符</h2>
+<h3 id="数字类型">数字类型</h3>
+<span id="more"></span>
+<h4 id="1-整数">1.整数</h4>
+<blockquote>
+<p>范围：无限大</p>
+</blockquote>
+<blockquote>
+<p>计算：转换为浮点数计算</p>
+</blockquote>
+<blockquote>
+<p>结果：</p>
+<p>除法：浮点数</p>
+<p>其余：整数</p>
+</blockquote>
+<h4 id="2-浮点数">2.浮点数</h4>
+<blockquote>
+<p>范围：精度有限</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=<span class="number">0.3</span></span><br><span class="line"><span class="keyword">if</span> a==<span class="number">0.1</span>+<span class="number">0.2</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;yes&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;no&quot;</span>)</span><br><span class="line"><span class="comment">#结果是no,因为0.1+0.2的结果为0.30000000000000004，而a为0.3</span></span><br></pre></td></tr></table></figure>
+<h5 id="解决方法-decimal模块">解决方法(decimal模块)</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> decimal</span><br><span class="line">a=decimal.Decimal(<span class="string">&#x27;0.1&#x27;</span>)</span><br><span class="line">b=decimal.Decimal(<span class="string">&#x27;0.2&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(a+b)</span><br><span class="line"><span class="comment">#结果为0.3</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-复数">3.复数</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = <span class="number">1</span> + <span class="number">2j</span></span><br><span class="line"><span class="comment">#1是实部，2j是虚部</span></span><br><span class="line"><span class="comment">#x.real获取实部</span></span><br><span class="line"><span class="comment">#x.imag获取虚部</span></span><br><span class="line"><span class="comment">#以浮点数形式存储</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-bool类型">4.bool类型</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">bool</span>(字符串)<span class="comment">#只有空字符串才是False，其余都为True</span></span><br><span class="line"><span class="built_in">bool</span>(数字)<span class="comment">#只有0是False，其余都是True</span></span><br></pre></td></tr></table></figure>
+<p><img src="Python_Picture/bool%E4%B8%ADFalse%E6%83%85%E5%86%B5.png%22bool%E4%B8%ADFalse%E7%9A%84%E6%83%85%E5%86%B5%22" alt=""></p>
+<h3 id="运算">运算</h3>
+<h4 id="算数运算符">算数运算符</h4>
+<p><img src="Python_Picture/%E8%BF%90%E7%AE%97%E8%A1%A8.png" alt=""></p>
+<h6 id="注：">注：</h6>
+<blockquote>
+<p>3/2=1.5</p>
+<p>3//2=1(向下取整)</p>
+<p>-3//2=-2(向下取整)</p>
+</blockquote>
+<blockquote>
+<p>abs(复数)=复数的模</p>
+</blockquote>
+<blockquote>
+<p>int(‘整数’)=整数（‘浮点数’报错）</p>
+<p>int(浮点数)=取整</p>
+</blockquote>
+<h4 id="逻辑运算符">逻辑运算符</h4>
+<p><img src="Python_Picture/%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6.png" alt=""></p>
+<h5 id="注：-2">注：</h5>
+<blockquote>
+<p>and返回第一个False的表达式的结果，如果都为True，则输出最后那个表达式的结果</p>
+<p>or返回第一个True的表达式的结果，如果都为False，则输出最后那个表达式的结果（0）</p>
+<p>and和or都遵循短路逻辑</p>
+<p>优先级：not&gt;and&gt;or</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="number">3</span> <span class="keyword">and</span> <span class="number">4</span>		<span class="comment">#答案是4，原因是3是true，所以将后面的4输出</span></span><br><span class="line"><span class="number">3</span> <span class="keyword">or</span> <span class="number">4</span>		<span class="comment">#答案是3，原因是3是true，所以直接输出前面的3</span></span><br></pre></td></tr></table></figure>
+<h4 id="运算符优先级">运算符优先级</h4>
+<p><img src="Python_Picture/%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7.png" alt=""></p>
+<blockquote>
+<p>注：运算优先级最高的在下</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

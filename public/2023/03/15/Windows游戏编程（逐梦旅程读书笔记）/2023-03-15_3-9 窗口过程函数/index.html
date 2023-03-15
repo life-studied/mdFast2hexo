@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3-9 窗口过程函数 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3-9 窗口过程函数</h1>
+    </header>
+
+    <section>
+      <h2 id="窗口过程函数">窗口过程函数</h2>
+<blockquote>
+<p>窗口过程函数是一个回调函数，用于创建窗口时将函数地址传进去处理消息。</p>
+</blockquote>
+<span id="more"></span>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">LRESULT</span> (CALLBACK* WNDPROC) (HWND, UINT, WPARAM, LPARAM);</span><br></pre></td></tr></table></figure>
+<h4 id="案例">案例</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 窗口过程函数的定义</span></span><br><span class="line"><span class="function">LRESULT CALLBACK <span class="title">WinProc</span><span class="params">(_In_ HWND hwnd,_In_ UINT Msg,_In_ WPARAM wPAram,_In_ LPARAM lParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 根据不同的消息进行处理</span></span><br><span class="line">    <span class="keyword">switch</span>(Msg)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果是关闭窗口的消息</span></span><br><span class="line">        <span class="keyword">case</span> WM_CLOSE:</span><br><span class="line">            <span class="comment">// 销毁窗口</span></span><br><span class="line">            <span class="built_in">DestroyWindow</span>(hwnd);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">// 如果是销毁窗口的消息</span></span><br><span class="line">        <span class="keyword">case</span> WM_DESTROY:</span><br><span class="line">            <span class="comment">// 退出程序</span></span><br><span class="line">            <span class="built_in">PostQuitMessage</span>(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">// 其他消息交给默认窗口过程处理</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">DefWindowProc</span>(hwnd,Msg,wPAram,lParam);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">源: 与必应的对话， 2023/3/7(1) 窗口过程函数_LC900730的博客-CSDN博客. https://blog.csdn.net/LC900730/article/details/72628971 访问时间 2023/3/7.</span></span><br><span class="line"><span class="comment">(2) win32应用程序创建流程（消息处理）（窗口过程WindowProc）_土戈的博客-CSDN博客. https://blog.csdn.net/f110300641/article/details/106566209 访问时间 2023/3/7.</span></span><br><span class="line"><span class="comment">(3) 数据分析｜SQL窗口函数最全使用指南 - 知乎. https://zhuanlan.zhihu.com/p/120269203 访问时间 2023/3/7.</span></span><br><span class="line"><span class="comment">(4) Windows窗口与信息：窗口过程 - 知乎. https://zhuanlan.zhihu.com/p/150462903 访问时间 2023/3/7.</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

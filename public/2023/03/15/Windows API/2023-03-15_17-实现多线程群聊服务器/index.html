@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>17-实现多线程群聊服务器 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>17-实现多线程群聊服务器</h1>
+    </header>
+
+    <section>
+      <h2 id="实现多线程群聊服务器">实现多线程群聊服务器</h2>
+<h4 id="1-设计思路">1.设计思路</h4>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>对于每一个上线的客户端，服务端会起一个线程去维护</p>
+</li>
+<li class="lvl-2">
+<p>将消息转发给全部客户端</p>
+</li>
+<li class="lvl-2">
+<p>当某个客户端断开（下线），需要处理</p>
+</li>
+</ul>
+<h4 id="完整代码">完整代码</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;process.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;ws2_32.lib&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_CLNT 256</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_BUF_SIZE 1024</span></span><br><span class="line"></span><br><span class="line">SOCKET clnSocks[MAX_CLNT];		<span class="comment">//所有连接的SOCKET客户端</span></span><br><span class="line"><span class="type">int</span> clntCnt = <span class="number">0</span>;				<span class="comment">//当前SOCKET连接数</span></span><br><span class="line"></span><br><span class="line">HANDLE hMutex;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SendMsg</span><span class="params">(<span class="type">char</span>* szMsg, <span class="type">int</span> iLen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">WaitForSingleObject</span>(hMutex, INFINITE);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; clntCnt; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">send</span>(clnSocks[i], szMsg, iLen, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">ReleaseMutex</span>(hMutex);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">unsigned</span> WINAPI <span class="title">HandleCln</span><span class="params">(<span class="type">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	SOCKET hClntSock = *((SOCKET*)arg);</span><br><span class="line">	<span class="type">int</span> iLen = <span class="number">0</span>, i;</span><br><span class="line">	<span class="type">char</span> szMsg[MAX_BUF_SIZE] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		iLen = <span class="built_in">recv</span>(hClntSock, szMsg, <span class="built_in">sizeof</span>(szMsg), <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">if</span> (iLen != <span class="number">-1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">SendMsg</span>(szMsg, iLen);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">WaitForSingleObject</span>(hMutex, INFINITE);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; clntCnt; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (hClntSock == clnSocks[i])</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = i; j &lt; clntCnt; j++)</span><br><span class="line">			&#123;</span><br><span class="line">				clnSocks[j] = clnSocks[j + <span class="number">1</span>];</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	clntCnt--;</span><br><span class="line">	<span class="built_in">ReleaseMutex</span>(hMutex);</span><br><span class="line">	<span class="built_in">closesocket</span>(hClntSock);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE hThread;</span><br><span class="line"></span><br><span class="line">	WORD wVersionRequested;</span><br><span class="line">	WSADATA wsadata;</span><br><span class="line">	<span class="type">int</span> err;</span><br><span class="line">	wVersionRequested = <span class="built_in">MAKEWORD</span>(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">	err = <span class="built_in">WSAStartup</span>(wVersionRequested, &amp;wsadata);</span><br><span class="line">	<span class="keyword">if</span> (err)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;WSAStartup errnum: %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="keyword">return</span> err;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">LOBYTE</span>(wsadata.wVersion) != <span class="number">2</span> || <span class="built_in">HIBYTE</span>(wsadata.wVersion) != <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;LOBYTE errnum: %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="built_in">WSACleanup</span>();</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//创建互斥对象</span></span><br><span class="line">	hMutex = <span class="built_in">CreateMutex</span>(<span class="literal">NULL</span>, FALSE, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建服务器SOCKET</span></span><br><span class="line">	SOCKET sockSrv = <span class="built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (INVALID_SOCKET == sockSrv)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	SOCKADDR_IN addrSrv;</span><br><span class="line">	addrSrv.sin_addr.S_un.S_addr = <span class="built_in">htonl</span>(INADDR_ANY);</span><br><span class="line">	addrSrv.sin_family = AF_INET;</span><br><span class="line">	addrSrv.sin_port = <span class="built_in">htons</span>(<span class="number">9999</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (SOCKET_ERROR == <span class="built_in">bind</span>(sockSrv, (SOCKADDR*)&amp;addrSrv, <span class="built_in">sizeof</span>(SOCKADDR)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (SOCKET_ERROR == <span class="built_in">listen</span>(sockSrv, <span class="number">5</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;start listen&quot;</span>);</span><br><span class="line"></span><br><span class="line">	SOCKADDR_IN addrCli;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">sizeof</span>(SOCKADDR_IN);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		SOCKET sockConn = <span class="built_in">accept</span>(sockSrv, (SOCKADDR*)&amp;addrCli, &amp;len);</span><br><span class="line">		<span class="built_in">WaitForSingleObject</span>(hMutex, INFINITE);</span><br><span class="line">		clnSocks[clntCnt++] = sockConn;</span><br><span class="line">		<span class="built_in">ReleaseMutex</span>(hMutex);</span><br><span class="line">		hThread = (HANDLE)_beginthreadex(<span class="literal">NULL</span>, <span class="number">0</span>, &amp;HandleCln, (<span class="type">void</span>*)&amp;sockConn, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Connect ip = %s\nNum = %d&quot;</span>, <span class="built_in">inet_ntoa</span>(addrCli.sin_addr), clntCnt);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">closesocket</span>(sockSrv);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

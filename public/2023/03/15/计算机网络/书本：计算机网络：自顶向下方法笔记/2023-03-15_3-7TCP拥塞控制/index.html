@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3-7TCP拥塞控制 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3-7TCP拥塞控制</h1>
+    </header>
+
+    <section>
+      <h2 id="3-7TCP拥塞控制">3.7TCP拥塞控制</h2>
+<blockquote>
+<p>方法：通过发送方所感知的网络拥塞程度来限制发送速率。</p>
+</blockquote>
+<span id="more"></span>
+<p>需要解决三个问题：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>如何限制发送速率</p>
+</li>
+<li class="lvl-2">
+<p>如何感知拥塞</p>
+</li>
+<li class="lvl-2">
+<p>采用何种算法来限制</p>
+</li>
+</ul>
+<h5 id="1-如何限制">1.如何限制</h5>
+<blockquote>
+<p>TCP的每一端都由</p>
+<ul class="lvl-1">
+<li class="lvl-2">发送缓存</li>
+<li class="lvl-2">接收缓存</li>
+<li class="lvl-2">公式rwnd = RcvBuffer - (LastByteRcvd - LastByteRead)里的变量</li>
+</ul>
+<p>组成。</p>
+</blockquote>
+<p>拥塞控制机制监视一个新变量：拥塞窗口（cwnd）：<br>
+$$<br>
+LastByteSent - LastByteAcked \leq min(cwnd,rwnd)<br>
+$$</p>
+<p>$$<br>
+rate = cwnd/RTT<br>
+$$</p>
+<blockquote>
+<p>发送速率 = 拥塞窗口 / 往返延迟</p>
+</blockquote>
+<h5 id="2-如何感知">2.如何感知</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>超时</p>
+</li>
+<li class="lvl-2">
+<p>收到3个冗余Ack</p>
+</li>
+</ul>
+<h5 id="3-采用算法">3.采用算法</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>慢启动</p>
+</li>
+<li class="lvl-2">
+<p>AIMD</p>
+</li>
+<li class="lvl-2">
+<p>超时事件后的保守策略</p>
+</li>
+</ul>
+<p><img src="picture/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%9A%84FSM%E6%8F%8F%E8%BF%B0.png" alt="TCP拥塞控制的FSM描述"></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

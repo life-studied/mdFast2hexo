@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>10-6 类作用域 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>10-6 类作用域</h1>
+    </header>
+
+    <section>
+      <h2 id="10-6-类作用域">10.6 类作用域</h2>
+<blockquote>
+<p>在类中定义的名称的作用域是整个类，只在该类中是已知的。</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="10-6-1作用域为类的常量">10.6.1作用域为类的常量</h4>
+<p>例如：类声明可能需要使用字面值30来指定数组的长度。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Brakery</span>&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MONTHS=<span class="number">12</span>;<span class="comment">//不可行！！</span></span><br><span class="line">    <span class="type">double</span> costs[MONTHS];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，因为声明只是描述了对象的形式，并没有创建变量，因此<strong>类声明中没有存储值的空间</strong>。所以常量不能被赋值</p>
+<h5 id="处理方法">处理方法</h5>
+<p>1.使用枚举</p>
+<blockquote>
+<p>注意：因为枚举并不创建类数据成员，所以在类中声明的枚举不会在对象中出现。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Brakery</span>&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">enum</span> &#123;MONTHS=<span class="number">12</span>&#125;;<span class="comment">//使用枚举</span></span><br><span class="line">    <span class="type">double</span> costs[MONTHS];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.使用static</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Brakery</span>&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> MONTHS=<span class="number">12</span>;</span><br><span class="line">    <span class="type">double</span> costs[MONTHS];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>该常量将与所有静态变量存储在一起，而不是存储在类中，所以能做到</p>
+</blockquote>
+<h4 id="10-6-2作用域内枚举（c-11）">10.6.2作用域内枚举（c++11）</h4>
+<blockquote>
+<p>传统枚举会因为两个枚举内的常量名称一致而引发冲突</p>
+<p>作用域内枚举可以有效避免这个问题</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum class</span> <span class="title class_">egg</span> &#123;Small,Medium,Large&#125;;<span class="comment">//作用域egg</span></span><br><span class="line"><span class="keyword">enum class</span> <span class="title class_">t_shirt</span> &#123;Small,Medium,Large&#125;;<span class="comment">//作用域t_shirt</span></span><br><span class="line">egg choose = egg::Large;<span class="comment">//注意加上作用域解析符::</span></span><br><span class="line">t_shirt T=t_shirt::Large;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>作用域内枚举不能隐式转化为整形</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

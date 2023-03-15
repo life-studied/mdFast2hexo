@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-6玩转文件描述符和重定向 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-6玩转文件描述符和重定向</h1>
+    </header>
+
+    <section>
+      <h2 id="1-6玩转文件描述符和重定向">1.6玩转文件描述符和重定向</h2>
+<blockquote>
+<p>文件描述符是与输入和输出流相关联的整数。</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="1-6-1-预备知识">1.6.1 预备知识</h4>
+<blockquote>
+<p>脚本可以使用大于号将输出重定向到文件中。</p>
+</blockquote>
+<p>文件描述符是与某个打开的文件或数据流相关联的整数。文件描述符0、1以及2是系统预留的。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>0</strong> —— stdin （标准输入）。</p>
+</li>
+<li class="lvl-2">
+<p><strong>1</strong> —— stdout（标准输出）。</p>
+</li>
+<li class="lvl-2">
+<p><strong>2</strong> —— stderr（标准错误）。</p>
+</li>
+</ul>
+<h4 id="1-6-2-实战演练">1.6.2 实战演练</h4>
+<h5 id="1-使用大于号将文本保存到文件中（覆盖）">1.使用大于号将文本保存到文件中（覆盖）</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;This is a example text 1&quot; &gt; temp.txt		#如果temp.txt已存在，则清空其中内容</span><br></pre></td></tr></table></figure>
+<h5 id="2-使用双大于号将文本追加到文件中">2.使用双大于号将文本追加到文件中</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;This is a example text 2&quot; &gt;&gt; temp.txt</span><br></pre></td></tr></table></figure>
+<h5 id="3-将stderr文本保存到文件中（覆盖）">3.将stderr文本保存到文件中（覆盖）</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls + 2&gt; out.txt			#OK，指定了stderr流</span><br><span class="line">ls + &gt; out.txt			#NO，默认stdout流即1&gt;，里面没有消息</span><br></pre></td></tr></table></figure>
+<h5 id="4-将stderr和stdout分别重定向到不同文件">4.将stderr和stdout分别重定向到不同文件</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd 2&gt; stderr.txt 1&gt; stdout.txt</span><br></pre></td></tr></table></figure>
+<h5 id="5-将stderr和stdout输出到一个文件">5.将stderr和stdout输出到一个文件</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd 2&gt;&amp;1 alloutput.txt	#OK</span><br><span class="line">cmd &amp;&gt; output.txt		#OK</span><br></pre></td></tr></table></figure>
+<h5 id="6-不显示、保存stderr">6.不显示、保存stderr</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">command 2&gt; /dev/null	#将命令重定向至空设备中</span><br></pre></td></tr></table></figure>
+<h5 id="7-保存数据同时作为下一命令输入使用">7.保存数据同时作为下一命令输入使用</h5>
+<blockquote>
+<p>stdout作为单数据流（single stream），可以被重定向到文件或是通过管道传入其他程序，但是无法两者兼得。</p>
+<p>tee命令接收到来自stdin的数据。它将stdout的一份副本写入文件out.txt，同时将另一份副本作为后续命令的stdin。</p>
+<p>cat命令没有文件参数，会从stdin读取，再输出到stdout</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">command | tee FILE1 FILE2 | otherCommand</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">eg</span></span><br><span class="line">cat a* | tee out.txt | cat -n</span><br><span class="line">cat a* | tee -a out.txt | cat -n	#使用-a表示追加到文件末尾</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong><code>|</code>符号表示前一个命令的输出作为下一个命令的标准输入。（即将stdout重定向到stdin）</p>
+<h5 id="8-将输入的文字标行号并重定向到两份文件中">8.将输入的文字标行号并重定向到两份文件中</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tee stdout.txt | cat -n &gt; out.txt 		#从stdin读入，输入到stdout.txt，同时标号输入out.txt</span><br></pre></td></tr></table></figure>
+<h4 id="1-6-4-补充内容">1.6.4 补充内容</h4>
+<h5 id="1-将文件重定向到命令">1.将文件重定向到命令</h5>
+<blockquote>
+<p>像读取stdin一样读取文件，使用&lt;</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd &lt; file</span><br></pre></td></tr></table></figure>
+<h5 id="2-重定向脚本内部的文本块">2.重定向脚本内部的文本块</h5>
+<blockquote>
+<p>可以将脚本中的文本重定向到文件。</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<blockquote>
+<p>要想将一条警告信息添加到自动生成的文件顶部，可以使用下面的代码：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span> </span><br><span class="line">cat &lt;&lt; EOF &gt; log.txt 	#从该命令下一行开始</span><br><span class="line">This is a generated file. Do not edit. Changes will be overwritten. </span><br><span class="line">EOF						#到EOF结束，不含EOF</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat log.txt</span><br><span class="line">This is a generated file. Do not edit. Changes will be overwritten. </span><br></pre></td></tr></table></figure>
+<h5 id="3-自定义文件描述符">3.自定义文件描述符</h5>
+<blockquote>
+<p>使用exec命令，后面跟新的文件描述符和文件名</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">exec 3&lt; input.txt	#将input.txt作为3，输入模式</span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"></span><br><span class="line">exec 4&gt; output.txt	# 将output.txt作为4，输出模式</span><br><span class="line">echo newline &gt;&amp;4</span><br><span class="line"></span><br><span class="line">exec 5&gt;&gt; input.txt	#将input.txt作为5，追加模式</span><br><span class="line">echo append new line &gt;&amp;5	#不是&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

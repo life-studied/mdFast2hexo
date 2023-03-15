@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-3使用变量与环境变量 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-3使用变量与环境变量</h1>
+    </header>
+
+    <section>
+      <h2 id="1-3使用变量与环境变量">1.3使用变量与环境变量</h2>
+<h4 id="1-3-1预备知识">1.3.1预备知识</h4>
+<span id="more"></span>
+<blockquote>
+<p>所有的应用程序和脚本都可以访问环境变量。可以使用<code>env</code>或<code>printenv</code>命令查看当前shell中所定义的全部环境变量</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">env</span><br><span class="line">printenv</span><br></pre></td></tr></table></figure>
+<h5 id="查看其它进程的环境变量">查看其它进程的环境变量</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">假设查看进程名为：process</span></span><br><span class="line">pgrep process	#获取进程PID</span><br><span class="line">12501			#PID</span><br><span class="line"></span><br><span class="line">cat /proc/12501/environ</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于变量之间用<code>\0</code>来分隔，因此不好阅读。要想生成一份易读的报表，可以将cat命令的输出通过管道传给tr，将其中的<code>\0</code>替换成<code>\n</code>：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /proc/12501/environ | <span class="built_in">tr</span> <span class="string">&#x27;\0&#x27;</span> <span class="string">&#x27;\n&#x27;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="1-3-2实战演练">1.3.2实战演练</h4>
+<h5 id="1-变量">1.变量</h5>
+<blockquote>
+<p>可以使用等号操作符为变量赋值：</p>
+</blockquote>
+<p><code>varName=value</code></p>
+<p><strong>如果变量带有空白字符，则要放入<code>”“</code>或者<code>‘’</code>中</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">var=&quot;value&quot;</span><br><span class="line">echo $var</span><br><span class="line">echo $&#123;var&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">注意两边没有空格的等号是赋值操作符，加上空格的等号表示的是等量关系测试</span></span><br><span class="line">var = &quot;value&quot;	#wrong</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以在其它命令的双引号中引用变量值</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span> </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">文件名:variables.sh</span> </span><br><span class="line">fruit=apple </span><br><span class="line">count=5 </span><br><span class="line">echo &quot;We have $count $&#123;fruit&#125;(s)&quot;</span><br></pre></td></tr></table></figure>
+<h5 id="2-export继承变量（子进程）">2.export继承变量（子进程）</h5>
+<blockquote>
+<p>export命令声明了将由子进程所继承的一个或多个变量。这些变量被导出后，当前shell脚本所执行的任何应用程序都会获得这个变量。</p>
+</blockquote>
+<p>标准环境变量PATH包含很多路径</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo $PATH</span><br><span class="line">/home/menu/.local/bin:/home/menu/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin</span><br><span class="line"></span><br><span class="line">echo $PATH | tr &#x27;:&#x27; &#x27;\n&#x27;	#使用换行分隔</span><br><span class="line">/home/menu/.local/bin</span><br><span class="line">/home/menu/bin</span><br><span class="line">/usr/local/bin</span><br><span class="line">/usr/local/sbin</span><br><span class="line">/usr/bin</span><br><span class="line">/usr/sbin</span><br></pre></td></tr></table></figure>
+<p>而要在其中加一个变量，则可以这样，使用<code>：</code>来分隔</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PATH=&quot;$PATH:/home/user/bin&quot;</span><br></pre></td></tr></table></figure>
+<p>另外还有一些众所周知的环境变量：HOME、PWD、USER、UID、SHELL等</p>
+<p>**注意:**使用单引号时，变量不会被扩展</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &#x27;$var&#x27;</span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">var	<span class="comment">#output</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="1-3-3-补充内容">1.3.3 补充内容</h4>
+<h5 id="1-获取变量长度">1. 获取变量长度</h5>
+<blockquote>
+<p>可以使用$</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

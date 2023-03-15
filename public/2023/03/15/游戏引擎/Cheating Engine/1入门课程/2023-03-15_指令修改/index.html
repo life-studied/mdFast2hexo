@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>指令修改 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>指令修改</h1>
+    </header>
+
+    <section>
+      <h2 id="指令修改">指令修改</h2>
+<h4 id="找到目标指令">找到目标指令</h4>
+<span id="more"></span>
+<p>步骤：</p>
+<p>1.找到数据内存</p>
+<p>2.找到写该数据的指令地址</p>
+<p>3.打开该指令的内存视图</p>
+<p>4.按住ctrl+A打开脚本编写窗口</p>
+<p>5.从模板（template）中选择full injection</p>
+<blockquote>
+<p>这种方法能找到指令的绝对位置</p>
+</blockquote>
+<h4 id="AOB技术">AOB技术</h4>
+<blockquote>
+<p>在大部分情况下，上述方法找到的指令不会随着进程重启而更改位置，但如果进程更新了，指令位置可能会移动，因此需要采用AOB技术来防止因此找不到指令的情况。</p>
+<p>AOB：Array of Bytes</p>
+<p>原理：如果目标指令的内容没有变化，只是因为其它位置的变动而发生了整体的偏移，那么可以将这部分内容作为数据来直接使用内容扫描来查找。</p>
+</blockquote>
+<p>步骤：</p>
+<p>（手动）</p>
+<p>1.复制指令内容（右键选择不包括地址）</p>
+<p>2.开始一次新扫描</p>
+<p>3.数据类型选择AOB，Writeable选择无要求（方块）</p>
+<p>4.将指令内容粘贴到查找框，保留第一个字节，后续使用xx替换（代表不完全匹配），再依次用同样的方法填入后续指令，进行查找（找不到就再加一条指令，重新查找，直到扫描结果唯一）</p>
+<h4 id="脚本讲解">脚本讲解</h4>
+<h5 id="标签与执行顺序">标签与执行顺序</h5>
+<p>特殊标签：与一个绝对地址绑定，将其后的指令保存在这个内存地址</p>
+<p>普通标签：其后的指令位于内存中的某个位置，标签通过这个指令获得对应的地址</p>
+<h5 id="脚本更改位置">脚本更改位置</h5>
+<p>（自动）</p>
+<p>1.找到目标指令，打开内存视图，按住ctrl+A打开脚本编写窗口</p>
+<p>2.从模板（template）中选择AOB injection</p>
+<p>3.将之前手动制作的匹配指令替换掉生成模板里的指令内容</p>
+<ol start="4">
+<li class="lvl-3">
+</li>
+</ol>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

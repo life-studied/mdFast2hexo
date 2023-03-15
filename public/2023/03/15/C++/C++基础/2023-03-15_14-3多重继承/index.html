@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>14-3多重继承 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>14-3多重继承</h1>
+    </header>
+
+    <section>
+      <h2 id="多重继承">多重继承</h2>
+<blockquote>
+<p>MI描述的是有多个直接基类的类。这同样描述的是is-a关系的继承关系。</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>公有MI有以下两个问题：</p>
+<p>1.从两个基类继承了两个同名方法</p>
+<p>2.从两个或更多基类中继承了同一个类的多个实例</p>
+</blockquote>
+<h4 id="14-3-1虚基类–解决基类问题">14.3.1虚基类–解决基类问题</h4>
+<blockquote>
+<p>虚基类使从多个基类相同的类中派生出的对象只继承一个基类对象。</p>
+</blockquote>
+<p><strong>使用</strong></p>
+<blockquote>
+<p>在类声明中使用关键字virtual。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singer</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Worker&#123;...&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Waiter</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Worker&#123;...&#125;;<span class="comment">//两个基于虚基类的派生类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SingingWaiter</span> : <span class="keyword">public</span> Singer, <span class="keyword">public</span> Waiter &#123;...&#125;;</span><br><span class="line"><span class="comment">//三代继承</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这个SingingWaiter只有Worker对象的一个副本</p>
+</blockquote>
+<p><strong>新的函数构造规则</strong></p>
+<blockquote>
+<p>对于使用虚基类，第三代构造函数如果在初始化列表中调用第二代派生类构造函数，则会通过两条不同的途径将数据传递给虚基类对象。因此C++在基类是虚的时候禁止这种传参方式，而是采用直接显式地在初始化列表中调用虚基类的构造函数。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">SingingWaiter</span>(<span class="type">const</span> Worker &amp; wk, <span class="type">int</span> p = <span class="number">0</span>, <span class="type">int</span> v = Singer::other) : <span class="built_in">Worker</span>(wk), <span class="built_in">Waiter</span>(wk,p), <span class="built_in">Singer</span>(wk,v)&#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处使用Worker(wk)来初始化虚基类对象</p>
+<p>注：对于虚基类，这种方式是合法的，对于非虚基类，这种方式是非法的。</p>
+</blockquote>
+<h4 id="14-3-2方法冲突–解决方法问题">14.3.2方法冲突–解决方法问题</h4>
+<blockquote>
+<p>除了修改构造函数，MI还需调整方法。</p>
+<p>对于单继承，如果调用方法，则会使用继承的类中的方法，但对于MI来说，如果继承的两个类出现同名方法，不能确定使用哪一个方法，从而产生二义性。</p>
+</blockquote>
+<p><strong>解决方案</strong></p>
+<p>1.在成员名字前面加上类名和域解析符<code>::</code>，以显式地指明到底使用哪个类的成员，消除二义性</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">SingingWaiter <span class="title">newhere</span><span class="params">(<span class="string">&quot;Elise Hawks&quot;</span>, <span class="number">2005</span>, <span class="number">6</span>, soprano)</span></span>;</span><br><span class="line">newhere.Singer::<span class="built_in">Show</span>();		<span class="comment">//类名和域解析符</span></span><br></pre></td></tr></table></figure>
+<p>2.使用模块化方法重新组装函数</p>
+<blockquote>
+<p>在基类和派生类中只给出自己成员的处理函数，再在三代派生中组装函数</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Worker::Data</span><span class="params">()</span>		<span class="comment">//基类</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Waiter::Data</span><span class="params">()</span>		<span class="comment">//派生1</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Singer::Data</span><span class="params">()</span>		<span class="comment">//派生2</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SingingWaiter::Data</span><span class="params">()</span>	<span class="type">const</span>	<span class="comment">//三代派生组装</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Singer::<span class="built_in">Data</span>();</span><br><span class="line">    Waiter::<span class="built_in">Data</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SingingWaiter::Show</span><span class="params">()</span>	<span class="type">const</span>	<span class="comment">//三代派生组装</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Worker::<span class="built_in">Data</span>();</span><br><span class="line">    <span class="built_in">Data</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.将所有的数据组件设置为保护的而非私有的</p>
+<h4 id="总结案例">总结案例</h4>
+<blockquote>
+<p>该案例总结地使用了上述方法</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//workermi.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Worker</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::string fullname;</span><br><span class="line">    <span class="type">long</span> id;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Data</span><span class="params">()</span> <span class="type">const</span></span>;		<span class="comment">//虚方法，为派生方法做准备</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Get</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Worker</span>() : <span class="built_in">fullname</span>(<span class="string">&quot;no name&quot;</span>), <span class="built_in">id</span>(<span class="number">0L</span>) &#123;&#125;;</span><br><span class="line">    <span class="built_in">Worker</span>(<span class="type">const</span> std::string &amp; s, <span class="type">long</span> n)</span><br><span class="line">        : <span class="built_in">fullname</span>(s), <span class="built_in">id</span>(n) &#123;&#125;;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Worker</span>() = <span class="number">0</span>;	<span class="comment">//纯虚函数，本身无定义</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Set</span><span class="params">()</span> </span>= <span class="number">0</span>; </span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Show</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Waiter</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> panache;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Data</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Get</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Waiter</span>() : <span class="built_in">Worker</span>(), <span class="built_in">panache</span>(<span class="number">0</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">Waiter</span>(<span class="type">const</span> std::string &amp; s, <span class="type">long</span> n, <span class="type">int</span> p = <span class="number">0</span>)</span><br><span class="line">        : <span class="built_in">Worker</span>(s,n), <span class="built_in">panache</span>(p) &#123;&#125;</span><br><span class="line">    <span class="built_in">Waiter</span>(<span class="type">const</span> Worker &amp; wk, <span class="type">int</span> p = <span class="number">0</span>)</span><br><span class="line">        : <span class="built_in">Worker</span>(wk), <span class="built_in">panache</span>(p) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Set</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Show</span><span class="params">()</span> <span class="type">const</span></span>;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Singer</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Worker		<span class="comment">//公有派生，虚基类</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">enum</span>&#123;other, alto, contralto, soprano,</span><br><span class="line">         bass, baritone, tenor&#125;;</span><br><span class="line">    <span class="keyword">enum</span>&#123;Vtypes = <span class="number">7</span>&#125;;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Data</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Get</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">char</span> *pv[Vtypes];</span><br><span class="line">    <span class="type">int</span> voice;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Singer</span>() : <span class="built_in">Worker</span>(), <span class="built_in">voice</span>(other) &#123;&#125;</span><br><span class="line">    <span class="built_in">Singer</span>(<span class="type">const</span> std::string &amp; s, <span class="type">long</span> n, <span class="type">int</span> v = other)</span><br><span class="line">        : <span class="built_in">Worker</span>(s,n), <span class="built_in">voice</span>(v) &#123;&#125;</span><br><span class="line">    <span class="built_in">Singer</span>(<span class="type">const</span> Worker &amp; wk, <span class="type">int</span> v = other)</span><br><span class="line">        : <span class="built_in">Worker</span>(wk), <span class="built_in">voice</span>(v) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Set</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Show</span><span class="params">()</span> <span class="type">const</span></span>;  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//三代派生类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SingingWaiter</span> : <span class="keyword">public</span> Singer, <span class="keyword">public</span> Waiter</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Data</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Get</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">SingingWaiter</span>() &#123;&#125;;</span><br><span class="line">    <span class="built_in">SingingWaiter</span>(<span class="type">const</span> std::string &amp; s, <span class="type">long</span> n, <span class="type">int</span> p = <span class="number">0</span>,</span><br><span class="line">                  <span class="type">int</span> v = other)</span><br><span class="line">        : <span class="built_in">Worker</span>(s,n), <span class="built_in">Waiter</span>(s,n,p), <span class="built_in">Singer</span>(s,n,v) &#123;&#125;</span><br><span class="line">    <span class="built_in">SingingWaiter</span>(<span class="type">const</span> Worker &amp; wk, <span class="type">int</span> p = <span class="number">0</span>, </span><br><span class="line">                  <span class="type">int</span> v = other)</span><br><span class="line">        : <span class="built_in">Worker</span>(wk), <span class="built_in">Waiter</span>(wk,p), <span class="built_in">Singer</span>(wk,v) &#123;&#125;</span><br><span class="line">    <span class="built_in">SingingWaiter</span>(<span class="type">const</span> Waiter &amp; wt, <span class="type">int</span> v = other)</span><br><span class="line">        : <span class="built_in">Worker</span>(wt), <span class="built_in">Waiter</span>(wt), <span class="built_in">Singer</span>(wt,v) &#123;&#125; </span><br><span class="line">    <span class="built_in">SingingWaiter</span>(<span class="type">const</span> Singer &amp; wt, <span class="type">int</span> p = <span class="number">0</span>)</span><br><span class="line">        : <span class="built_in">Worker</span>(wt), <span class="built_in">Waiter</span>(wt, p), <span class="built_in">Singer</span>(wt) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Set</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Show</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//workermi.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;workmi.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">//work methods</span></span><br><span class="line">Worker::~<span class="built_in">Worker</span>() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//protected methods</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Worker::Data</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Name: &quot;</span>&lt;&lt;fullname&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Employee ID: &quot;</span>&lt;&lt; id &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Worker::Get</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">getline</span>(cin, fullname);</span><br><span class="line">    cout&lt;&lt; <span class="string">&quot;Enter worker&#x27;s ID: &quot;</span>;</span><br><span class="line">    cin&gt;&gt;id;</span><br><span class="line">    <span class="keyword">while</span>(cin.<span class="built_in">get</span>()!=<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Waiter methods</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Waiter::Set</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Enter waiter&#x27;s name: &quot;</span>;</span><br><span class="line">    Worker::<span class="built_in">Get</span>();</span><br><span class="line">    <span class="built_in">Get</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Waiter::Show</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt; <span class="string">&quot;Category: waiter\n&quot;</span>;</span><br><span class="line">  	Worker::<span class="built_in">Data</span>();</span><br><span class="line">    <span class="built_in">Data</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//protected methods</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Waiter::Data</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Panache rating: &quot;</span>&lt;&lt; panache&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Waiter::Get</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Enter waiter&#x27;s panache rating: &quot;</span>;</span><br><span class="line">    cin&gt;&gt;panache;</span><br><span class="line">    <span class="keyword">while</span>(cin.<span class="built_in">get</span>()!=<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Singer methods</span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> * Singer::pv[Singer::Vtypes] = &#123;<span class="string">&quot;other&quot;</span>, <span class="string">&quot;alto&quot;</span>, <span class="string">&quot;contralro&quot;</span>, </span><br><span class="line">                                    <span class="string">&quot;soprano&quot;</span>, <span class="string">&quot;bass&quot;</span>, <span class="string">&quot;baritone&quot;</span>, <span class="string">&quot;tenor&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Singer::Set</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Enter singer&#x27;s name: &quot;</span>;</span><br><span class="line">    Worker::<span class="built_in">Get</span>();</span><br><span class="line">    <span class="built_in">Get</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Singer::Show</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt; <span class="string">&quot;Category: singer\n&quot;</span>;</span><br><span class="line">    Worker::<span class="built_in">Data</span>();</span><br><span class="line">    <span class="built_in">Data</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//protected methods</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Singer::Data</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Vocal range: &quot;</span>&lt;&lt;pv[voice] &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Singer::Get</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Enter number for singer&#x27;s vocal range:\n&quot;</span>;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; Vtypes; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;i&lt;&lt;<span class="string">&quot;: &quot;</span>&lt;&lt;pv[i]&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">4</span>==<span class="number">3</span>)</span><br><span class="line">            cout&lt;&lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(i%<span class="number">4</span> != <span class="number">0</span>)</span><br><span class="line">        cout&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">    cin&gt;&gt;voice;</span><br><span class="line">    <span class="keyword">while</span>(cin.<span class="built_in">get</span>()!=<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//SingingWaiter methods</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SingingWaiter::Data</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Singer::<span class="built_in">Data</span>();</span><br><span class="line">    Waiter::<span class="built_in">Data</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SingingWaiter::Get</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Waiter::<span class="built_in">Get</span>();</span><br><span class="line">    Singer::<span class="built_in">Get</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SingingWaiter::Set</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Enter singing waiter&#x27;s name: &quot;</span>;</span><br><span class="line">    Worker::<span class="built_in">Get</span>();</span><br><span class="line">    <span class="built_in">Get</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SingingWaiter::Show</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Category: singing waiter\n&quot;</span>;</span><br><span class="line">    Worker::<span class="built_in">Data</span>();</span><br><span class="line">    <span class="built_in">Data</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="其它问题">其它问题</h4>
+<h5 id="1-混合使用虚基类和非虚基类">1.混合使用虚基类和非虚基类</h5>
+<blockquote>
+<p>当基类是虚基类时，派生类包含基类的一个子对象；当基类不是虚基类时，派生类包含多个子对象。</p>
+<p>当混合使用时，虚基类共享一个对象，非虚基类对象数目递增。</p>
+</blockquote>
+<h5 id="2-虚基类和支配">2.虚基类和支配</h5>
+<blockquote>
+<p>在不使用虚基类的情况下，如果使用不同基类继承的同名成员，可能导致二义性。</p>
+<p>但使用虚基类，如果在某个名称优先于其它名称的情况下，先使用这个名称。</p>
+<p>派生类中的名称优于直接或间接祖先类中的相同名称</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

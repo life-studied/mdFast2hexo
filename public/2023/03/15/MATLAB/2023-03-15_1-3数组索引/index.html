@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-3数组索引 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-3数组索引</h1>
+    </header>
+
+    <section>
+      <h2 id="数组索引">数组索引</h2>
+<h4 id="引用某个元素">引用某个元素</h4>
+<span id="more"></span>
+<h5 id="按行和列">按行和列</h5>
+<blockquote>
+<p>使用（行，列）引用</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">A(<span class="number">4</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="按单一下标（线性索引）">按单一下标（线性索引）</h5>
+<blockquote>
+<p>使用（下标）引用，从左往右从上往下</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">A(<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="数组扩容">数组扩容</h4>
+<blockquote>
+<p>在赋值语句左侧指定数组外的元素，数组会自动增大以容纳新元素</p>
+</blockquote>
+<h4 id="引用多个元素（行列或邻近）">引用多个元素（行列或邻近）</h4>
+<blockquote>
+<p>在（）使用：运算符，格式为start：end</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">A(<span class="number">1</span>:<span class="number">3</span>,<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>引用第二列的前三行元素（并构成一个新矩阵3*1）</p>
+</blockquote>
+<p><strong>单独：运算符</strong></p>
+<blockquote>
+<p>表示该维中的所有元素</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">A(<span class="number">3</span>,:);</span><br><span class="line">A(:,<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="创建等距向量值的矩阵">创建等距向量值的矩阵</h4>
+<blockquote>
+<p>使用：运算符</p>
+<p>格式  start:step:end</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">B=<span class="number">0</span>:<span class="number">10</span>:<span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建了一个含11个元素，起始为0，结尾为100，等距10的向量</p>
+</blockquote>
+<blockquote>
+<p>省略step，默认步长为1</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

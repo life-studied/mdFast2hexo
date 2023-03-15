@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>29-进程间通信：命名管道 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>29-进程间通信：命名管道</h1>
+    </header>
+
+    <section>
+      <h2 id="进程间通信：命名管道">进程间通信：命名管道</h2>
+<blockquote>
+<p>命名管道于Socket 相似，能够支持网络之间不同进程的通信</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>命名管道使用的顺序为：</p>
+<p>1.服务端创建命名管道</p>
+<p>2.服务端阻塞客户端连接命名管道，并获取句柄</p>
+<p>3.客户端连接命名管道</p>
+<p>4.客户端根据命名管道名字获取句柄</p>
+<p>5.双方根据句柄互相通信</p>
+</blockquote>
+<h4 id="1-服务端创建命名管道函数">1.服务端创建命名管道函数</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">HANDLE <span class="title">CreateNamedPipeA</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    LPCSTR lpName, 			<span class="comment">// 管道名称</span></span></span></span><br><span class="line"><span class="params"><span class="function">    						<span class="comment">//使用LPCTSTR szNamedPipeName = TEXT(&quot;\\\\.\\pipe\\mypipe&quot;)传入</span></span></span></span><br><span class="line"><span class="params"><span class="function">    DWORD dwOpenMode,</span></span></span><br><span class="line"><span class="params"><span class="function">    DWORD dwPipeMode,</span></span></span><br><span class="line"><span class="params"><span class="function">    DWORD nMaxInstances,</span></span></span><br><span class="line"><span class="params"><span class="function">    DWORD nOutBufferSize,</span></span></span><br><span class="line"><span class="params"><span class="function">    DWORD nInBufferSize,</span></span></span><br><span class="line"><span class="params"><span class="function">    DWORD nDefaultTimeOut,</span></span></span><br><span class="line"><span class="params"><span class="function">    LPSECURITY_ATTRIBUTES lpSecurityAttributes</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+<h4 id="2-服务端等待客户端连接命名管道函数">2.服务端等待客户端连接命名管道函数</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">ConnectNamedPipe</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    HANDLE hNamedPipe,				<span class="comment">//管道句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">    LPOVERLAPPED lpOverlapped		</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+<h4 id="3-客户端阻塞检测命名管道是否存在函数">3.客户端阻塞检测命名管道是否存在函数</h4>
+<blockquote>
+<p>该函数仅检测管道是否存在，不获取管道的句柄</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">WaitNamedPipe</span>(</span><br><span class="line">    szNamedPipeName, 				<span class="comment">//管道名</span></span><br><span class="line">    NMPWAIT_WAIT_FOREVER</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h4 id="4-客户端获取管道句柄">4.客户端获取管道句柄</h4>
+<blockquote>
+<p>当检测到该命名管道存在后，将其当作一个文件，获取句柄</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">CreateFile</span>(szNamedPipeName, GENERIC_READ | GENERIC_WRITE,</span><br><span class="line"><span class="number">0</span>, <span class="literal">NULL</span>, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="案例">案例</h4>
+<h5 id="1-服务端">1.服务端</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnCreateNamedPipe</span><span class="params">()</span>				<span class="comment">//创建命名管道按钮		</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//1 创建一个命名管道</span></span><br><span class="line">    LPCTSTR szPipeName = <span class="built_in">TEXT</span>(<span class="string">&quot;\\\\.\\pipe\\mypipe&quot;</span>);</span><br><span class="line">    hNamedPipe = <span class="built_in">CreateNamedPipe</span>(szPipeName,PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,</span><br><span class="line">    PIPE_TYPE_BYTE, <span class="number">1</span>, <span class="number">1024</span>, <span class="number">1024</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (hNamedPipe == INVALID_HANDLE_VALUE)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">TRACE</span>(<span class="string">&quot;CreateNamedhPipe failed with %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;创建命名管道失败&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2 等待客户端的连接</span></span><br><span class="line">    HANDLE hEvent = <span class="built_in">CreateEvent</span>(<span class="literal">NULL</span>, TRUE, FALSE, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">NULL</span> == hEvent)</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;创建事件失败&quot;</span>));</span><br><span class="line">        <span class="built_in">CloseHandle</span>(hNamedPipe);</span><br><span class="line">        hNamedPipe = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    OVERLAPPED ovlap;</span><br><span class="line">    <span class="built_in">ZeroMemory</span>(&amp;ovlap, <span class="built_in">sizeof</span>(OVERLAPPED));</span><br><span class="line">    ovlap.hEvent = hEvent;</span><br><span class="line">    <span class="comment">//等待连接</span></span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">ConnectNamedPipe</span>(hNamedPipe, &amp;ovlap))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (ERROR_IO_PENDING != <span class="built_in">GetLastError</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;等待客户端连接失败&quot;</span>));</span><br><span class="line">            <span class="built_in">CloseHandle</span>(hNamedPipe);</span><br><span class="line">            <span class="built_in">CloseHandle</span>(hEvent);</span><br><span class="line">            hNamedPipe = <span class="literal">NULL</span>;</span><br><span class="line">            hEvent = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">WaitForSingleObject</span>(hEvent,INFINITE) == WAIT_FAILED)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;等待对象失败&quot;</span>));</span><br><span class="line">        <span class="built_in">CloseHandle</span>(hNamedPipe);</span><br><span class="line">        <span class="built_in">CloseHandle</span>(hEvent);</span><br><span class="line">        hNamedPipe = <span class="literal">NULL</span>;</span><br><span class="line">        hEvent = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnSreadNamedPipe</span><span class="params">()</span>					<span class="comment">//读取命名管道按钮</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">char</span> szBuf[<span class="number">100</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">    DWORD dwRead;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">ReadFile</span>(hNamedPipe, szBuf, <span class="number">100</span>, &amp;dwRead, <span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;读取数据失败&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MessageBox</span>((CStringW)szBuf);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnSwriteNamedpipe</span><span class="params">()</span>				<span class="comment">//写入命名管道按钮</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//写入数据</span></span><br><span class="line">    <span class="type">char</span> szBuf[] = <span class="string">&quot;OnNamedPipe Server&quot;</span>;</span><br><span class="line">    DWORD dwWrite;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">WriteFile</span>(hNamedPipe, szBuf, <span class="built_in">strlen</span>(szBuf) + <span class="number">1</span>, &amp;dwWrite, <span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;写入数据失败&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2-客户端">2.客户端</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnConnectNamedPipe</span><span class="params">()</span>				<span class="comment">//连接命名管道的按钮</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LPCTSTR szNamedPipeName = <span class="built_in">TEXT</span>(<span class="string">&quot;\\\\.\\pipe\\mypipe&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">0</span> == <span class="built_in">WaitNamedPipe</span>(szNamedPipeName, NMPWAIT_WAIT_FOREVER))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;当前没有可以利用的管道&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    hNamedPipe =</span><br><span class="line">    <span class="built_in">CreateFile</span>(szNamedPipeName, GENERIC_READ | GENERIC_WRITE,</span><br><span class="line">    <span class="number">0</span>, <span class="literal">NULL</span>, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (hNamedPipe == INVALID_HANDLE_VALUE)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">TRACE</span>(<span class="string">&quot;CreateFile failed with %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;打开命名管道失败！&quot;</span>));</span><br><span class="line">        hNamedPipe = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnReadNamedPipe</span><span class="params">()</span>				<span class="comment">//读取命名管道按钮</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">    <span class="type">char</span> szBuf[<span class="number">100</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">    DWORD dwRead;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">ReadFile</span>(hNamedPipe, szBuf, <span class="number">100</span>, &amp;dwRead, <span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;读取数据失败&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MessageBox</span>((CStringW)szBuf);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnWriteNamedPipe</span><span class="params">()</span>				<span class="comment">//写入命名管道按钮</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">char</span> szBuf[] = <span class="string">&quot;NAMEDPIPE CLIENT&quot;</span>;</span><br><span class="line">    DWORD dwWrite;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">WriteFile</span>(hNamedPipe, szBuf, <span class="built_in">strlen</span>(szBuf) + <span class="number">1</span>, &amp;dwWrite, <span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;写入数据失败&quot;</span>));</span><br><span class="line">        <span class="built_in">CloseHandle</span>(hWriteCliPipe);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">CloseHandle</span>(hWriteCliPipe);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

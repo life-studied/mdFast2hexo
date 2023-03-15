@@ -1,0 +1,221 @@
+<h1>Contributing to normalize.css</h1>
+<p>Please take a moment to review this document in order to make the contribution<br>
+process easy and effective for everyone involved.</p>
+<p>Following these guidelines helps to communicate that you respect the time of<br>
+the developers managing and developing this open source project. In return,<br>
+they should reciprocate that respect in addressing your issue or assessing<br>
+patches and features.</p>
+<h2 id="Using-the-issue-tracker">Using the issue tracker</h2>
+<p>The issue tracker is the preferred channel for <a href="#bugs">bug reports</a>,<br>
+<a href="#features">features requests</a> and <a href="#pull-requests">submitting pull<br>
+requests</a>, but please respect the following restrictions:</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Please <strong>do not</strong> use the issue tracker for personal support requests.</p>
+</li>
+<li class="lvl-2">
+<p>Please <strong>do not</strong> derail or troll issues. Keep the discussion on topic and<br>
+respect the opinions of others.</p>
+</li>
+</ul>
+<h2 id="Bug-reports">Bug reports</h2>
+<p>A bug is a <em>demonstrable problem</em> that is caused by the code in the repository.<br>
+Good bug reports are extremely helpful - thank you!</p>
+<p>Guidelines for bug reports:</p>
+<ol>
+<li class="lvl-3">
+<p><strong>Use the GitHub issue search</strong> – check if the issue has already been<br>
+reported.</p>
+</li>
+<li class="lvl-3">
+<p><strong>Check if the issue has been fixed</strong> – try to reproduce it using the<br>
+latest <code>master</code> branch in the repository.</p>
+</li>
+<li class="lvl-3">
+<p><strong>Isolate the problem</strong> – create a live example (e.g., on<br>
+<a href="http://codepen.io">Codepen</a>) of a <a href="http://css-tricks.com/6263-reduced-test-cases/">reduced test<br>
+case</a>.</p>
+</li>
+</ol>
+<p>A good bug report shouldn’t leave others needing to chase you up for more<br>
+information. Please try to be as detailed as possible in your report. What is<br>
+your environment? What steps will reproduce the issue? What browser(s) and OS<br>
+experience the problem? What would you expect to be the outcome? All these<br>
+details will help people to fix any potential bugs.</p>
+<p>Example:</p>
+<blockquote>
+<p>Short and descriptive example bug report title</p>
+<p>A summary of the issue and the browser/OS environment in which it occurs. If<br>
+suitable, include the steps required to reproduce the bug.</p>
+<ol>
+<li class="lvl-3">
+<p>This is the first step</p>
+</li>
+<li class="lvl-3">
+<p>This is the second step</p>
+</li>
+<li class="lvl-3">
+<p>Further steps, etc.</p>
+</li>
+</ol>
+<p><code>&lt;url&gt;</code> - a link to the reduced test case</p>
+<p>Any other information you want to share that is relevant to the issue being<br>
+reported. This might include the lines of code that you have identified as<br>
+causing the bug, and potential solutions (and your opinions on their<br>
+merits).</p>
+</blockquote>
+<h2 id="Feature-requests">Feature requests</h2>
+<p>Feature requests are welcome. But take a moment to find out whether your idea<br>
+fits with the scope and aims of the project. It’s up to <em>you</em> to make a strong<br>
+case to convince the project’s developers of the merits of this feature. Please<br>
+provide as much detail and context as possible.</p>
+<h2 id="Pull-requests">Pull requests</h2>
+<p>Good pull requests - patches, improvements, new features - are a fantastic<br>
+help. They should remain focused in scope and avoid containing unrelated<br>
+commits.</p>
+<p><strong>Please ask first</strong> before embarking on any significant work, otherwise you<br>
+risk spending a lot of time working on something that the project’s developers<br>
+might not want to merge into the project.</p>
+<p>Please adhere to the coding conventions used throughout a project (whitespace,<br>
+accurate comments, etc.) and any other requirements (such as test coverage).</p>
+<p>Follow this process if you’d like your work considered for inclusion in the<br>
+project:</p>
+<ol>
+<li class="lvl-3">
+<p><a href="https://help.github.com/articles/fork-a-repo/">Fork</a> the project, clone your<br>
+fork, and configure the remotes:</p>
+<pre><code class="language-bash"># Clone your fork of the repo into the current directory
+git clone https://github.com/&lt;your-username&gt;/normalize.css
+# Navigate to the newly cloned directory
+cd normalize.css
+# Assign the original repo to a remote called &quot;upstream&quot;
+git remote add upstream https://github.com/necolas/normalize.css
+</code></pre>
+</li>
+<li class="lvl-3">
+<p>If you cloned a while ago, get the latest changes from upstream:</p>
+<pre><code class="language-bash">git checkout master
+git pull upstream master
+</code></pre>
+</li>
+<li class="lvl-3">
+<p>Never work directly on <code>master</code>. Create a new topic branch (off the latest<br>
+version of <code>master</code>) to contain your feature, change, or fix:</p>
+<pre><code class="language-bash">git checkout -b &lt;topic-branch-name&gt;
+</code></pre>
+</li>
+<li class="lvl-3">
+<p>Commit your changes in logical chunks. Please adhere to these <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">git commit<br>
+message conventions</a><br>
+or your code is unlikely be merged into the main project. Use Git’s<br>
+<a href="https://help.github.com/articles/interactive-rebase">interactive rebase</a><br>
+feature to tidy up your commits before making them public.</p>
+<p>Be sure to add a test to the <code>test.html</code> file if appropriate, and test<br>
+your change in all supported browsers.</p>
+</li>
+<li class="lvl-3">
+<p>Locally rebase the upstream development branch into your topic branch:</p>
+<pre><code class="language-bash">git pull --rebase upstream master
+</code></pre>
+</li>
+<li class="lvl-3">
+<p>Push your topic branch up to your fork:</p>
+<pre><code class="language-bash">git push origin &lt;topic-branch-name&gt;
+</code></pre>
+</li>
+<li class="lvl-4">
+<p><a href="https://help.github.com/articles/using-pull-requests/">Open a Pull Request</a><br>
+with a clear title and description.</p>
+</li>
+</ol>
+<p><strong>IMPORTANT</strong>: By submitting a patch, you agree to allow the project owner to<br>
+license your work under the same license as that used by the project.</p>
+<h3 id="CSS-Conventions">CSS Conventions</h3>
+<p>Keep the CSS file as readable as possible by following these guidelines:</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>Comments are short and to the point.</p>
+</li>
+<li class="lvl-2">
+<p>Comments without a number reference the entire rule.</p>
+</li>
+<li class="lvl-2">
+<p>Comments describe the selector when the selector does not make the<br>
+normalization obvious.</p>
+</li>
+<li class="lvl-2">
+<p>Comments begin with “Correct the…” when they deal with less obvious side<br>
+effects.</p>
+</li>
+<li class="lvl-2">
+<p>Rules are sorted by cascade, specificity, and then alphabetic order.</p>
+</li>
+<li class="lvl-2">
+<p>Selectors are sorted by specificity and then alphabetic order.</p>
+</li>
+<li class="lvl-2">
+<p><code>in browser</code> applies to all versions.</p>
+</li>
+<li class="lvl-2">
+<p><code>in browser v-</code> applies to all versions up to and including the version.</p>
+</li>
+<li class="lvl-2">
+<p><code>in browser v+</code> applies to all versions after and including the version.</p>
+</li>
+<li class="lvl-2">
+<p><code>in browser v-v</code> applies to all versions including and between the versions.</p>
+</li>
+</ul>
+<h2 id="Maintainers">Maintainers</h2>
+<p>If you have commit access, please follow this process for merging patches and<br>
+cutting new releases.</p>
+<h3 id="Accepting-patches">Accepting patches</h3>
+<ol>
+<li class="lvl-3">
+<p>Check that a patch is within the scope and philosophy of the project.</p>
+</li>
+<li class="lvl-3">
+<p>Check that a patch has any necessary tests and a proper, descriptive commit<br>
+message.</p>
+</li>
+<li class="lvl-3">
+<p>Test the patch locally.</p>
+</li>
+<li class="lvl-3">
+<p>Do not use GitHub’s merge button. Apply the patch to <code>master</code> locally<br>
+(either via <code>git am</code> or by checking the whole branch out). Amend minor<br>
+problems with the author’s original commit if necessary. Then push to GitHub.</p>
+</li>
+</ol>
+<h3 id="Releasing-a-new-version">Releasing a new version</h3>
+<ol>
+<li class="lvl-3">
+<p>Include all new functional changes in the CHANGELOG.</p>
+</li>
+<li class="lvl-3">
+<p>Use a dedicated commit to increment the version. The version needs to be<br>
+added to the CHANGELOG (inc. date), the <code>package.json</code>, and <code>normalize.css</code><br>
+files.</p>
+</li>
+<li class="lvl-3">
+<p>The commit message must be of <code>v0.0.0</code> format.</p>
+</li>
+<li class="lvl-3">
+<p>Create an annotated tag for the version: <code>git tag -m &quot;v0.0.0&quot; 0.0.0</code>.</p>
+</li>
+<li class="lvl-3">
+<p>Push the changes and tags to GitHub: <code>git push --tags origin master</code></p>
+</li>
+<li class="lvl-3">
+<p>Checkout the <code>gh-pages</code> branch and follow the instructions in the README.</p>
+</li>
+</ol>
+<h3 id="Semver-strategy">Semver strategy</h3>
+<p><a href="http://semver.org/">Semver</a> is a widely accepted method for deciding how<br>
+version numbers are incremented in a project. Versions are written as<br>
+MAJOR.MINOR.PATCH.</p>
+<p>Any change to CSS rules whatsoever is considered backwards-breaking and will<br>
+result in a new <strong>major</strong> release. No changes to CSS rules can add<br>
+functionality in a backwards-compatible manner, therefore no changes are<br>
+considered <strong>minor</strong>. Others changes with no impact on rendering are considered<br>
+backwards-compatible and will result in a new <strong>patch</strong> release.</p>

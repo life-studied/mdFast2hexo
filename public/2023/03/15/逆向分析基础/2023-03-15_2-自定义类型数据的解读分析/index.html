@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2-自定义类型数据的解读分析 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2-自定义类型数据的解读分析</h1>
+    </header>
+
+    <section>
+      <h2 id="自定义类型数据的解读分析">自定义类型数据的解读分析</h2>
+<h4 id="1-如何找到一个数据结构体（类）的起始点">1.如何找到一个数据结构体（类）的起始点</h4>
+<span id="more"></span>
+<p>步骤：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>要想找到一个结构体的头部，等于要找到这个结构体的指针（因为指针一定指向头部）</p>
+</li>
+<li class="lvl-2">
+<p>由于类指针一般以this的方式出现，因此变成了找this</p>
+</li>
+<li class="lvl-2">
+<p>由于this一般出现在成员函数中，只要这个成员函数改写了成员变量，底层一定是指针+偏移量的形式访问这个数据的</p>
+</li>
+<li class="lvl-2">
+<p>因此最终要找的实际是改写了成员变量的那个语句中的this指针</p>
+</li>
+</ul>
+<h4 id="2-内存对齐">2.内存对齐</h4>
+<blockquote>
+<p>下面的输出结果是12</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">test</span> &#123;</span><br><span class="line">	<span class="type">char</span> x;</span><br><span class="line">	<span class="type">int</span> m;</span><br><span class="line">	<span class="type">char</span> b;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	cout &lt;&lt; <span class="built_in">sizeof</span>(test);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//在实际存储中是char 0 0 0 int char 0 0 0</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-数据分析">3.数据分析</h4>
+<blockquote>
+<p>首先根据被修改数据的偏移量找到结构体的首地址，</p>
+<p>根据内存偏移的规则，一般将内存数据读到文件里，每四个字节划分一次</p>
+<p>如果有末尾不像00这种，可以猜测是字符数组，放到vs里去试一下</p>
+</blockquote>
+<h4 id="4-使用CE结构分析工具">4.使用CE结构分析工具</h4>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

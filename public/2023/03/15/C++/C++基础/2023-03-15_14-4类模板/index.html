@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>14-4类模板 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>14-4类模板</h1>
+    </header>
+
+    <section>
+      <h2 id="类模板">类模板</h2>
+<h4 id="14-4-1定义类模板">14.4.1定义类模板</h4>
+<span id="more"></span>
+<blockquote>
+<p>模板类的开头如下</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;类型参数表&gt;</span><br><span class="line"><span class="keyword">class</span> 类模板名&#123;</span><br><span class="line">  成员函数和成员变量</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>类型参数表的写法如下：</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span>类型参数<span class="number">1</span>, <span class="keyword">class</span>类型参数<span class="number">2</span>, ...</span><br></pre></td></tr></table></figure>
+<p><strong>例如</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">Type</span>&gt;	<span class="comment">//这个Type可以用其它变量名替代（T）</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>或者</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Type&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>同时，用模板成员函数来替代原有的类方法，每个函数头都以相同的模板声明开头</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">Type</span>&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>例如</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">bool</span> Stack&lt;T&gt;::<span class="built_in">push</span>(<span class="type">const</span> T &amp; item)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：不能将模板成员函数放在独立的文件中实现，因为它们不是函数，不能单独编译，必须和特定的模板实例化请求一起使用。</p>
+<p><strong>案例</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;		<span class="comment">//模板类声明</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Stack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">enum</span> &#123;MAX = <span class="number">10</span>&#125;;</span><br><span class="line">    T item[MAX];</span><br><span class="line">    <span class="type">int</span> top;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Stack</span>();</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isempty</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isfull</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T &amp; item)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">pop</span><span class="params">(T &amp; item)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line">Stack&lt;T&gt;::<span class="built_in">Stack</span>()</span><br><span class="line">&#123;</span><br><span class="line">    top=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">bool</span> Stack&lt;T&gt;::<span class="built_in">isempty</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> top==<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">bool</span> Stack&lt;T&gt;::<span class="built_in">isfull</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> top==MAX;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">bool</span> Stack&lt;T&gt;::<span class="built_in">push</span>(<span class="type">const</span> T &amp; item)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(top &lt; MAX)</span><br><span class="line">    &#123;</span><br><span class="line">        items[top++]=item;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> flase;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">bool</span> Stack&lt;T&gt;::<span class="built_in">pop</span>(T &amp; item)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(top&gt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        item = items[--top];</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> flase;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="14-4-2使用模板类">14.4.2使用模板类</h4>
+<blockquote>
+<p>程序包含模板并不能生成模板类，而必须请求实例化。</p>
+<p>因此，需要声明一个类型为模板类的对象。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Stack&lt;<span class="type">int</span>&gt; kernels;</span><br><span class="line">Stack&lt;string&gt; colonels;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述声明编译器将使用模板生成两个独立的类声明和两组独立的类方法。</p>
+<p>并将&lt;&gt;中的关键字替代原有的Type</p>
+</blockquote>
+<p>**注：**必须显式地提供所需的类型</p>
+<h4 id="14-4-3深入讨论模板类">14.4.3深入讨论模板类</h4>
+<blockquote>
+<p>对于不同类型的参数，模板的实现效果也不同。一些实现并不正确。</p>
+</blockquote>
+<h5 id="1-不正确地使用指针栈">1.不正确地使用指针栈</h5>
+<h6 id="使用char">使用char*</h6>
+<p>编译时通过，但由于没有创建用于保存字符串的空间导致在读入数据时会崩溃</p>
+<h6 id="使用字符数组char-num">使用字符数组char [num]</h6>
+<p>使用数组名不能作为引用来使用，所以会出现问题</p>
+<h6 id="使用new来分配char-空间">使用new来分配char*空间</h6>
+<p>只有一个变量导致压栈和出栈时的地址一样，没有效果</p>
+<h5 id="2-正确使用指针栈">2.正确使用指针栈</h5>
+<blockquote>
+<p>方法之一是让调用程序创建一个指针数组，其中每个指针都指向一个分配好空间的字符串，再将这些指针放入栈。</p>
+</blockquote>
+<h4 id="14-4-4数组模板示例和非类型参数">14.4.4数组模板示例和非类型参数</h4>
+<blockquote>
+<p>讨论一些非类型参数以及如何使用数组来处理继承族</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdlib&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="type">int</span> n&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ArrayTP</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    T ar[n];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ArrayTP</span>() &#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">ArrayTP</span><span class="params">(<span class="type">const</span> T &amp; v)</span></span>;		<span class="comment">//防止隐式转换</span></span><br><span class="line">    <span class="keyword">virtual</span> T &amp; <span class="keyword">operator</span>[](<span class="type">int</span> i);</span><br><span class="line">    <span class="keyword">virtual</span> T <span class="keyword">operator</span>[](<span class="type">int</span> i) <span class="type">const</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="type">int</span> n&gt;</span><br><span class="line">ArrayTP&lt;T,n&gt;::<span class="built_in">ArrayTP</span>(<span class="type">const</span> T &amp; v)		<span class="comment">//初始化n个相同元素</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">        ar[i]=v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="type">int</span> n&gt;</span><br><span class="line">T &amp; ArrayTP&lt;T,n&gt;::<span class="keyword">operator</span>[](<span class="type">int</span> i)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;<span class="number">0</span>||i&gt;=n)				<span class="comment">//防止数组元素引用超出限制</span></span><br><span class="line">    &#123;</span><br><span class="line">        std::cerr&lt;&lt;<span class="string">&quot;Error in array limits: &quot;</span>&lt;&lt;i</span><br><span class="line">            &lt;&lt;<span class="string">&quot;is out of range\n&quot;</span>;</span><br><span class="line">        std::<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ar[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="type">int</span> n&gt;</span><br><span class="line">T ArrayTP&lt;T,n&gt;::<span class="keyword">operator</span>[](<span class="type">int</span> i) <span class="type">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;<span class="number">0</span>||i&gt;=n)				<span class="comment">//防止数组元素引用超出限制</span></span><br><span class="line">    &#123;</span><br><span class="line">        std::cerr&lt;&lt;<span class="string">&quot;Error in array limits: &quot;</span>&lt;&lt;i</span><br><span class="line">            &lt;&lt;<span class="string">&quot;is out of range\n&quot;</span>;</span><br><span class="line">        std::<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ar[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="说明">说明</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="type">int</span> n&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关键字class指出T为类型参数，而int指出n为非类型参数（表达式参数）。</p>
+</blockquote>
+<p>在实例化时，可以这样使用</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">ArrayTP&lt;<span class="type">double</span>, <span class="number">12</span>&gt; eggweight;</span><br><span class="line"><span class="comment">//编译器将使用double替换T，使用12替换int</span></span><br></pre></td></tr></table></figure>
+<p><strong>限制</strong></p>
+<p>1.表达式参数可以是整型、枚举、引用和指针。其余都不合法</p>
+<p>2.模板代码不能修改参数的值，也不能使用参数的地址。</p>
+<p>3.实例化模板时，表达式参数的值必须是常数表达式</p>
+<h4 id="14-4-5模板多功能性">14.4.5模板多功能性</h4>
+<blockquote>
+<p>模板类可以使用另一个模板类作为参数</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Array &lt;Stack&lt;<span class="type">int</span>&gt;&gt; asi;</span><br><span class="line"><span class="comment">//一个元素为栈的数组</span></span><br></pre></td></tr></table></figure>
+<h5 id="1-递归使用模板">1.递归使用模板</h5>
+<blockquote>
+<p>例如，二维数组可以这样使用</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">ArrayTP &lt;ArrayTP&lt;<span class="type">int</span>,<span class="number">5</span>&gt;,<span class="number">10</span>&gt; twodee;</span><br><span class="line"><span class="comment">//10*5的数组</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-使用多个类型参数">2.使用多个类型参数</h5>
+<blockquote>
+<p>模板可以包含多个类型参数</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T1</span>,<span class="keyword">class</span> <span class="title class_">T2</span>&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="3-默认类型模板参数">3.默认类型模板参数</h5>
+<blockquote>
+<p>可以为类型参数提供默认值</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T1</span>,<span class="keyword">class</span> <span class="title class_">T2</span> = <span class="type">int</span>&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>注：虽然可以给类模板类型参数提供默认值，但不能为函数模板参数提供默认值。但对两者的非类型参数，都能提供默认值。</strong></p>
+<h4 id="14-4-6模板的具体化">14.4.6模板的具体化</h4>
+<blockquote>
+<p>模板以泛型描述类，具体化是使用具体的类型生成类声明</p>
+</blockquote>
+<h5 id="1-隐式实例化">1.隐式实例化</h5>
+<blockquote>
+<p>声明一个或多个对象，指出所需的类型。</p>
+</blockquote>
+<p><strong>注：编译器在需要对象之前不会生成类的隐式实例化</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">ArrayTP&lt;<span class="type">double</span>, <span class="number">12</span>&gt; * pt;		<span class="comment">//未生成</span></span><br><span class="line">py = <span class="keyword">new</span> ArrayTP &lt;<span class="type">double</span>, <span class="number">12</span>&gt;;	<span class="comment">//生成</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-显式实例化">2.显式实例化</h5>
+<blockquote>
+<p>使用关键字template并指出所需类型来声明类时，编译器将生成类声明的显式实例化。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> <span class="keyword">class</span> <span class="title class_">ArrayTP</span>&lt;string, <span class="number">100</span>&gt;;</span><br><span class="line"><span class="comment">//该声明将ArrayTP&lt;string, 100&gt;声明成一个类</span></span><br></pre></td></tr></table></figure>
+<p><strong>注：该声明必须在模板定义的名称空间中</strong></p>
+<h5 id="3-显式具体化">3.显式具体化</h5>
+<blockquote>
+<p>显式具体化是特定类型的定义。某些时候，可能需要为特殊类型实例化时，对模板进行修改，使其行为不同。</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<blockquote>
+<p>假设已经为用于排序之后的数组的类定义了一个模板</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SortedArray</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>另外假设模板使用&gt;运算符进行比较。</p>
+</blockquote>
+<blockquote>
+<p>当T是整型时，可以做到。</p>
+<p>但当T是字符串时，就会出现问题。模板会正常工作，但按照字符串的地址排序，与我们所想的不符。</p>
+</blockquote>
+<blockquote>
+<p>此时采用具体化版本</p>
+</blockquote>
+<p>具体化格式：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">class</span> <span class="title class_">Classname</span>&lt;specialized-type-name&gt; &#123;...&#125;;</span><br></pre></td></tr></table></figure>
+<p>所以我们将其具体化为如下专供模板：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">class</span> <span class="title class_">SortArray</span>&lt;<span class="type">const</span> <span class="type">char</span> *&gt;</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-部分具体化">4.部分具体化</h5>
+<blockquote>
+<p>C++允许部分具体化，即部分限制模板的通用性</p>
+</blockquote>
+<p><strong>案例1</strong></p>
+<blockquote>
+<p>部分具体化的基础</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//通用模板</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T1</span>, <span class="keyword">class</span> <span class="title class_">T2</span>&gt; <span class="keyword">class</span> <span class="title class_">Pair</span> &#123;...&#125;;</span><br><span class="line"><span class="comment">//部分具体化模板</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T1</span>&gt; <span class="keyword">class</span> <span class="title class_">Pair</span>&lt;T1,<span class="type">int</span>&gt; &#123;...&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>部分具体化将template后的&lt;&gt;中的具体化参数去除，并在类名后加入</p>
+<p>如果参数全部去除，则为显式具体化</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">class</span> <span class="title class_">Pair</span>&lt;<span class="type">int</span>,<span class="type">int</span>&gt; &#123;...&#125;;</span><br><span class="line"><span class="comment">//显式具体化</span></span><br></pre></td></tr></table></figure>
+<p><strong>案例2</strong></p>
+<blockquote>
+<p>指针形式</p>
+<p>可以使用指针来提供特殊版本的部分具体化</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;		<span class="comment">//通用版本</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Feeb</span> &#123;...&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>*&gt;		<span class="comment">//指针版本</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Feeb</span> &#123;...&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样，凡是提供的是指针参数，都优先采用指针版本来具体化模板。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Feed&lt;<span class="type">char</span> *&gt; fb;	<span class="comment">//指针模板</span></span><br></pre></td></tr></table></figure>
+<p><strong>案例3</strong></p>
+<blockquote>
+<p>部分具体化还能用来设置各种限制</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//通用版本</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T1</span>,<span class="keyword">class</span> <span class="title class_">T2</span>,<span class="keyword">class</span> <span class="title class_">T3</span>&gt; <span class="keyword">class</span> <span class="title class_">Trio</span> &#123;...&#125;;</span><br><span class="line"><span class="comment">//将T3和T2保持一致的版本</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T1</span>,<span class="keyword">class</span> <span class="title class_">T2</span>&gt; <span class="keyword">class</span> <span class="title class_">Trio</span>&lt;T1,T2,T2&gt; &#123;...&#125;;</span><br><span class="line"><span class="comment">//将T3和T2设置为T1*的版本</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T1</span>&gt; <span class="keyword">class</span> <span class="title class_">Trio</span>&lt;T1,T1*,T1*&gt; &#123;...&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="14-4-7成员模板">14.4.7成员模板</h4>
+<blockquote>
+<p>模板可以用作类，模板类等的成员</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">bate</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> V&gt;		<span class="comment">//创建模板类声明</span></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">hold</span></span><br><span class="line">    &#123;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        V val;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">hold</span>(V v=<span class="number">0</span>) : <span class="built_in">val</span>(v) &#123;&#125;</span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> <span class="type">const</span> </span>&#123;cout &lt;&lt; val &lt;&lt; endl;&#125;</span><br><span class="line">        <span class="function">V <span class="title">Value</span><span class="params">()</span> <span class="type">const</span> </span>&#123;<span class="keyword">return</span> val;&#125; </span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    hold&lt;T&gt; q;</span><br><span class="line">    hold&lt;<span class="type">int</span>&gt; n;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">beta</span>(T t, <span class="type">int</span> i) : <span class="built_in">q</span>(t), <span class="built_in">n</span>(i) &#123;&#125;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> U&gt;		<span class="comment">//模板方法</span></span><br><span class="line">    <span class="function">U <span class="title">blab</span><span class="params">(U u, T t)</span> </span>&#123; <span class="keyword">return</span> (n.<span class="built_in">Value</span>() + q.<span class="built_in">Value</span>() * u / t);&#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Show</span><span class="params">()</span> <span class="type">const</span> </span>&#123;q.<span class="built_in">show</span>(); n.<span class="built_in">show</span>();&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="14-4-8将模板用作参数">14.4.8将模板用作参数</h4>
+<blockquote>
+<p>模板除了包含类型参数和非类型参数，还可以包含本身就是模板的参数</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class</span> <span class="title class_">Thing</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Crab</span></span><br><span class="line"><span class="comment">//这是一个模板的声明，要求参数是一个模板</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中<code>template &lt;typename T&gt; class</code>是类型，<code>Thing</code>是参数</p>
+</blockquote>
+<p>这意味着假设有如下声明：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Crab&lt;King&gt; legs;</span><br></pre></td></tr></table></figure>
+<p>必须使得King是一个模板类，且与模板参数Thing匹配</p>
+<p><strong>案例</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;stacktp.h&gt;</span></span></span><br><span class="line"><span class="string"><span class="meta"></span></span></span><br><span class="line"><span class="string"><span class="meta">template &lt;template &lt;typename T&gt; class Thing&gt;</span></span></span><br><span class="line"><span class="string"><span class="meta">class Crab</span></span></span><br><span class="line"><span class="string"><span class="meta">&#123;</span></span></span><br><span class="line"><span class="string"><span class="meta">    private:</span></span></span><br><span class="line"><span class="string"><span class="meta">    Thing&lt;int&gt; s1;</span></span></span><br><span class="line"><span class="string"><span class="meta">    Thing&lt;double&gt; s2;</span></span></span><br><span class="line"><span class="string"><span class="meta">    public:</span></span></span><br><span class="line"><span class="string"><span class="meta">    Crab() &#123;&#125;</span></span></span><br><span class="line"><span class="string"><span class="meta">    bool push(int a, double x) &#123; return s1.push(a) &amp;&amp; s2.push(x); &#125;</span></span></span><br><span class="line"><span class="string"><span class="meta">    bool pop(int &amp; a, double &amp; x) &#123; return s1.pop(a) &amp;&amp; s2.pop(x); &#125;</span></span></span><br><span class="line"><span class="string"><span class="meta">&#125;;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="14-4-9模板类和友元">14.4.9模板类和友元</h4>
+<h5 id="1-非模板友元">1.非模板友元</h5>
+<blockquote>
+<p>非模板友元函数是所有实例化的友元，不能通过对象调用，也没有对象参数。</p>
+</blockquote>
+<p><strong>可以访问：</strong></p>
+<p>1.全局对象</p>
+<p>2.使用全局指针访问非全局对象</p>
+<p>3.创建自己的对象</p>
+<p>4.访问独立于对象的模板类的静态数据成员</p>
+<blockquote>
+<p>注：为友元函数提供模板类参数，必须指明具体化。</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HasFriend</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">report</span><span class="params">(HasFriend&lt;T&gt; &amp;)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于每个具体化，都会生成一份对应的友元函数</p>
+<p>注：report()本身<strong>不是模板函数</strong>，而只是使用了一个模板作为参数，也就意味着必须在类声明以外为需要的使用的友元定义显式具体化。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">report</span><span class="params">(HasFriend&lt;<span class="type">short</span>&gt; &amp;)</span> </span>&#123;...&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">report</span><span class="params">(HasFriend&lt;<span class="type">int</span>&gt; &amp;)</span> </span>&#123;...&#125;;</span><br><span class="line"><span class="comment">//因为友元在类中的声明仅仅是说明其拥有具有访问类的权利，但并不是真正在类中被声明，因此不在模板类的名称空间中，不能享有其可变参数的特性，因而需要在外面对可能被生成的类型创建函数的各种版本重载。</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-约束模板友元函数">2.约束模板友元函数</h5>
+<blockquote>
+<p>对上述方法进行改进，使友元函数本身成为模板的方法，以便不用创建各个版本的重载友元函数。</p>
+<p>“约束”是指这个友元函数与类模板的参数保持一致，被类模板“约束”住了。</p>
+</blockquote>
+<h6 id="案例如下">案例如下</h6>
+<blockquote>
+<p>要使类的每一个具体化都与都获得与友元匹配的具体化，有三步：</p>
+</blockquote>
+<p><strong>1.在类定义前面声明每个模板函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="type">void</span> <span class="title">counts</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="type">void</span> <span class="title">report</span><span class="params">(T &amp;)</span></span>;</span><br><span class="line"><span class="comment">//这意味着这个函数首先是个模板函数</span></span><br></pre></td></tr></table></figure>
+<p><strong>2.在函数中再次将模板声明为友元</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> TT&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HasFriendT</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">friend</span> <span class="type">void</span> <span class="built_in">counts</span>&lt;TT&gt;();</span><br><span class="line">    <span class="keyword">friend</span> <span class="type">void</span> report&lt;&gt;(HasFriend&lt;TT&gt; &amp;);		<span class="comment">//&lt;&gt;指出这是模板具体化</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这意味着这个模板函数在模板类中被具体化了参数，并被列为友元。再将被具体化的参数传给模板函数声明，模板自动生成符合类模板参数的模板函数版本，定义也自动更新。</span></span><br></pre></td></tr></table></figure>
+<h5 id="3-为友元提供模板定义">3.为友元提供模板定义</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">counts</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//注意，提供定义中的参数应当是模板函数声明中的参数，而不是类模板的参数。</span></span><br><span class="line"><span class="comment">//这表明类模板只是调用了函数模板，把类模板的参数传给函数模板的参数，以此调用函数模板生成符合类的友元函数。</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="3-非约束模板友元函数">3.非约束模板友元函数</h5>
+<blockquote>
+<p>“非约束”是指友元函数是模板函数，但不被类模板的具体化所约束，而是在类模板具体化之后依旧保持模板状态，能够根据具体调用时的参数再具体化。</p>
+</blockquote>
+<p><strong>创建方法</strong></p>
+<blockquote>
+<p>在类内部声明友元的函数模板，在外部实现定义，不要再在外面做提前模板声明。</p>
+</blockquote>
+<h4 id="14-4-10-使用模板别名">14.4.10 使用模板别名</h4>
+<h5 id="1-使用typedef">1.使用typedef</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> std::array&lt;<span class="type">int</span>,12&gt; arri;</span><br><span class="line"><span class="keyword">typedef</span> std::array&lt;<span class="type">double</span>,12&gt; arrd;</span><br><span class="line"><span class="keyword">typedef</span> std::array&lt;std::string,12&gt; arrs;</span><br></pre></td></tr></table></figure>
+<h5 id="2-使用using-同样可用于正常的定义别名">2.使用using=	(同样可用于正常的定义别名)</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> arri = std::array&lt;<span class="type">int</span>,<span class="number">12</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>21归并排序、计数排序、桶排序、基数排序 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>21归并排序、计数排序、桶排序、基数排序</h1>
+    </header>
+
+    <section>
+      <h2 id="归并排序、计数排序、桶排序、基数排序">归并排序、计数排序、桶排序、基数排序</h2>
+<h4 id="归并排序（分治思想）">归并排序（分治思想）</h4>
+<span id="more"></span>
+<blockquote>
+<p>递归，将数组拆分成子数组，不断递下去直到拆分成1的数组，再归时排序</p>
+</blockquote>
+<p><strong>时间复杂度</strong></p>
+<blockquote>
+<p>时间：排序时间+合并时间</p>
+<p>空间复杂度：O(n)</p>
+<p>空间换时间</p>
+</blockquote>
+<p><img src="picture/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%9B%BE%E8%A7%A3.png" alt=""></p>
+<p><strong>稳定性</strong></p>
+<p>稳定，不破坏原有的排序规则</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">merge_sort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> first, <span class="type">int</span> last)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> mid= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(first&lt;last)</span><br><span class="line">    &#123;</span><br><span class="line">        mid = (first+last)/<span class="number">2</span>;</span><br><span class="line">        <span class="comment">//分下标</span></span><br><span class="line">        merge_sort(arr,first,mid);</span><br><span class="line">        merge_sort(arr,mid+<span class="number">1</span>,last);</span><br><span class="line">        <span class="comment">//对于分开的元素做处理</span></span><br><span class="line">        merge(arr,first,mid,last);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">merge</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> first, <span class="type">int</span> mid, <span class="type">int</span> last)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> k=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> *temp=(<span class="type">int</span> *)<span class="built_in">malloc</span>((high-low+<span class="number">1</span>)*<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    <span class="comment">//申请空间用来存放之后排序的内容</span></span><br><span class="line">    <span class="type">int</span> left_low = low;</span><br><span class="line">    <span class="type">int</span> left_high = mid;</span><br><span class="line">    <span class="type">int</span> right_low = mid+<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> right_high = high;</span><br><span class="line">    <span class="comment">//记录左右的头尾</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;left_low&lt;=left_high &amp;&amp; right_low&lt;=right_high;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(arr[left_low]&lt;=arr[right_low])</span><br><span class="line">            temp[i]=arr[left_low++];	<span class="comment">//排序并存入数组</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            temp[i]=arr[right_low++];</span><br><span class="line">        k++;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">//三种情况：正好全部跑完、左边结束、右边结束</span></span><br><span class="line">    <span class="keyword">if</span>(left_low&lt;=left_high)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=left_low;i&lt;left_high;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            temp[k]=arr[i];</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(right_low&lt;=right_high)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=right_low;i&lt;right_high;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            temp[k]=arr[i];</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//将新数组的内容放回原数组</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;high-low+<span class="number">1</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        arr[low+<span class="number">1</span>] = temp[i++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(temp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="计数排序">计数排序</h4>
+<blockquote>
+<p>针对于特定范围（数据跨度小）内的整数进行排序，不能用于小数</p>
+<p>使用一个新数组（大小为最小值到最大值）统计给定数组中不同元素的数量，再遍历这个数组输出</p>
+</blockquote>
+<p><strong>时间复杂度</strong></p>
+<blockquote>
+<p>如果待排序数据的范围不明显大于待排序数组的长度，效率高于快排和归并排序，O(n)+k</p>
+</blockquote>
+<p><strong>稳定性</strong></p>
+<p>不稳定，会破坏原有排序规则</p>
+<blockquote>
+<p>优化方案</p>
+<p>1.更新建立的新数组，规则是count[i]=count[i]+count[i-1]，用于存储下标代表的数字在排序之后的位置范围</p>
+<p>2.原数组从后往前遍历，count[arr[i]]-1就是这个arr[i]排序之后的位置，同时count[arr[i]]要减去1，来保证下一个相同的数组的位置范围不重复。</p>
+</blockquote>
+<p><img src="picture/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96%E5%9B%BE%E8%A7%A3.png" alt=""></p>
+<h4 id="桶排序">桶排序</h4>
+<blockquote>
+<p>有若干个桶，将数据尽量均匀地分到桶中</p>
+<p>在桶中进行排序，并合并</p>
+</blockquote>
+<p><strong>时间复杂度</strong></p>
+<p>遍历数组的时间+对每个桶内的元素排序的时间</p>
+<p><strong>适用场景</strong></p>
+<p>数据跨度不大且范围不大</p>
+<h4 id="基数排序（位数）">基数排序（位数）</h4>
+<blockquote>
+<p>对元素最低有效位到最高有效位逐位排序（先个位，后十位，再百位）</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<p><img src="picture/%E6%A1%B6%E6%8E%92%E5%BA%8F%E5%9B%BE%E8%A7%A31.png" alt=""></p>
+<p><img src="picture/%E6%A1%B6%E6%8E%92%E5%BA%8F%E5%9B%BE%E8%A7%A32.png" alt=""></p>
+<p><img src="picture/%E6%A1%B6%E6%8E%92%E5%BA%8F%E5%9B%BE%E8%A7%A33.png" alt=""></p>
+<p><strong>时间复杂度</strong></p>
+<p>O（(n+b)*d）</p>
+<p>(n-数组长度)</p>
+<p>(b-一个数的基础 十进制b=10)</p>
+<p>(k-计算机表示的最大整数)</p>
+<p>(d-logbK)</p>
+<p><strong>应用场景</strong></p>
+<p>日期(先日再月最后年)</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

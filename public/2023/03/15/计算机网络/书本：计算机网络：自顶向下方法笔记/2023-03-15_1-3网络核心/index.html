@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-3网络核心 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-3网络核心</h1>
+    </header>
+
+    <section>
+      <h2 id="1-3网络核心">1.3网络核心</h2>
+<blockquote>
+<p>网络核心：由分组交换机和链路组成的网状网络</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="1-3-1分组交换">1.3.1分组交换</h4>
+<blockquote>
+<p>端系统之间交换报文</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>分组：长报文被划分为的较小的数据块</p>
+</li>
+</ul>
+<h5 id="1-存储转发传输">1.存储转发传输</h5>
+<p>存储转发机制指：交换机能够开始向输出链路传输该分组的第一个比特之前，必须接收到整个分组</p>
+<p>公式：d = NL/R</p>
+<p>(延时 = N个链路*分组大小L/传输速率R)</p>
+<h5 id="2-排队时延和分组丢失">2.排队时延和分组丢失</h5>
+<p>输出缓存：用于存储路由器准备发往输出链路的分组</p>
+<p>排队时延：输出缓存以队列的方式存储输出，导致的延时（变化的）</p>
+<p>分组丢失：缓存空间有限，一个到达的分组可能因为缓存充满了而被丢弃。</p>
+<h5 id="3-转发表和路由选择协议">3.转发表和路由选择协议</h5>
+<blockquote>
+<p>每一个端系统都有一个IP地址，地址具有一种等级结构</p>
+<p>源主机向目的地发送分组时包含了目的地的IP地址，经过的路由器会检查其IP地址的一部分来决定转发链路</p>
+</blockquote>
+<h4 id="1-3-2电路交换">1.3.2电路交换</h4>
+<blockquote>
+<p>相比于分组交换，电路交换在端系统之间预留的通信路径所需要的资源。在接收方与发送方之间，有一条连接被一直维护，称为电路。</p>
+</blockquote>
+<h4 id="1-3-3网络的网络">1.3.3网络的网络</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>第一层ISP：全球承载ISP</p>
+</li>
+<li class="lvl-2">
+<p>因特网交换点IXP：连接相近的区域ISP</p>
+</li>
+<li class="lvl-2">
+<p>第二层ISP：区域ISP</p>
+</li>
+<li class="lvl-2">
+<p>第三层ISP：接入ISP</p>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

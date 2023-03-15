@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3-3无连接运输：UDP | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3-3无连接运输：UDP</h1>
+    </header>
+
+    <section>
+      <h2 id="3-3无连接运输：UDP">3.3无连接运输：UDP</h2>
+<blockquote>
+<p>UDP仅在IP协议的基础上提供多路复用、多路分解的服务和少量的差错检测。</p>
+</blockquote>
+<span id="more"></span>
+<p>使用UDP的原因：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>应用层能更精细地控制发送：</p>
+<ul class="lvl-2">
+<li class="lvl-6">UDP没有拥塞控制机制，因此发送时间和数据量大小完全由应用层来决定。而TCP中，应用层发送数据，TCP会根据不同实际情况来决定发送时间和每次数据大小，应用层的控制少。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>无需建立连接：</p>
+<ul class="lvl-2">
+<li class="lvl-6">TCP在开始传输数据之前要进行三次握手。UDP没有建立连接的时延。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>无连接状态：</p>
+<ul class="lvl-2">
+<li class="lvl-6">TCP需要在端系统中维护连接状态，因此在TCP传输中会有状态参数。UDP没有这些参数。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>分组首部开销少：</p>
+<ul class="lvl-2">
+<li class="lvl-6">TCP首部20字节</li>
+<li class="lvl-6">UDP首部8字节</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-3-1-UDP报文段结构">3.3.1 UDP报文段结构</h4>
+<blockquote>
+<p>UDP首部仅有四个字段，每个字段两个字节，如图：</p>
+</blockquote>
+<p><img src="picture/UDP%E6%8A%A5%E6%96%87%E6%AE%B5%E7%BB%93%E6%9E%84.png" alt=""></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>端口号：2字节，16位，0~65535</p>
+</li>
+<li class="lvl-2">
+<p>长度：指明报文段字节数（首部+数据）</p>
+</li>
+<li class="lvl-2">
+<p>校验和：接收方用于检测该报文段是否出现差错（计算公式如下）</p>
+</li>
+</ul>
+<h4 id="3-3-2-UDP校验和">3.3.2 UDP校验和</h4>
+<p>计算方法：每16位进行一次加和（除了校验和部分），如果溢出则回卷（最低位进1）。最终结果再进行反码运算，存入校验和中。</p>
+<p><strong>案例</strong></p>
+<p><img src="picture/%E6%A0%A1%E9%AA%8C%E5%92%8C%E6%A1%88%E4%BE%8B.png" alt=""></p>
+<p>在接收方，将所有的16位进行加和（包括校验和），得到的结果如果不是全1，则出错。（校验和 = 所有加和取反码，所以其它加和再次加上校验和应该为16个1）</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

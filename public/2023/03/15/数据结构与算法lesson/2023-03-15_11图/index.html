@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>11图 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>11图</h1>
+    </header>
+
+    <section>
+      <h2 id="图">图</h2>
+<h4 id="一些概念">一些概念</h4>
+<span id="more"></span>
+<blockquote>
+<p>图是由两个集合组成的：V结点集合与E边集</p>
+</blockquote>
+<blockquote>
+<p>简单图：在图结构中，如果不存在顶点到其自身的边，且同一条边不会重复出现</p>
+</blockquote>
+<blockquote>
+<p>无向图：边没有方向</p>
+</blockquote>
+<blockquote>
+<p>有向图：边有方向</p>
+</blockquote>
+<blockquote>
+<p>完全图：如果图中每两个顶点间都存在一条边</p>
+</blockquote>
+<blockquote>
+<p>端点：无向图中的一条边的两个点，互为邻接点</p>
+</blockquote>
+<blockquote>
+<p>度：</p>
+<p>无向图中顶点具有边的数目</p>
+<p>出度：从某个点出去的边数</p>
+<p>入度：进入某个点的边数</p>
+</blockquote>
+<blockquote>
+<p>子图：图的子集</p>
+</blockquote>
+<blockquote>
+<p>路径：从一个顶点到另一个顶点之间的顶点序列</p>
+<p>路径长度：路径所经的边的个数（最大值）</p>
+</blockquote>
+<blockquote>
+<p>回路（环）：开始结点与结束结点相同</p>
+<p>欧拉回路：经过图中各边有且仅有一次的回路（结点可能重复）</p>
+<p>哈密顿回路：经过图中各顶点有且仅有一次的回路</p>
+</blockquote>
+<blockquote>
+<p>连通：两个顶点之间如果有路径，则连通</p>
+<p>连通图：如果任意两个顶点之间连通</p>
+<p>连通分量：在一个无向图中一个极大连通子图，叫做连通分量</p>
+<p>强连通图：有向图中的任意两个顶点之间连通</p>
+<p>强连通分量：有向图中一个极大连通子图，叫做强连通分量</p>
+</blockquote>
+<blockquote>
+<p>稠密图：大于nlnn的图</p>
+<p>稀疏图：少于nlnn的图</p>
+</blockquote>
+<blockquote>
+<p>权：图的每个边对应的数值，叫做权值</p>
+<p>网：带权的图</p>
+</blockquote>
+<blockquote>
+<p>连通图的生成树：极小连通图</p>
+</blockquote>
+<h4 id="图的存储">图的存储</h4>
+<h5 id="1-邻接矩阵">1.邻接矩阵</h5>
+<blockquote>
+<p>用一维数组存储结点</p>
+<p>用二维数组存储边</p>
+<p>列之和为入度，行之和为出度</p>
+</blockquote>
+<p><img src="D:%5C%E6%96%87%E4%BB%B6%E5%90%88%E9%9B%86%5Cmarkdown%E5%90%88%E9%9B%86%5C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson%5Cpicture%5C%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5.png" alt=""></p>
+<p><strong>注：对于带权图，没有边连接结点之间用正无穷表示，其余用权值表示</strong></p>
+<blockquote>
+<p>问题：对于稀疏图会出现空间浪费，因为结点间不连通的较多</p>
+</blockquote>
+<p><strong>代码实现</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> Maxvertices 100</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="comment">//一维数组表示顶点信息，二维数组表示边信息</span></span><br><span class="line">    <span class="type">int</span> Vertices[Maxvertices];</span><br><span class="line">    <span class="type">int</span> Edge[Maxvertices][Maxvertices];</span><br><span class="line">    <span class="type">int</span> numV,numE;<span class="comment">//顶点数，边数</span></span><br><span class="line">&#125;AdjMatrix;</span><br><span class="line"><span class="comment">//注意：数组最大空间为100，并不意味着每次都需要存入100，真正存入的空间是以numV和numE来统计的</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">CreateGraph</span><span class="params">(AdjMatrix *G)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> n,e;<span class="comment">//n代表顶点数，e代表边数</span></span><br><span class="line">    <span class="type">int</span> vi,vj;	<span class="comment">//边的顶点（两个）</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;输入顶点数和边数&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;n,&amp;e);</span><br><span class="line">    G-&gt;numV=n;</span><br><span class="line">    G-&gt;numE=e;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//初始化图</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)	<span class="comment">//边数组初始化</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(i==j)			<span class="comment">//对角线之间赋0</span></span><br><span class="line">            &#123;</span><br><span class="line">                G-&gt;Edge[i][j]=<span class="number">0</span>;</span><br><span class="line">			&#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                G-&gt;Edge[i][j]=<span class="number">32767</span>;	<span class="comment">//其余为无穷值</span></span><br><span class="line">            &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;numV;i++)		<span class="comment">//顶点信息录入</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请输入第%d个顶点的信息&quot;</span>,i+<span class="number">1</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;G-&gt;Vertices[i]);</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;numE;i++)		<span class="comment">//边信息录入</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请输入边的顶点信息i,j&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;vi,&amp;vj);	</span><br><span class="line">        <span class="comment">//无向图示例</span></span><br><span class="line">        G-&gt;Edge[vi<span class="number">-1</span>][vj<span class="number">-1</span>]=<span class="number">1</span>;		<span class="comment">//边存在则赋值</span></span><br><span class="line">        G-&gt;Edge[vj<span class="number">-1</span>][vi<span class="number">-1</span>]=<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//有向图则无需对称</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2-邻接表">2.邻接表</h5>
+<blockquote>
+<p>数组和链表一起存储</p>
+<p>数组：顶点集合</p>
+<p>链表：边集（链表结点之间的关系为”从同一结点出发/进入“）</p>
+<p>注：一个数组元素后的链表数目为一个结点的出度/入度（只能表示一种）</p>
+</blockquote>
+<p><img src="D:%5C%E6%96%87%E4%BB%B6%E5%90%88%E9%9B%86%5Cmarkdown%E5%90%88%E9%9B%86%5C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson%5Cpicture%5C%E9%82%BB%E6%8E%A5%E8%A1%A8.png" alt=""></p>
+<blockquote>
+<p>问题：对于顶点的出度和入度不能同时看到</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXVEX 100	<span class="comment">//顶点数目最大值</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//边链表中的结构</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">EdgeNode</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> adjvex;				<span class="comment">//邻接的点所对应的下标</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">EdgeNode</span>* <span class="title">next</span>;</span>	<span class="comment">//下一个指针</span></span><br><span class="line">&#125;EdgeNode;</span><br><span class="line"></span><br><span class="line"><span class="comment">//顶点表中的结构</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VertexNode</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> data;				<span class="comment">//信息的值</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">EdgeNode</span>* <span class="title">first</span>;</span>	<span class="comment">//边表的头指针</span></span><br><span class="line">&#125;VertexNode,AdjList[MAXVEX];</span><br><span class="line"></span><br><span class="line"><span class="comment">//邻接表的抽象结构</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">GraphAdjList</span>&#123;</span></span><br><span class="line">    AdjList adjlist;			<span class="comment">//顶点集合数组</span></span><br><span class="line">    <span class="type">int</span> numVertexes,numEdge;	<span class="comment">//顶点的数量和边的数量</span></span><br><span class="line">&#125;GraphAdjList;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">CreateAlGraph</span><span class="params">(GraphAdjList* G)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;输入顶点数和边数&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;G-&gt;numVertexes,&amp;G-&gt;numEdge);			</span><br><span class="line">    <span class="type">int</span> vi,vj;	<span class="comment">//接收顶点信息</span></span><br><span class="line">    <span class="comment">//输入顶点信息</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;numVertexes;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>,&amp;G-&gt;adjlist[i]);</span><br><span class="line">        getchar();</span><br><span class="line">        G-&gt;adjlist[i].first=<span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">//输入边的信息</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;numEdge;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;vi,&amp;vj);</span><br><span class="line">        getchar();</span><br><span class="line">        EdgeNode* e=(EdgeNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(EdgeNode));</span><br><span class="line">        e-&gt;adjvex=vj;</span><br><span class="line">        e-&gt;next=G-&gt;adjlist[vi].first;</span><br><span class="line">        G-&gt;adjlist[vi].first=e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3-十字链表">3.十字链表</h5>
+<blockquote>
+<p>顶点集合：将出度和入度结合在一起，每个顶点结点多加一个指针</p>
+<p>边集合：采用弧之间的关系</p>
+<p>两个下标和两个指针：头尾结点的下标，指向同一结点的弧首指针，指向同一结点的弧尾指针</p>
+</blockquote>
+<p><img src="D:%5C%E6%96%87%E4%BB%B6%E5%90%88%E9%9B%86%5Cmarkdown%E5%90%88%E9%9B%86%5C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson%5Cpicture%5C%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8.png" alt=""></p>
+<p><img src="D:%5C%E6%96%87%E4%BB%B6%E5%90%88%E9%9B%86%5Cmarkdown%E5%90%88%E9%9B%86%5C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson%5Cpicture%5C%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%9B%BE.png" alt=""></p>
+<blockquote>
+<p>问题：对边的操作频繁不适合</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100</span></span><br><span class="line"><span class="comment">//边集</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">AreBox</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> tail;		<span class="comment">//弧尾对应的顶点在数组中的下标</span></span><br><span class="line">    <span class="type">int</span> headvex;	<span class="comment">//弧头对应的顶点在数组中的下标</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">AreBox</span>* <span class="title">hlink</span>,*<span class="title">tlink</span>;</span></span><br><span class="line">    <span class="comment">//弧头和弧尾对应的下一个边</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VexNode</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> data;		<span class="comment">//数据域</span></span><br><span class="line">    AreBox* firstIn,*firstout;</span><br><span class="line">    <span class="comment">//该结点为弧头和弧尾的链表的头结点</span></span><br><span class="line">&#125;VexNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    VexNode xlist[MAX];	<span class="comment">//顶点数组</span></span><br><span class="line">    <span class="type">int</span> vexnum,arenum;</span><br><span class="line">    <span class="comment">//顶点数和边数</span></span><br><span class="line">&#125;OLGraph;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">CreatDG</span><span class="params">(OLGraph* G)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> vi,vj;	<span class="comment">//邻接顶点下标</span></span><br><span class="line">    <span class="comment">//输入有向图的顶点数和边数</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;G-&gt;vexnum,&amp;G-&gt;arenum);</span><br><span class="line">    <span class="comment">//输入顶点集的数据</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;vexnum;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;G-&gt;xlist[i].data);</span><br><span class="line">        G-&gt;xlist[i].firstIn=<span class="literal">NULL</span>;</span><br><span class="line">        G-&gt;xlist[i].firstout=<span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构建十字链表</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;arenum;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;vi,&amp;vj);		<span class="comment">//输入下标</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//建立弧的结点</span></span><br><span class="line">        AreBox*p=(AreBox*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(AreBox));</span><br><span class="line">        p-&gt;tailvex=vi;	<span class="comment">//弧尾下标</span></span><br><span class="line">        p-&gt;headvex=vj;	<span class="comment">//弧头下标</span></span><br><span class="line">        p-&gt;hlink=G-&gt;xlist[vj].firstIn;	<span class="comment">//指向弧头相同的下一个弧</span></span><br><span class="line">        p-&gt;tlink=G-&gt;<span class="built_in">list</span>[vj].firstout;</span><br><span class="line">        </span><br><span class="line">        G-&gt;xlist[vi].firstOut=G-&gt;xlist[vi].firstIn=p;		<span class="comment">//头插</span></span><br><span class="line">        </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-邻接多重表">4.邻接多重表</h5>
+<blockquote>
+<p>结点采用数组存储</p>
+<p>边采用链表存储</p>
+<p>一个边结点有四个数据</p>
+<p>前后结点，前后指向同一结点的弧指针</p>
+</blockquote>
+<p><img src="D:%5C%E6%96%87%E4%BB%B6%E5%90%88%E9%9B%86%5Cmarkdown%E5%90%88%E9%9B%86%5C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson%5Cpicture%5C%E9%82%BB%E6%8E%A5%E5%A4%9A%E9%87%8D%E8%A1%A8.png" alt=""></p>
+<blockquote>
+<p>优点：删除图中某个结点只需删除数组结点与之后跟踪到的所有结点即可</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 100</span></span><br><span class="line"><span class="comment">//确定边的类型</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> ivex,jvex;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">vi</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">vj</span>;</span></span><br><span class="line">&#125;AreNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> vertex;</span><br><span class="line">    AreNode* first;</span><br><span class="line">&#125;VNode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    VNode Dvex[MAX];</span><br><span class="line">    <span class="type">int</span> vexnum,arenum;</span><br><span class="line">&#125;Grap;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">creat</span><span class="params">(Grap* G)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> vi,vj;</span><br><span class="line">    <span class="comment">//输入顶点数和边数</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;G-&gt;vexnum,&amp;G-&gt;arenum);</span><br><span class="line">    <span class="comment">//输入各顶点的值</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;vexnum;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>,&amp;G-&gt;Dvex[i].vertex);</span><br><span class="line">        getchar();</span><br><span class="line">        G-&gt;Dvex[i].first=<span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构建邻接多重表</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G-&gt;arenum;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;vi,&amp;vj);</span><br><span class="line">        AreNode* e=(AreNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(AreNode));</span><br><span class="line">        e-&gt;ivex=vi;</span><br><span class="line">        e-&gt;jvex=vj;</span><br><span class="line">        e-&gt;Vi=G-&gt;Dvex[vi].first;</span><br><span class="line">        G-&gt;Dvex[vi].first=e;</span><br><span class="line">        e-&gt;Vj=G-&gt;Dvex[vj].first;</span><br><span class="line">        G-&gt;Dvex[vj].fist=e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="5-边集数组">5.边集数组</h5>
+<blockquote>
+<p>两个一维数组构成，一个存储顶点信息，一个存储边的信息（结构体数组）</p>
+</blockquote>
+<p><img src="D:%5C%E6%96%87%E4%BB%B6%E5%90%88%E9%9B%86%5Cmarkdown%E5%90%88%E9%9B%86%5C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson%5Cpicture%5C%E8%BE%B9%E9%9B%86%E6%95%B0%E7%BB%84.png" alt=""></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

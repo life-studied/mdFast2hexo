@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>8二叉平衡树 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>8二叉平衡树</h1>
+    </header>
+
+    <section>
+      <h2 id="二叉平衡树">二叉平衡树</h2>
+<h4 id="平衡二叉树">平衡二叉树</h4>
+<span id="more"></span>
+<h6 id="由来：">由来：</h6>
+<blockquote>
+<p>为了防止二叉排序树中斜树的出现，影响查找效率</p>
+</blockquote>
+<h6 id="性质：">性质：</h6>
+<blockquote>
+<p>1.可以是空树</p>
+</blockquote>
+<blockquote>
+<p>2.任一结点的左右子树高度之差&lt;=1</p>
+</blockquote>
+<h5 id="调整失衡操作">调整失衡操作</h5>
+<blockquote>
+<p>旋转</p>
+<p>左旋</p>
+<p>步骤：</p>
+<p>1.结点的右孩子代替失衡结点的位置</p>
+<p>2.如果右孩子有左子树，变成失衡结点的右子树</p>
+<p>3.失衡结点本身变成右孩子的左子树</p>
+<p>右旋类似</p>
+</blockquote>
+<p><img src="picture/%E6%97%8B%E8%BD%AC%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%9B%BE.png" alt=""></p>
+<p><img src="picture/%E6%97%8B%E8%BD%AC%E6%93%8D%E4%BD%9C%E5%90%8E.png" alt=""></p>
+<p><strong>注：这是在左子树的左孩子失衡或右子树的右孩子失衡下进行的基础操作。如果出现的情况与之不符，则应先对左子树左旋或右子树右旋，再进行上述基本操作</strong></p>
+<blockquote>
+<p>总结：</p>
+<p>LL 单一右旋</p>
+<p>RR 单一左旋</p>
+<p>LR 先左后右</p>
+<p>RL 先右后左</p>
+</blockquote>
+<h5 id="删除操作">删除操作</h5>
+<blockquote>
+<p>与二叉排序树一致</p>
+<p>唯一问题在于删除后是否平衡</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HEIGHT(node) (node==NULL)?0:((avlnode*)(node)-&gt;height)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a,b) ((a)&gt;(b)?(a):(b))</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> key;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">left</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">right</span>;</span></span><br><span class="line">    <span class="type">int</span> height;</span><br><span class="line">&#125;avlnode, * avltree;</span><br><span class="line"></span><br><span class="line">avltree <span class="title function_">left_left_rotation</span><span class="params">(avltree tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    avlnode* k2 = tree-&gt;left;</span><br><span class="line">    tree-&gt;left = k2-&gt;right;</span><br><span class="line">    k2-&gt;right = tree;</span><br><span class="line">    <span class="comment">//注：旋转操作改变了树的高度</span></span><br><span class="line">    tree-&gt;height = MAX(getNode_height(tree-&gt;left), getNode_height(tree-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    k2-&gt;height = MAX(getNode_height(tree-&gt;left), getNode_height(tree-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> k2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">avltree <span class="title function_">right_right_rotation</span><span class="params">(avltree tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    avlnode* k2 = tree-&gt;right;</span><br><span class="line">    tree-&gt;right = k2-&gt;left;</span><br><span class="line">    k2-&gt;left = tree;</span><br><span class="line">    <span class="comment">//注：旋转操作改变了树的高度</span></span><br><span class="line">    <span class="comment">//底层的高度是没有变化的，而顶层的失衡结点和替代结点高度发生了变化</span></span><br><span class="line">    tree-&gt;height = MAX(getNode_height(tree-&gt;left), getNode_height(tree-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    k2-&gt;height = MAX(getNode_height(tree-&gt;left), getNode_height(tree-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> k2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">avltree <span class="title function_">left_right_rotation</span><span class="params">(avltree tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    tree-&gt;left = right_right_rotation(tree-&gt;left);</span><br><span class="line">    tree = left_left_rotation(tree);</span><br><span class="line">    <span class="comment">//在调用的函数中树的高度已经调整，此处就无需调整</span></span><br><span class="line">    <span class="keyword">return</span> tree;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">avltree <span class="title function_">right_left_rotation</span><span class="params">(avltree tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    tree-&gt;right = left_left_rotation(tree-&gt;right);</span><br><span class="line">    tree = right_right_rotation(tree);</span><br><span class="line">    <span class="comment">//在调用的函数中树的高度已经调整，此处就无需调整</span></span><br><span class="line">    <span class="keyword">return</span> tree;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//插入结点</span></span><br><span class="line">avltree <span class="title function_">insert</span><span class="params">(avltree tree, <span class="type">int</span> key)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (tree == <span class="literal">NULL</span>)<span class="comment">//找到可以插入的位置了</span></span><br><span class="line">    &#123;</span><br><span class="line">        avlnode* node = create_node(key, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">        tree = node;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (key &lt; tree-&gt;key)<span class="comment">//左子树中插入结点</span></span><br><span class="line">    &#123;</span><br><span class="line">        tree-&gt;left = insert(tree-&gt;left, key);<span class="comment">//递归查找应该插入的位置</span></span><br><span class="line">        <span class="keyword">if</span> (HEIGHT(tree-&gt;left) - HEIGHT(tree-&gt;right) == <span class="number">2</span>)<span class="comment">//从最底层开始判断是否失衡（递归层层向上判断）</span></span><br><span class="line">            <span class="comment">//注：大前提是左插，所以只可能左边的高度大于右边高度引起的失衡</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (key &lt; tree-&gt;left-&gt;key)<span class="comment">//如果当前树的左子树的key小于插入值</span></span><br><span class="line">            &#123;</span><br><span class="line">                tree = left_left_rotation(tree);</span><br><span class="line">                <span class="comment">//说明当前树是左左型失衡，使用左左旋调整，同时将当前最顶端的结点赋值给树，在最后返回</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                tree = left_right_rotation(tree);</span><br><span class="line">                <span class="comment">//说明当前树是左右型失衡，使用左右旋调整，同时将当前最顶端的结点赋值给树，在最后返回</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span><span class="comment">//在右子树中插入结点</span></span><br><span class="line">    &#123;</span><br><span class="line">        tree-&gt;right = insert(tree-&gt;right, key);<span class="comment">//递归查找应该插入的位置</span></span><br><span class="line">        <span class="keyword">if</span> (HEIGHT(tree-&gt;right) - HEIGHT(tree-&gt;left) == <span class="number">2</span>)<span class="comment">//从最底层开始判断是否失衡（递归层层向上判断）</span></span><br><span class="line">            <span class="comment">//注：大前提是右插，所以只可能右边的高度大于左边高度引起的失衡</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (key &lt; tree-&gt;right-&gt;key)<span class="comment">//如果当前树的右子树的key小于插入值</span></span><br><span class="line">            &#123;</span><br><span class="line">                tree = right_left_rotation(tree);</span><br><span class="line">                <span class="comment">//说明当前树是右左型失衡，使用右左旋调整</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                tree = right_right_rotation(tree);</span><br><span class="line">                <span class="comment">//说明当前树是右右型失衡，使用右右旋调整</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重新调整二叉树的深度</span></span><br><span class="line">    tree-&gt;height = MAX(getNode_height(tree-&gt;left), getNode_height(tree-&gt;right)) + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tree;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建新节点</span></span><br><span class="line">avlnode* <span class="title function_">create_node</span><span class="params">(<span class="type">int</span> key, avlnode* left, avlnode* right)</span></span><br><span class="line">&#123;</span><br><span class="line">    avlnode* node = (avlnode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(avlnode));</span><br><span class="line">    node-&gt;key = key;</span><br><span class="line">    node-&gt;left = left;</span><br><span class="line">    node-&gt;right = right;</span><br><span class="line">    node-&gt;height = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算当前树的高度</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">getNode_height</span><span class="params">(avlnode* node)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> HEIGHT(node);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">avlnode* <span class="title function_">search_node</span><span class="params">(avltree tree, <span class="type">int</span> key)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (tree == <span class="literal">NULL</span> || key == tree-&gt;key)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> tree;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (key &lt; tree-&gt;key)</span><br><span class="line">    &#123;</span><br><span class="line">        search_node(tree-&gt;left, key);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        search_node(tree-&gt;right, key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">avlnode* <span class="title function_">minimun</span><span class="params">(avltree tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (tree == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (tree-&gt;right)</span><br><span class="line">        &#123;</span><br><span class="line">            tree = tree-&gt;right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tree;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">avlnode* <span class="title function_">avltree_deleteNode</span><span class="params">(avltree tree, <span class="type">int</span> key)</span></span><br><span class="line">&#123;</span><br><span class="line">    avlnode* node = search_node(tree, key);</span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">NULL</span> || tree == <span class="literal">NULL</span>)<span class="comment">//如果node定位结果NULL</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> tree;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span><span class="comment">//node定位到了</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (key &lt; tree-&gt;key)<span class="comment">//删除的结点在当前树的左子树</span></span><br><span class="line">        &#123;</span><br><span class="line">            tree-&gt;left = avltree_deleteNode(tree-&gt;left, key);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//检查高度的代码,因为删除的是左子树上的结点，所以右子树可能比左子树高，所以使用右减左</span></span><br><span class="line">            <span class="keyword">if</span> (HEIGHT(tree-&gt;right) - HEIGHT(tree-&gt;left) == <span class="number">2</span>)<span class="comment">//从最底层开始判断是否失衡（递归层层向上判断）</span></span><br><span class="line">            &#123;                                                 </span><br><span class="line">                <span class="keyword">if</span> (tree-&gt;right-&gt;left)<span class="comment">//当前结点的右结点的左结点是否存在</span></span><br><span class="line">                &#123;<span class="comment">//存在</span></span><br><span class="line">                    tree = right_left_rotation(tree);</span><br><span class="line">                    <span class="comment">//说明当前树是右左型失衡，使用右左旋调整</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span><span class="comment">//不存在</span></span><br><span class="line">                &#123;</span><br><span class="line">                    tree = right_right_rotation(tree);</span><br><span class="line">                    <span class="comment">//说明当前树是右右型失衡，使用右右旋调整</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(key &gt; tree-&gt;key)<span class="comment">//删除的结点在右子树</span></span><br><span class="line">        &#123;</span><br><span class="line">            tree-&gt;right = avltree_deleteNode(tree-&gt;right, key);</span><br><span class="line">            <span class="keyword">if</span> (HEIGHT(tree-&gt;left) - HEIGHT(tree-&gt;right) == <span class="number">2</span>)<span class="comment">//从最底层开始判断是否失衡（递归层层向上判断）</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (key &lt; tree-&gt;left-&gt;key)</span><br><span class="line">                &#123;</span><br><span class="line">                    tree = left_left_rotation(tree);</span><br><span class="line">                    <span class="comment">//说明当前树是左左型失衡，使用左左旋调整</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    tree = left_right_rotation(tree);</span><br><span class="line">                    <span class="comment">//说明当前树是左右型失衡，使用左右旋调整</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span><span class="comment">//待删除的结点就是当前树，即递归定位到了当前树==删除结点</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (tree-&gt;left &amp;&amp; tree-&gt;right)<span class="comment">//左右都不为NULL</span></span><br><span class="line">            &#123;</span><br><span class="line">                avlnode* min_node = minimun(tree-&gt;left);<span class="comment">//找到适合取代该结点的结点</span></span><br><span class="line">                tree-&gt;key = min_node-&gt;key;<span class="comment">//把找到的值放入当前结点</span></span><br><span class="line">                tree-&gt;left = avltree_deleteNode(tree-&gt;left, min_node-&gt;key);</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span><span class="comment">//左右至少有一个NULL</span></span><br><span class="line">            &#123;</span><br><span class="line">                tree = (tree-&gt;left ? tree-&gt;left : tree-&gt;right);</span><br><span class="line">                <span class="comment">//独子或无子</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (tree)<span class="comment">//整理高度</span></span><br><span class="line">        &#123;</span><br><span class="line">            tree-&gt;height = MAX(getNode_height(tree-&gt;left), getNode_height(tree-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tree;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：递归这样理解：</p>
+<p>在这个树中，如果结点一下子看不到，就深入一层，直到找到，在当前这个局部树中删除这个结点并消除影响</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

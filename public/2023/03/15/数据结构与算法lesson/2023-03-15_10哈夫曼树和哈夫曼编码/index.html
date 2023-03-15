@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>10哈夫曼树和哈夫曼编码 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>10哈夫曼树和哈夫曼编码</h1>
+    </header>
+
+    <section>
+      <h2 id="哈夫曼树和哈夫曼编码">哈夫曼树和哈夫曼编码</h2>
+<h4 id="概念">概念</h4>
+<span id="more"></span>
+<blockquote>
+<p>1.结点路径：某一个结点从根节点到某一个路径上的连接数</p>
+<p>2.树的路径长度：每一个叶子的结点路径长度之和</p>
+<p>3.结点的带权路径长度：某一个结点的权重*该结点的路径长度</p>
+<p>4.树的带权路径长度：每一个叶子的带权路径长度之和</p>
+</blockquote>
+<h4 id="哈夫曼树">哈夫曼树</h4>
+<p><strong>构造方式</strong></p>
+<blockquote>
+<p>一次选择两个权重最小的结点，构造一棵二叉树，将权重赋值给父节点，直至结束。</p>
+</blockquote>
+<p><strong>特点</strong></p>
+<p>数据都存储在叶子结点上</p>
+<h4 id="概念-2">概念</h4>
+<blockquote>
+<p>定长编码：对数据进行指定长度的编码，例如ascll编码</p>
+<p>缺点：浪费空间，适合对指定的数据进行编码</p>
+<p>变长编码：对高频字符进行短位编码</p>
+<p>前缀属性：在字符集中，一个字符的编码不是其他字符编码的前缀。不产生二义性</p>
+</blockquote>
+<h4 id="哈夫曼编码（策略）">哈夫曼编码（策略）</h4>
+<p><strong>作用：数据压缩</strong></p>
+<p><strong>注意：不能产生二义性</strong></p>
+<h4 id="哈夫曼编码树">哈夫曼编码树</h4>
+<blockquote>
+<p>每一个叶子结点都代表一个字符，</p>
+<p>从结点到左孩子结点标记为0，到右孩子结点标记为1</p>
+</blockquote>
+<p><img src="picture/%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81%E6%A0%91.png" alt=""></p>
+<h5 id="代码实现">代码实现</h5>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> weight;		<span class="comment">//叶子结点的权值</span></span><br><span class="line">    <span class="type">int</span> lchild;		<span class="comment">//左孩子下标</span></span><br><span class="line">    <span class="type">int</span> rchild;		<span class="comment">//右孩子下标</span></span><br><span class="line">    <span class="type">int</span> parent;		<span class="comment">//父节点下标</span></span><br><span class="line"></span><br><span class="line">&#125;Node,*HuffmanTree;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">char</span>* HuffmanCode;</span><br><span class="line"><span class="comment">//步骤</span></span><br><span class="line"><span class="comment">//选择最小的两个结点</span></span><br><span class="line"><span class="comment">//创建哈夫曼树，并求出哈夫曼编码</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">select</span><span class="params">(HuffmanTree* huffmanTree, <span class="type">int</span> n, <span class="type">int</span>* s1, <span class="type">int</span>* s2)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> min;<span class="comment">//记录最小值的变量</span></span><br><span class="line">    <span class="comment">//找出第一个没有被赋值的单节点</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果没有父节点，把结点序号赋值给min，跳出</span></span><br><span class="line">        <span class="keyword">if</span> ((*huffmanTree)[i].parent == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            min = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//继续遍历全部结点，找到权值最小的</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果没有父节点进入下一次判断</span></span><br><span class="line">        <span class="keyword">if</span> ((*huffmanTree)[i].parent == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> ((*huffmanTree)[i].weight &lt; (*huffmanTree)[min].weight)</span><br><span class="line">            &#123;</span><br><span class="line">                min = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    *s1 = min;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//找出第一个没有被赋值的单节点</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果没有父节点，把结点序号赋值给min，跳出</span></span><br><span class="line">        <span class="keyword">if</span> ((*huffmanTree)[i].parent == <span class="number">0</span> &amp;&amp; i != *s1)</span><br><span class="line">        &#123;</span><br><span class="line">            min = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//继续遍历全部结点，找到权值最小的</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果没有父节点进入下一次判断</span></span><br><span class="line">        <span class="keyword">if</span> ((*huffmanTree)[i].parent == <span class="number">0</span> &amp;&amp; i != *s1)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> ((*huffmanTree)[i].weight &lt; (*huffmanTree)[min].weight)</span><br><span class="line">            &#123;</span><br><span class="line">                min = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    *s2 = min;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//构建哈夫曼树</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">HuffmanTree* huffmanTree:树</span></span><br><span class="line"><span class="comment">int w[]：数组权值</span></span><br><span class="line"><span class="comment">int n：元素个数</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">creatHuffmanTree</span><span class="params">(HuffmanTree* huffmanTree, <span class="type">int</span> w[], <span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> s1, s2;<span class="comment">//当前结点中最小的两个结点</span></span><br><span class="line">    <span class="type">int</span> m = <span class="number">2</span> * n - <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//所有结点数目=2*n-1</span></span><br><span class="line">    <span class="comment">//结点总数为m+1（因为加上了根节点）</span></span><br><span class="line">    *huffmanTree = (HuffmanTree)<span class="built_in">malloc</span>((m + <span class="number">1</span>) * <span class="keyword">sizeof</span>(Node));</span><br><span class="line">    <span class="comment">//1至n存放叶子数据</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)		<span class="comment">//初始化叶子数组</span></span><br><span class="line">    &#123;</span><br><span class="line">        (*huffmanTree)[i].weight = w[i];</span><br><span class="line">        <span class="comment">//权重赋值</span></span><br><span class="line">        (*huffmanTree)[i].lchild = <span class="number">0</span>;</span><br><span class="line">        (*huffmanTree)[i].rchild = <span class="number">0</span>;</span><br><span class="line">        (*huffmanTree)[i].parent = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//n至最后存放非叶子</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = n + <span class="number">1</span>; i &lt; m; i++)		<span class="comment">//初始化非叶子数组</span></span><br><span class="line">    &#123;</span><br><span class="line">        (*huffmanTree)[i].weight = <span class="number">0</span>;</span><br><span class="line">        (*huffmanTree)[i].lchild = <span class="number">0</span>;</span><br><span class="line">        (*huffmanTree)[i].rchild = <span class="number">0</span>;</span><br><span class="line">        (*huffmanTree)[i].parent = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//开始构建哈夫曼树</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = n + <span class="number">1</span>; i &lt;= m; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        select(huffmanTree, i - <span class="number">1</span>, &amp;s1, &amp;s2);</span><br><span class="line"></span><br><span class="line">        (*huffmanTree)[s1].parent = i;</span><br><span class="line">        (*huffmanTree)[s2].parent = i;</span><br><span class="line">        (*huffmanTree)[i].lchild = s1;</span><br><span class="line">        (*huffmanTree)[i].lchild = s2;</span><br><span class="line">        (*huffmanTree)[i].weight = (*huffmanTree)[s1].weight + (*huffmanTree)[s2].weight;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//创造完毕</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从n个叶子结点到根，逆向求每个叶子结点对应的哈夫曼编码</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">creatHuffmanCode</span><span class="params">(HuffmanTree* huffmanTree, HuffmanCode* huffmanCode, <span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> c;		<span class="comment">//遍历n个叶子结点的指示标记</span></span><br><span class="line">    <span class="type">int</span> p;		<span class="comment">//当前结点的父节点</span></span><br><span class="line">    <span class="type">int</span> start;<span class="comment">//起始指针</span></span><br><span class="line">    <span class="comment">//分配n个编码的头指针</span></span><br><span class="line">    huffmanCode = (HuffmanCode*)<span class="built_in">malloc</span>((n + <span class="number">1</span>) * <span class="keyword">sizeof</span>(<span class="type">char</span>*));</span><br><span class="line">    <span class="comment">//分配求当前编码的工作空间</span></span><br><span class="line">    <span class="type">char</span>* cd = (<span class="type">char</span>*)<span class="built_in">malloc</span>(n * <span class="keyword">sizeof</span>(<span class="type">char</span>));</span><br><span class="line">    cd[n - <span class="number">1</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        start = n - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//从叶子到根节点求编码</span></span><br><span class="line">        <span class="keyword">for</span> (c = i, p = (*huffmanTree)[i].parent; p != <span class="number">0</span>; c = p, p = (*huffmanTree)[p].parent)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> ((*huffmanTree)[p].lchild == c)</span><br><span class="line">            &#123;</span><br><span class="line">                cd[--start] = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                cd[--start] = <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        huffmanCode[i] = (<span class="type">char</span>*)<span class="built_in">malloc</span>((n - start) * <span class="keyword">sizeof</span>(<span class="type">char</span>));</span><br><span class="line">        <span class="built_in">strcpy</span>(huffmanCode[i], &amp;cd[start]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, huffmanCode[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="树，二叉树，森林之间的转换">树，二叉树，森林之间的转换</h2>
+<h4 id="树转换为二叉树">树转换为二叉树</h4>
+<blockquote>
+<p>在兄弟结点之间连线，再去除除左孩子以外的其余所有父子连线</p>
+</blockquote>
+<h4 id="森林转换为二叉树">森林转换为二叉树</h4>
+<blockquote>
+<p>1.将每一棵树转换为二叉树</p>
+<p>2.从第二棵开始，根节点作为前一棵根节点的右孩子</p>
+</blockquote>
+<h4 id="二叉树转换为树或者森林">二叉树转换为树或者森林</h4>
+<blockquote>
+<p>1.如果x是y的左孩子，则将x的右孩子与y相连</p>
+<p>2.去除右孩子之间的连线</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

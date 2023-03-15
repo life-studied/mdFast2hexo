@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2</h1>
+    </header>
+
+    <section>
+      <h2 id=""></h2>
+<h4 id="磁盘">磁盘</h4>
+<span id="more"></span>
+<p>每个磁片上分为多个扇片。也可以分为多个磁道，每个磁道分为多个扇区。</p>
+<h4 id="实现输入输出的方式">实现输入输出的方式</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>忙等待：仅能一个设备占用CPU直到使用结束，其它设备不能用</p>
+</li>
+<li class="lvl-2">
+<p>中断：暂时停止一个设备对CPU的占用</p>
+</li>
+<li class="lvl-2">
+<p>直接存储器访问（DMA）：直接控制内存和控制器交换</p>
+</li>
+</ul>
+<h4 id="总线（BUS）">总线（BUS）</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>多个设备或者接入点（站点）</p>
+</li>
+<li class="lvl-2">
+<p>传输的数据包（乘客）</p>
+</li>
+<li class="lvl-2">
+<p>传输的数据有容量（字节块）（4/8byte）</p>
+</li>
+<li class="lvl-2">
+<p>运行有顺序（控制器）</p>
+</li>
+</ul>
+<h4 id="操作系统功能">操作系统功能</h4>
+<h5 id="基本功能">基本功能</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>防止硬件被滥用</p>
+</li>
+<li class="lvl-2">
+<p>通过简单的机制匹配对应的应用程序，进而控制复杂的硬件</p>
+</li>
+</ul>
+<h5 id="对硬件进行的抽象">对硬件进行的抽象</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>进程：程序</p>
+</li>
+<li class="lvl-2">
+<p>虚拟内存：内存和磁盘</p>
+</li>
+<li class="lvl-2">
+<p>文件：io设备</p>
+</li>
+</ul>
+<h4 id="进程">进程</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>进程的本质是操作系统执行的一个程序，这个容器里存放了这个程序所有的信息</p>
+</li>
+<li class="lvl-2">
+<p>与进程相关</p>
+<ul class="lvl-2">
+<li class="lvl-6">地址空间——从某个最小值的存储位置到某个最大值的存储位置的列表</li>
+<li class="lvl-6">资源集——寄存器、文件清单、突发警报、进程清单等信息</li>
+</ul>
+</li>
+</ul>
+<h5 id="进程挂起">进程挂起</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>进程的地址空间——磁盘映像</p>
+</li>
+<li class="lvl-2">
+<p>进程表项（保存了进程当前的信息）</p>
+</li>
+</ul>
+<h5 id="进程间通信">进程间通信</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>合作完成某些作业的相关进程经常需要彼此通信来完成作业</p>
+</li>
+<li class="lvl-2">
+<p>保证信息不会丢失</p>
+<ul class="lvl-2">
+<li class="lvl-6">定时器</li>
+</ul>
+</li>
+</ul>
+<h5 id="并发技术">并发技术</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>通过指令的交错执行，进程在来回切换</p>
+</li>
+<li class="lvl-2">
+<p>一个进程的指令和另一个进程的指令交错执行的过程即为并发</p>
+</li>
+<li class="lvl-2">
+<p>在每个任务运行前，CPU都需要知道任务从哪里加载和运行</p>
+<ul class="lvl-2">
+<li class="lvl-6">CPU寄存器</li>
+<li class="lvl-6">程序计数器（记录下一条指令的位置）</li>
+</ul>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

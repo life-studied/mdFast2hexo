@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>6-1 定时器动画显示 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>6-1 定时器动画显示</h1>
+    </header>
+
+    <section>
+      <h2 id="定时器动画显示">定时器动画显示</h2>
+<blockquote>
+<p>使用<code>SetTimer</code>函数，可以定时发出<code>WM_TIMER</code>消息。</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="1-创建定时器">1.创建定时器</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">UINT_PTR <span class="title">SetTimer</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] HWND      hWnd,			<span class="comment">//接收定时器消息的窗口句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           UINT_PTR  nIDEvent,		<span class="comment">//定时器代号（同一窗口下唯一，不为0）</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           UINT      uElapse,			<span class="comment">//定时（毫秒）</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] TIMERPROC lpTimerFunc		<span class="comment">//响应函数指针，可以设为NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//example</span></span><br><span class="line"><span class="built_in">SetTimer</span>(hwnd, <span class="number">1</span>, <span class="number">100</span>, <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
+<p>该函数可以通过<strong>响应函数</strong>来指定操作，也可以在<strong>消息处理函数里加上WM_TIMER消息</strong>来处理。</p>
+<h4 id="2-删除定时器">2.删除定时器</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">KillTimer</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] HWND     hWnd,				<span class="comment">//窗口句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in]           UINT_PTR uIDEvent			<span class="comment">//定时器代号</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//example</span></span><br><span class="line"><span class="built_in">KillTimer</span>(hwnd, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

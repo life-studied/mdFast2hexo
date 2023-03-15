@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>26-进程间通信：剪切板 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>26-进程间通信：剪切板</h1>
+    </header>
+
+    <section>
+      <h2 id="进程间通信：剪切板">进程间通信：剪切板</h2>
+<h4 id="1-进程间通信方式汇总">1.进程间通信方式汇总</h4>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>socket 编程 IP 和端口</p>
+</li>
+<li class="lvl-2">
+<p>剪切板</p>
+<ul class="lvl-2">
+<li class="lvl-6">剪切板的内核对象</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>邮槽</p>
+<ul class="lvl-2">
+<li class="lvl-6">邮槽的内核对象</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>匿名管道</p>
+</li>
+<li class="lvl-2">
+<p>命名管道</p>
+</li>
+<li class="lvl-2">
+<p>信息</p>
+<ul class="lvl-2">
+<li class="lvl-6">SendMessage</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-剪切板通信">2.剪切板通信</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CClipBoardDlg::OnBnClickedSendButton</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//1.打开剪切板</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">OpenClipboard</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//2.清空剪切板</span></span><br><span class="line">		<span class="built_in">EmptyClipboard</span>();</span><br><span class="line">		<span class="type">char</span>* szSendBuf;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//3.获取编辑框的内容	</span></span><br><span class="line">		CStringA strSend;</span><br><span class="line">		<span class="built_in">GetDlgItemText</span>(IDC_EDIT_SEND, strSend);</span><br><span class="line">		<span class="comment">//4.分配内存对象</span></span><br><span class="line">		HANDLE hClip = <span class="built_in">GlobalAlloc</span>(GMEM_MOVEABLE, strSend.<span class="built_in">GetLength</span>() + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//5.将剪切板加锁，拷贝内容，解锁</span></span><br><span class="line">		szSendBuf = (<span class="type">char</span>*)<span class="built_in">GlobalLock</span>(hClip);</span><br><span class="line">		<span class="built_in">strcpy</span>(szSendBuf, strSend);</span><br><span class="line">		<span class="built_in">GlobalUnlock</span>(hClip);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//6.将数据放入剪切板</span></span><br><span class="line">		<span class="built_in">SetClipboardData</span>(CF_TEXT, hClip);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//7.关闭剪切板</span></span><br><span class="line">		<span class="built_in">CloseClipboard</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">CClipBoardDlg::OnBnClickedRecvButton</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//1.打开剪切板</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">OpenClipboard</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//2.判断剪切板是否可用</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">IsClipboardFormatAvailable</span>(CF_TEXT))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">char</span>* szRecvBuf;</span><br><span class="line">			<span class="comment">//3.从剪切板获取数据</span></span><br><span class="line">			HANDLE hClip = <span class="built_in">GetClipboardData</span>(CF_TEXT);</span><br><span class="line">			szRecvBuf = (<span class="type">char</span>*)<span class="built_in">GlobalLock</span>(hClip);</span><br><span class="line">			<span class="built_in">SetDlgItemTextA</span>(IDC_EDIT_RECV, szRecvBuf);</span><br><span class="line">			<span class="built_in">GlobalUnlock</span>(hClip);</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//4.关闭剪切板</span></span><br><span class="line">		<span class="built_in">CloseClipboard</span>();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

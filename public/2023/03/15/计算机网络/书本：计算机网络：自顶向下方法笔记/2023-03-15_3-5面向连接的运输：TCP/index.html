@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3-5面向连接的运输：TCP | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3-5面向连接的运输：TCP</h1>
+    </header>
+
+    <section>
+      <h2 id="3-5面向连接的运输：TCP">3.5面向连接的运输：TCP</h2>
+<blockquote>
+<p>TCP建立在可靠数据传输原理之上。</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>同时依赖原理：差错检测、重传、累积确认、定时器、首部字段。</p>
+</blockquote>
+<h4 id="3-5-1-TCP连接">3.5.1 TCP连接</h4>
+<blockquote>
+<p>TCP协议的连接状态只保留在两个端系统中，而不在中间的网络元素运行。</p>
+</blockquote>
+<p>1.TCP提供<strong>全双工服务</strong>：两个进程之间可以在同时双向发送信息。</p>
+<p>2.建立TCP连接的过程：（<strong>三次握手</strong>）</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>客户端发送一个特殊的TCP报文段（不含应用层信息）</p>
+</li>
+<li class="lvl-2">
+<p>服务器响应一个特殊的TCP报文段（不含应用层信息）</p>
+</li>
+<li class="lvl-2">
+<p>客户端响应一个特殊的TCP报文段（可以有应用层信息）</p>
+</li>
+</ul>
+<p>3.最大报文段长度（MSS）：报文段中应用层数据的最大长度。</p>
+<p>4.TCP连接的组成包括：两台主机上的缓存，变量和与进程连接的socket</p>
+<h4 id="3-5-2-TCP报文段结构（如图）">3.5.2 TCP报文段结构（如图）</h4>
+<p><img src="picture/TCP%E6%8A%A5%E6%96%87%E6%AE%B5%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p><strong>简介</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>源端口号和目的端口号：各占16bit</p>
+</li>
+<li class="lvl-2">
+<p>序号和确认号字段：各占32bit，用于实现可靠数据传输服务（详见下方）</p>
+</li>
+<li class="lvl-2">
+<p>接收窗口字段：16bit，用于流量控制，指示接收方愿意接收的字节数量</p>
+</li>
+<li class="lvl-2">
+<p>首部长度字段：4bit，指示了TCP首部长度（单位：32bit的字）注：TCP首部长度可变</p>
+</li>
+<li class="lvl-2">
+<p>选项字段：可变长度，用于发送方和接收方协商最大报文段长度（MSS）。</p>
+</li>
+<li class="lvl-2">
+<p>标识字段：6bit。</p>
+<ul class="lvl-2">
+<li class="lvl-6">ACK：对上一报文段有效的确认。</li>
+<li class="lvl-6">RST、SYN、FIN：用于连接的建立与拆除。</li>
+<li class="lvl-6">PSH：指示立即将数据交付给上层。</li>
+<li class="lvl-6">URG：指示报文段中存在紧急数据。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>紧急数据指针：16bit，当URG的bit有效时，指向紧急数据的最后一个字节。（即紧急数据尾）</p>
+</li>
+</ul>
+<h5 id="1-序号与确认号">1.序号与确认号</h5>
+<p>1.序号：序号是以字节为单位的，指的是报文段数据的首字节编号。假如MSS为1000，则第一个报文段序号为0，第二个报文段序号为1000。</p>
+<p>2.确认号：期望收到的下一报文段的序号。例如已经收到0-535字节的数据，则应该发536的确认号。</p>
+<p>3.<strong>累计确认</strong>：TCP只确认流中第一个丢失的字节。例如已经收到0-535和900-1000字节，则应该发536的确认号。</p>
+<h5 id="2-Telnet学习案例：序号与确认号">2.Telnet学习案例：序号与确认号</h5>
+<blockquote>
+<p>Telnet将数据发送给服务器后，服务器会将数据发回来，以表示成功发送。数据会显示在Telnet的屏幕上，称为”回显“。</p>
+</blockquote>
+<h4 id="3-5-3往返时间的估计与超时（略）">3.5.3往返时间的估计与超时（略）</h4>
+<h4 id="3-5-4可靠数据传输（略）">3.5.4可靠数据传输（略）</h4>
+<h4 id="3-5-5流量控制">3.5.5流量控制</h4>
+<blockquote>
+<p>TCP的接收方使用一个缓存来存储收到的数据报，如果发送方的发送速度大于接收方的上层应用的读取速度，接收缓冲就会溢出。因此TCP提供<strong>流量控制服务</strong>。</p>
+</blockquote>
+<p>流量控制服务的实现是：发送方维护一个<strong>接收窗口</strong>的变量（rwnd），该变量告知发送方：接收方剩余可用缓冲空间数量。</p>
+<p><strong>公式：</strong><br>
+$$<br>
+rwnd = RcvBuffer - (LastByteRcvd - LastByteRead)<br>
+$$<br>
+<strong>解释：</strong><br>
+$$<br>
+接收窗口的大小 = 缓冲区大小 - （缓冲区中最后一个字节编号 - 缓冲区已读的字节编号）<br>
+$$</p>
+<p><img src="picture/%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3%E5%A4%A7%E5%B0%8F.png" alt=""></p>
+<blockquote>
+<p>由于TCP是全双工的，接收方会将自己当前rwnd的值放入报文段的接收窗口字段中。</p>
+</blockquote>
+<h4 id="3-5-6TCP连接管理">3.5.6TCP连接管理</h4>
+<h5 id="1-建立连接：（三步）">1.建立连接：（三步）</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一：客户端TCP向服务器TCP发送一个特殊报文段。</p>
+<ul class="lvl-2">
+<li class="lvl-6">不含应用层数据</li>
+<li class="lvl-6">SYN标识位置1</li>
+<li class="lvl-6">随机选择一个初始编号client_isn，写入序号字段</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>二：服务器从该报文段中取出SYN报文段，为该TCP连接分配缓存和变量，并发送允许连接的报文段。</p>
+<ul class="lvl-2">
+<li class="lvl-6">不含应用层数据</li>
+<li class="lvl-6">SYN标志位置1</li>
+<li class="lvl-6">确认号字段设置为client_isn+1</li>
+<li class="lvl-6">随机选择一个初始编号server_isn，写入序号字段</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>三：客户接收SYNACK报文段，为该连接分配缓存和变量。并发送一个报文段给服务器。</p>
+<ul class="lvl-2">
+<li class="lvl-6">可以发送应用层数据</li>
+<li class="lvl-6">SYN标志位置0</li>
+<li class="lvl-6">确认号字段设置为server_isn+1</li>
+<li class="lvl-6">序号字段为client_isn+1</li>
+</ul>
+</li>
+</ul>
+<p><img src="picture/TCP%E8%BF%9E%E6%8E%A5.png" alt=""></p>
+<h5 id="2-关闭连接：（四步）">2.关闭连接：（四步）</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一：客户向服务器发送一个特殊的TCP报文段</p>
+<ul class="lvl-2">
+<li class="lvl-6">FIN标志位置1</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>二：服务器向客户回送一个确认ACK报文段</p>
+</li>
+<li class="lvl-2">
+<p>三：服务器发送自己的终止报文段</p>
+<ul class="lvl-2">
+<li class="lvl-6">FIN标志位置1</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>四：客户向服务器回送一个确认ACK报文段</p>
+</li>
+</ul>
+<p><img src="picture/%E5%85%B3%E9%97%ADTCP%E8%BF%9E%E6%8E%A5.png" alt=""></p>
+<h5 id="3-客户的TCP连接状态（对应上面的连接的三步与关闭的四步）">3.客户的TCP连接状态（对应上面的连接的三步与关闭的四步）</h5>
+<p>建立连接过程：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一：CLOSED-&gt;SYN_SENT</p>
+</li>
+<li class="lvl-2">
+<p>二：SYN_SENT-&gt;ESTABLISHED</p>
+</li>
+<li class="lvl-2">
+<p>三：ESTABLISHED</p>
+</li>
+</ul>
+<p>关闭连接过程：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>一：ESTABLISHED-&gt;FIN_WAIT1</p>
+</li>
+<li class="lvl-2">
+<p>二：FIN_WAIT1-&gt;FIN_WAIT2</p>
+</li>
+<li class="lvl-2">
+<p>三、四：FIN_WAIT2-&gt;TIME_WAIT</p>
+</li>
+<li class="lvl-2">
+<p>等待30s：TIME_WAIT-&gt;CLOSED</p>
+</li>
+</ul>
+<p><img src="picture/TCP%E8%BF%9E%E6%8E%A5%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%E5%9B%BE.png" alt=""></p>
+<blockquote>
+<p>对应的服务器TCP连接状态变化图：</p>
+</blockquote>
+<p><img src="picture/%E6%9C%8D%E5%8A%A1%E5%99%A8TCP%E8%BF%9E%E6%8E%A5%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%E5%9B%BE.png" alt=""></p>
+<h5 id="4-服务器端口不接受连接（端口没被使用）">4.服务器端口不接受连接（端口没被使用）</h5>
+<blockquote>
+<p>当服务器端口收到TCP连接，但该端口并无socket时，主机将回送一个特殊重置报文段，该报文段将RST标志位置1。</p>
+<p>在UDP的情况下，主机将发送一个特殊的ICMP数据报。</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1简单工厂模式 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1简单工厂模式</h1>
+    </header>
+
+    <section>
+      <h2 id="简单工厂模式">简单工厂模式</h2>
+<h4 id="1-介绍">1.介绍</h4>
+<blockquote>
+<p>把被创建的对象称为“产品”，把创建产品的对象称为“工厂”。如果要创建的产品不多，只要一个工厂类就可以完成，这种模式叫简单工厂模式。</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>在简单工厂模式中创建实例的方法通常为静态（static）方法，因此简单工厂模式（Simple Factory Pattern）又叫作静态工厂方法模式（Static Factory Method Pattern）。</p>
+</blockquote>
+<h4 id="2-意图：">2.意图：</h4>
+<p>简单工厂模式(Simple Factory Pattern)：定义一个工厂类，它可以根据参数的不同返回不同类的实例，被创建的实例通常都具有共同的父类。</p>
+<h4 id="3-解决问题：">3.解决问题：</h4>
+<p>主要解决接口选择的问题。(免得想用那个接口了，偷懒必备，同时提高工程效率)</p>
+<h4 id="4-实现概述：">4.实现概述：</h4>
+<p>将需要创建的各种不同对象的相关代码封装到不同的类中，这些类称为具体产品类。将它们公共的代码进行抽象和提取后封装在一个抽象产品类，每一个具体产品类都是抽象产品类的子类提供一个工厂类用于创建各种产品，工厂类中提供一个创建产品的工厂方法，该方法可以根据所传入的参数不同创建不同的具体产品对象要点：当你需要什么，只需要传入一个正确的参数，就可以获取你所需要的对象，而无须知道其创建细节。</p>
+<h4 id="5-应用场景：">5.应用场景：</h4>
+<p>在以下情况下可以考虑使用简单工厂模式：</p>
+<p>(1) 工厂类负责创建的对象比较少，由于创建的对象较少，不会造成工厂方法中的业务逻辑太过复杂。</p>
+<p>(2) 客户端只知道传入工厂类的参数，对于如何创建对象并不关心。</p>
+<p><strong>生活中场景</strong><br>
+不同工厂生产不同的产品。比如不同的球类工厂生产不同的球类。</p>
+<p><strong>软件中场景</strong><br>
+1、日志记录器：记录可能记录到本地硬盘、系统事件、远程服务器等，用户可以选择记录日志到什么地方。</p>
+<p>2、数据库访问，当用户不知道最后系统采用哪一类数据库，以及数据库可能有变化时。</p>
+<blockquote>
+<p>优点：工厂类包含必要的逻辑判断，可以决定在什么时候创建哪一个产品的实例。客户端无需知道所创建具体产品的类名，只需知道参数即可。缺点：简单工厂模式的工厂类单一，负责所有产品的创建，职责过重，一旦异常，整个系统将受影响。且工厂类代码会非常臃肿，违背高聚合原则。系统扩展困难，一旦增加新产品不得不修改工厂逻辑，在产品类型较多时，可能造成逻辑过于复杂简单工厂模式使用了 static 工厂方法，造成工厂角色无法形成基于继承的等级结构。</p>
+</blockquote>
+<h4 id="6-案例">6.案例</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> <span class="title class_">ProductTypeTag</span>				<span class="comment">//Here create the enumerate for products</span></span><br><span class="line">&#123;</span><br><span class="line">    TypeA,</span><br><span class="line">    TypeB,</span><br><span class="line">    TypeC</span><br><span class="line">&#125;PRODUCTTYPE;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Here is the product class</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Show</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Here are the derived classes of product</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> : <span class="keyword">public</span> Product</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;I&#x27;m ProductA&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> : <span class="keyword">public</span> Product</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;I&#x27;m ProductB&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductC</span> : <span class="keyword">public</span> Product</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;I&#x27;m ProductC&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Here is the Factory class</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Factory</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Product* <span class="title">CreateProduct</span><span class="params">(PRODUCTTYPE type)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (type)</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="keyword">case</span> TypeA:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">ProductA</span>();</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">case</span> TypeB:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">ProductB</span>();</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">case</span> TypeC:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">ProductC</span>();</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// First, create a factory object</span></span><br><span class="line">    Factory *ProductFactory = <span class="keyword">new</span> <span class="built_in">Factory</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//using product point to get the object&#x27;s memory</span></span><br><span class="line">    Product *productObjA = ProductFactory-&gt;<span class="built_in">CreateProduct</span>(TypeA);</span><br><span class="line">    <span class="keyword">if</span> (productObjA != <span class="literal">NULL</span>)</span><br><span class="line">        productObjA-&gt;<span class="built_in">Show</span>();</span><br><span class="line"> </span><br><span class="line">    Product *productObjB = ProductFactory-&gt;<span class="built_in">CreateProduct</span>(TypeB);</span><br><span class="line">    <span class="keyword">if</span> (productObjB != <span class="literal">NULL</span>)</span><br><span class="line">        productObjB-&gt;<span class="built_in">Show</span>();</span><br><span class="line"> </span><br><span class="line">    Product *productObjC = ProductFactory-&gt;<span class="built_in">CreateProduct</span>(TypeC);</span><br><span class="line">    <span class="keyword">if</span> (productObjC != <span class="literal">NULL</span>)</span><br><span class="line">        productObjC-&gt;<span class="built_in">Show</span>();</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//delete the memory and set the point to NULL</span></span><br><span class="line">    <span class="keyword">delete</span> ProductFactory;</span><br><span class="line">    ProductFactory = <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">delete</span> productObjA;</span><br><span class="line">    productObjA = <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">delete</span> productObjB;</span><br><span class="line">    productObjB = <span class="literal">NULL</span>;        </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">delete</span> productObjC;</span><br><span class="line">    productObjC = <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/A%E6%98%9F%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/2023-03-15_A%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/">A寻路算法</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/">数据结构与算法lesson</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/A%E6%98%9F%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/">A星寻路算法</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h4 id="广度优先搜索">广度优先搜索</h4>
+<p>平等的探索各个方向</p>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/A%E6%98%9F%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/2023-03-15_A%E5%AF%BB%E8%B7%AF%E7%AE%97%E6%B3%95/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E6%AF%94%E8%B5%9B%E6%8A%80%E5%B7%A7/2023-03-15_%E5%BF%AB%E8%AF%BB%E5%BF%AB%E5%86%99/">快读快写</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/">数据结构与算法lesson</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E6%AF%94%E8%B5%9B%E6%8A%80%E5%B7%A7/">比赛技巧</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h4 id="字符串和字符">字符串和字符</h4>
+<blockquote>
+<p>1.cin/cout别用，太慢！</p>
+</blockquote>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E6%AF%94%E8%B5%9B%E6%8A%80%E5%B7%A7/2023-03-15_%E5%BF%AB%E8%AF%BB%E5%BF%AB%E5%86%99/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/2023-03-15_2-1%E5%88%86%E6%9E%90%E6%A1%86%E6%9E%B6/">2-1分析框架</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/">数据结构与算法lesson</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/">算法设计与分析</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="分析框架">分析框架</h2>
+<h4 id="2-1-1输入规模的度量">2.1.1输入规模的度量</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/2023-03-15_2-1%E5%88%86%E6%9E%90%E6%A1%86%E6%9E%B6/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/2023-03-15_2-3%E9%9D%9E%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/">2-3非递归算法的数学分析</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/">数据结构与算法lesson</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/">算法设计与分析</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="非递归算法的数学分析">非递归算法的数学分析</h2>
+<blockquote>
+<p>根据2.1的通用框架来分析非递归算法</p>
+</blockquote>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/2023-03-15_2-2%E6%B8%90%E8%BF%9B%E7%AC%A6%E5%8F%B7%E5%92%8C%E5%9F%BA%E6%9C%AC%E6%95%88%E7%8E%87%E7%B1%BB%E5%9E%8B/">2-2渐进符号和基本效率类型</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/">数据结构与算法lesson</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/">算法设计与分析</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="渐进符号和基本效率类型">渐进符号和基本效率类型</h2>
+<blockquote>
+<p>在n趋近于无穷的情况下：</p>
+</blockquote>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95lesson/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/2023-03-15_2-2%E6%B8%90%E8%BF%9B%E7%AC%A6%E5%8F%B7%E5%92%8C%E5%9F%BA%E6%9C%AC%E6%95%88%E7%8E%87%E7%B1%BB%E5%9E%8B/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2023-03-15_%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E7%BB%AA%E8%AE%BA/">第一章 绪论</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="第一章绪论">第一章	绪论</h2>
+<h4 id="1-2基本术语">1.2基本术语</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/2023-03-15_%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E7%BB%AA%E8%AE%BA/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_1-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E6%B1%87%E7%BC%96%E9%A1%B9%E7%9B%AE/">1-如何创建汇编项目</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/">网课</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="如何创建汇编项目">如何创建汇编项目</h2>
+<ul class="lvl-0">
+<li class="lvl-2">打开vs2019</li>
+<li class="lvl-2">选择控制台</li>
+</ul>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_1-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E6%B1%87%E7%BC%96%E9%A1%B9%E7%9B%AE/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_2-%E6%B1%87%E7%BC%96%E4%B8%AD%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8/">2-汇编中的寄存器</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/">网课</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="汇编中的寄存器">汇编中的寄存器</h2>
+<ul class="lvl-0">
+<li class="lvl-2">8个通用寄存器</li>
+<li class="lvl-2">1个标志寄存器</li>
+</ul>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_2-%E6%B1%87%E7%BC%96%E4%B8%AD%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_3-%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8/">3-标志寄存器</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/">网课</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="标志寄存器">标志寄存器</h2>
+<h4 id="1-状态标志">1.状态标志</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_3-%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_4-4mov%E6%8C%87%E4%BB%A4/">4-4mov指令</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/">网课</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="mov指令">mov指令</h2>
+<p>格式：mov 目标，源</p>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/%E7%BD%91%E8%AF%BE/2023-03-15_4-4mov%E6%8C%87%E4%BB%A4/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+  <section id="nav-wrapper">
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/32/">« prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><a class="page-number" href="/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><a class="extend next" rel="next" href="/page/34/">next »</a>
+    </nav>
+  </section>
+
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

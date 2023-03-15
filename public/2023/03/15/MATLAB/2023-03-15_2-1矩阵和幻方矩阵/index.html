@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2-1矩阵和幻方矩阵 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2-1矩阵和幻方矩阵</h1>
+    </header>
+
+    <section>
+      <h2 id="矩阵和幻方矩阵">矩阵和幻方矩阵</h2>
+<h4 id="输入矩阵">输入矩阵</h4>
+<span id="more"></span>
+<h5 id="元素列表形式输入">元素列表形式输入</h5>
+<p><strong>规定</strong></p>
+<blockquote>
+<p>• 使用空格或逗号分隔行的元素。</p>
+</blockquote>
+<blockquote>
+<p>• 使用分号 <strong>;</strong> 表示每行末尾。</p>
+</blockquote>
+<blockquote>
+<p>• 使用方括号 <strong>[ ]</strong> 将整个元素列表括起来。</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">A = [<span class="number">16</span> <span class="number">3</span> <span class="number">2</span> <span class="number">13</span>; <span class="number">5</span> <span class="number">10</span> <span class="number">11</span> <span class="number">8</span>; <span class="number">9</span> <span class="number">6</span> <span class="number">7</span> <span class="number">12</span>; <span class="number">4</span> <span class="number">15</span> <span class="number">14</span> <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="矩阵求和、转置和对角矩阵">矩阵求和、转置和对角矩阵</h4>
+<h5 id="矩阵元素求和">矩阵元素求和</h5>
+<blockquote>
+<p>sum函数对矩阵的每列进行求和，输出行向量</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">sum(A)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>ans =</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>34 34 34 34</strong></p>
+</blockquote>
+<p><strong>注：</strong></p>
+<p>如果对行进行求和，可以转置矩阵后使用sum再转置回来</p>
+<h5 id="转置矩阵">转置矩阵</h5>
+<blockquote>
+<p>撇号运算符（例如，<strong>A’</strong>）执行复共轭转置。翻转矩阵，更改矩阵的任何复数元素的虚部符号。</p>
+<p>点撇号运算符 (<strong>A.'</strong>) 转置矩阵，但不会影响复数元素的符号。</p>
+<p>对于包含所有实数元素的矩阵，这两个运算符返回相同结果。</p>
+</blockquote>
+<h5 id="主对角线">主对角线</h5>
+<blockquote>
+<p>使用diag函数，返回对角线组成的列矩阵</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">diag</span>(A)</span><br></pre></td></tr></table></figure>
+<p><strong>ans =</strong></p>
+<p><strong>16</strong></p>
+<p><strong>10</strong></p>
+<p><strong>7</strong></p>
+<p><strong>1</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">sum(<span class="built_in">diag</span>(A))</span><br></pre></td></tr></table></figure>
+<p><strong>ans =</strong></p>
+<p><strong>34</strong></p>
+<h5 id="magic函数">magic函数</h5>
+<blockquote>
+<p>参数为矩阵维数，创建一个幻方</p>
+</blockquote>
+<h5 id="其余生成函数">其余生成函数</h5>
+<p><strong>zeros</strong> 		全部为零</p>
+<p><strong>ones</strong> 		 全部为 1</p>
+<p><strong>rand</strong> 		 均匀分布的随机元素</p>
+<p><strong>randn</strong> 		正态分布的随机元素</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

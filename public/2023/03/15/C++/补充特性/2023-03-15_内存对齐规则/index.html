@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>内存对齐规则 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>内存对齐规则</h1>
+    </header>
+
+    <section>
+      <h2 id="内存对齐规则">内存对齐规则</h2>
+<h4 id="1-规则：">1.规则：</h4>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>数据成员的偏移量以min(pack(n)，最大成员占用字节)的整数倍进行对齐。</p>
+</li>
+</ul>
+<h4 id="2-其它说明">2.其它说明</h4>
+<ol>
+<li class="lvl-3">
+<p>内存对齐，是指数据在内存中的存放位置必须是其对齐字节数（一个无符号整数，且必须是2的幂）的倍数。这样做可以提高数据访问的效率和性能。</p>
+</li>
+<li class="lvl-3">
+<p>C++中，不同类型的数据有不同的默认对齐字节数，例如int为4，char为1，double为8等。如果数据是自定义类型（如类或结构体），则其正常对齐字节数等于其最大成员的对齐字节数。</p>
+</li>
+<li class="lvl-3">
+<p>C<ins>中还可以使用#pragma pack(n)或__attribute__((aligned(n)))等指令来修改默认的对齐方式。C</ins>11还引入了alignof和alignas两个关键字来获取或设置数据的对齐字节数。</p>
+</li>
+</ol>
+<h4 id="案例">案例</h4>
+<p>请看下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 例1：默认对齐方式</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">    <span class="type">char</span> a; <span class="comment">// 占1字节，偏移0</span></span><br><span class="line">    <span class="type">int</span> b; <span class="comment">// 占4字节，偏移4（因为要对齐到4的倍数）</span></span><br><span class="line">    <span class="type">char</span> c; <span class="comment">// 占1字节，偏移8</span></span><br><span class="line">&#125;; <span class="comment">// 结构体A的大小为12（因为要对齐到最大成员的倍数）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 例2：使用#pragma pack(2)指令</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> pack(2) <span class="comment">// 设置对齐字节数为2</span></span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">B</span> &#123;</span><br><span class="line">    <span class="type">char</span> a; <span class="comment">// 占1字节，偏移0</span></span><br><span class="line">    <span class="type">int</span> b; <span class="comment">// 占4字节，偏移2（因为要对齐到2的倍数）</span></span><br><span class="line">    <span class="type">char</span> c; <span class="comment">// 占1字节，偏移6</span></span><br><span class="line">&#125;; <span class="comment">// 结构体B的大小为8（因为要对齐到指定的倍数）</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> pack() <span class="comment">// 恢复默认对齐方式</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 例3：使用__attribute__((aligned(8)))指令</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">C</span> &#123;</span><br><span class="line">    <span class="type">char</span> a; <span class="comment">// 占1字节，偏移0</span></span><br><span class="line">    <span class="type">int</span> b __attribute__((<span class="built_in">aligned</span>(<span class="number">8</span>))); <span class="comment">// 占4字节，偏移8（因为要对齐到8的倍数）</span></span><br><span class="line">    <span class="type">char</span> c; <span class="comment">// 占1字节，偏移12</span></span><br><span class="line">&#125;; <span class="comment">// 结构体C的大小为16（因为要对齐到最大成员的倍数）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 例4：使用C++11中的alignas关键字</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">D</span> &#123;</span><br><span class="line">    <span class="built_in">alignas</span>(<span class="number">16</span>) <span class="type">char</span> a; <span class="comment">// 占1字节，偏移0（但是占用16个空间）</span></span><br><span class="line">    <span class="type">int</span> b; <span class="comment">// 占4字节，偏移16（因为要对齐到16的倍数）</span></span><br><span class="line">    <span class="type">char</span> c; <span class="comment">// 占1字节，偏移20</span></span><br><span class="line">&#125;; <span class="comment">// 结构体D的大小为32（因为要对齐到最大成员的倍数）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 例5：含double的结构体</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">E</span> &#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">double</span> b;</span><br><span class="line">    <span class="type">char</span> c;</span><br><span class="line">&#125;; <span class="comment">// 结构体E的大小为24</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

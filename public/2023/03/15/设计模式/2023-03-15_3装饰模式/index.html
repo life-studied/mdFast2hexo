@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3装饰模式 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3装饰模式</h1>
+    </header>
+
+    <section>
+      <h2 id="装饰模式">装饰模式</h2>
+<h4 id="意图">意图</h4>
+<span id="more"></span>
+<blockquote>
+<p>动态地给一个对象添加一些额外的职责。就增加功能来说，装饰器模式相比生成子类更为灵活。</p>
+</blockquote>
+<h4 id="何时使用">何时使用</h4>
+<p>在不想增加很多子类的情况下扩展类。</p>
+<h4 id="如何解决">如何解决</h4>
+<p>将具体功能职责划分，同时继承装饰器模式。</p>
+<h4 id="模式优点">模式优点</h4>
+<p>装饰类和被装饰类可以独立发展，不会相互耦合，装饰器模式是继承的一个替代模式，装饰器模式可以动态地扩展实现一个类的功能。</p>
+<h4 id="模式缺点">模式缺点</h4>
+<p>多层装饰比较复杂。</p>
+<h4 id="代码实现">代码实现</h4>
+<h5 id="情景模拟">情景模拟</h5>
+<blockquote>
+<p>我们还是拿汽车来举例子吧。现在的汽车越来越智能化了，什么定速巡航、自动刹车、车道偏离等功能都逐渐进入我们的生活，为我们带来了更为便利的出行。</p>
+<p>假设上述提到的定速巡航、自动刹车、车道偏离三个功能就是我们想要为汽车装饰的功能，汽车默认的功能配置有：基本配置。</p>
+</blockquote>
+<p>得到具体的汽车（宝马、奥迪、奔驰）后，我们可以选择性地增加装饰功能。</p>
+<h4 id="代码实现-2">代码实现</h4>
+<p>具体实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 三个实体的汽车类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Bmw</span> :<span class="keyword">public</span> Car</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;这是一辆宝马汽车，配置有：基本配置&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Audi</span> :<span class="keyword">public</span> Car</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;这是一辆奥迪汽车，配置有：基本配置&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Benz</span> :<span class="keyword">public</span> Car</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;这是一辆奔驰汽车，配置有：基本配置&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 装饰器1 定速巡航</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decorator01</span> :<span class="keyword">public</span> Car</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Decorator01</span>(Car* p) :<span class="built_in">pCar</span>(p) &#123;&#125;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		pCar-&gt;<span class="built_in">show</span>();</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;，定速巡航&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Car* pCar;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 装饰器2 自动刹车</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decorator02</span> :<span class="keyword">public</span> Car</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Decorator02</span>(Car* p) :<span class="built_in">pCar</span>(p) &#123;&#125;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		pCar-&gt;<span class="built_in">show</span>();</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;，自动刹车&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Car* pCar;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 装饰器3 定速巡航</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decorator03</span> :<span class="keyword">public</span> Car</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Decorator03</span>(Car* p) :<span class="built_in">pCar</span>(p) &#123;&#125;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		pCar-&gt;<span class="built_in">show</span>();</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;，车道偏离&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Car* pCar;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接着我们可以使用如下代码：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Car* p1 = <span class="keyword">new</span> <span class="built_in">Decorator01</span>(<span class="keyword">new</span> <span class="built_in">Bmw</span>());</span><br><span class="line">	p1 = <span class="keyword">new</span> <span class="built_in">Decorator02</span>(p1);</span><br><span class="line">	p1 = <span class="keyword">new</span> <span class="built_in">Decorator03</span>(p1);</span><br><span class="line">	p1-&gt;<span class="built_in">show</span>();</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	Car* p2 = <span class="keyword">new</span> <span class="built_in">Decorator02</span>(<span class="keyword">new</span> <span class="built_in">Audi</span>());</span><br><span class="line">	p2-&gt;<span class="built_in">show</span>();</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	Car* p3 = <span class="keyword">new</span> <span class="built_in">Decorator03</span>(<span class="keyword">new</span> <span class="built_in">Benz</span>());</span><br><span class="line">	p3-&gt;<span class="built_in">show</span>();</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可以看到，我们在运行代码中：给宝马汽车增加了Decorator01（定速巡航）、Decorator02（自动刹车）、Decorator03（车道偏离）的配置；给奥迪汽车增加了Decorator02（自动刹车）配置；给奔驰汽车增加了Decorator03（车道偏离）配置。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>6P2P应用 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>6P2P应用</h1>
+    </header>
+
+    <section>
+      <h2 id="P2P应用">P2P应用</h2>
+<h4 id="管理模式">管理模式</h4>
+<span id="more"></span>
+<blockquote>
+<p>由于P2P模式下，每个节点动态变化，难以管理，因此有如下管理模式</p>
+</blockquote>
+<h5 id="非结构化P2P">非结构化P2P</h5>
+<blockquote>
+<p>任意两个Peer之间可以形成逻辑连接</p>
+</blockquote>
+<h6 id="集中式目录">集中式目录</h6>
+<p>在客户端上线时向服务器做注册，可以为其它客户端服务，下线时向服务器做报告</p>
+<h6 id="完全分布式">完全分布式</h6>
+<p>peer之间以图的结构连接，需要服务时，向邻居发出查询，如果没有，则再向邻居发出查询</p>
+<h6 id="混合式">混合式</h6>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>每个对等方要么是一个组长，要么隶属于一个组长</p>
+<ul class="lvl-2">
+<li class="lvl-6">对等方与其组长之间有TCP连接</li>
+<li class="lvl-6">组长之间有TCP连接</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>组长之间以分布式连接，组长与组员之间以集中式连接</p>
+</li>
+<li class="lvl-2">
+<p>组长追踪其所有孩子的内容</p>
+</li>
+<li class="lvl-2">
+<p>组长与其它组长联系</p>
+<ul class="lvl-2">
+<li class="lvl-6">转发查询到其它组长</li>
+<li class="lvl-6">获得其它组长的数据拷贝</li>
+</ul>
+</li>
+</ul>
+<h5 id="DHT（结构化）P2P">DHT（结构化）P2P</h5>
+<blockquote>
+<p>Peer之间由某种结构（树或者环等）组成连接</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

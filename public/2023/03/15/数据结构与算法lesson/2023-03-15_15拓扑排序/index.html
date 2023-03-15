@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>15拓扑排序 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>15拓扑排序</h1>
+    </header>
+
+    <section>
+      <h2 id="拓扑排序">拓扑排序</h2>
+<h4 id="基础概念">基础概念</h4>
+<span id="more"></span>
+<blockquote>
+<p>有向无环图：有向图且无环</p>
+<p>活动：在一个表示工程的有向图中，顶点表示活动，边表示活动之间的优先级关系</p>
+<p>AOV网：描述“顶点表示活动，边表示活动之间的优先级关系”的图</p>
+<p>拓扑序列：一个具有n个顶点的有向图，只要满足vi到vj有路径且vi在vj之前，则称之为拓扑序列</p>
+<p>拓扑排序：从有向图中每次选出一个没有前驱的结点，输出（放入序列中），并删除有关的弧</p>
+</blockquote>
+<h4 id="步骤">步骤</h4>
+<blockquote>
+<p>需要一个图，使用邻接表来存储，附带一个矩阵来存储每个结点的入度（如图）</p>
+</blockquote>
+<p><img src="picture/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt=""></p>
+<blockquote>
+<p>为了减少循环次数，使用栈来辅助决策</p>
+<p>每次循环，都先把入度为0的结点入栈，在一个一个出栈过程中更新其余结点的入度，更新过程中出现了入度为0的结点就入栈</p>
+</blockquote>
+<h4 id="代码实现">代码实现</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> OK 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ERROR 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MVNum 100</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> Status;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> VerTexType;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> OtherInfo;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建栈 </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span> &#123;</span></span><br><span class="line">	<span class="type">int</span> data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span>* <span class="title">next</span>;</span></span><br><span class="line">&#125;StackNode, * StackList;</span><br><span class="line"><span class="comment">//出栈函数 </span></span><br><span class="line">StackList <span class="title function_">Pop</span><span class="params">(StackList S, <span class="type">int</span>* e)</span></span><br><span class="line">&#123;</span><br><span class="line">	StackList p;</span><br><span class="line">	p = S;</span><br><span class="line">	<span class="keyword">if</span> (!p)</span><br><span class="line">		<span class="keyword">return</span> ERROR;</span><br><span class="line">	*e = p-&gt;data;</span><br><span class="line">	S = S-&gt;next;</span><br><span class="line">	<span class="built_in">free</span>(p);</span><br><span class="line">	<span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//入栈函数： </span></span><br><span class="line">StackList <span class="title function_">Push</span><span class="params">(StackList S, <span class="type">int</span> e)</span></span><br><span class="line">&#123;</span><br><span class="line">	StackList p;</span><br><span class="line">	p = (StackNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(StackNode));</span><br><span class="line">	p-&gt;data = e;</span><br><span class="line">	p-&gt;next = S;</span><br><span class="line">	S = p;</span><br><span class="line">	<span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//边结点 </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span> &#123;</span>    <span class="comment">//链表结点</span></span><br><span class="line">	<span class="type">int</span> adjvex;           <span class="comment">//邻接表创建无向网的实现</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span>* <span class="title">nextarc</span>;</span>    <span class="comment">//指向下一条边的指针</span></span><br><span class="line">	OtherInfo info;       <span class="comment">//和边相关的信息</span></span><br><span class="line">&#125;ArcNode;</span><br><span class="line"></span><br><span class="line"><span class="comment">//顶点信息 </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VNode</span> &#123;</span>   <span class="comment">//头结点</span></span><br><span class="line">	VerTexType data;   <span class="comment">//顶点信息</span></span><br><span class="line">	ArcNode* firstarc;<span class="comment">//指向第一条依附该顶点的边的指针</span></span><br><span class="line">&#125;VNode, AdjList[MVNum];<span class="comment">//AdjList 表示邻接表类型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">	AdjList vertices;     <span class="comment">//邻接表头结点数组</span></span><br><span class="line">	<span class="type">int</span> vexnum, arcnum;   <span class="comment">//图的顶点数和弧数</span></span><br><span class="line">&#125;ALGraph;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> indegree[<span class="number">100</span>] = &#123; <span class="number">0</span> &#125;;<span class="comment">//结点入度的个数</span></span><br><span class="line"><span class="comment">//这里大家自行解决入度的问题 你可以创建图的时候直接创建相对应的数组</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TopoSort</span><span class="params">(ALGraph G, <span class="type">int</span>* topo)</span></span><br><span class="line">&#123;</span><br><span class="line">	StackList S = <span class="literal">NULL</span>;</span><br><span class="line">	ArcNode* p;</span><br><span class="line">	<span class="comment">//先检查所有入度为0的结点并且入栈</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; G.vexnum; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!indegree[i]) &#123;</span><br><span class="line">			S = Push(S, i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> m = <span class="number">0</span>;<span class="comment">//记录拓扑序列的个数 </span></span><br><span class="line">	<span class="type">int</span> index = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (S)</span><br><span class="line">	&#123;</span><br><span class="line">		S = Pop(S, &amp;index);</span><br><span class="line">		topo[m] = index;</span><br><span class="line">		m++;</span><br><span class="line">		<span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> k = p-&gt;adjvex;</span><br><span class="line">			indegree[k]--;</span><br><span class="line">			<span class="keyword">if</span> (indegree[k] == <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				S = Push(S, k);</span><br><span class="line">			&#125;</span><br><span class="line">			p = p-&gt;nextarc;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	topo[m] = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">if</span> (m &lt; G.vexnum)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//有环</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//输出拓扑序列</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3-实现游戏人物属性显示 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3-实现游戏人物属性显示</h1>
+    </header>
+
+    <section>
+      <h2 id="实现游戏人物属性显示">实现游戏人物属性显示</h2>
+<h4 id="1-OpenProcess函数">1.OpenProcess函数</h4>
+<span id="more"></span>
+<blockquote>
+<p>获取某个进程的权限</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">HANDLE</span></span><br><span class="line"><span class="function">WINAPI</span></span><br><span class="line"><span class="function"><span class="title">OpenProcess</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ DWORD dwDesiredAccess,		<span class="comment">//读取权限</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ BOOL bInheritHandle,		<span class="comment">//是否继承</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ DWORD dwProcessId			<span class="comment">//想要读取的PID</span></span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//example</span></span><br><span class="line">HANDLE hProcess = <span class="built_in">OpenProcess</span>(PROCESS_ALL_ACCESS,FALSE,Pid)</span><br></pre></td></tr></table></figure>
+<h4 id="2-ReadProcessMemory函数">2.ReadProcessMemory函数</h4>
+<blockquote>
+<p>获取某个进程的内存</p>
+</blockquote>
+<p>返回值：</p>
+<p>TRUE	成功</p>
+<p>FALSE	失败</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BOOL</span></span><br><span class="line"><span class="function">WINAPI</span></span><br><span class="line"><span class="function"><span class="title">ReadProcessMemory</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ HANDLE hProcess,				<span class="comment">//要读取的句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ LPCVOID lpBaseAddress,			<span class="comment">//要读取的地址</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _Out_writes_bytes_to_(nSize,*lpNumberOfBytesRead) LPVOID lpBuffer,		<span class="comment">//指向接收数据的缓冲区</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ SIZE_T nSize,					<span class="comment">//读取大小</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _Out_opt_ SIZE_T* lpNumberOfBytesRead		<span class="comment">//接收到的数据大小（不需要就置NULL）</span></span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>;</span><br></pre></td></tr></table></figure>
+<h4 id="3-实际应用">3.实际应用</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	DWORD Pid;</span><br><span class="line">	SIZE_T readByte;</span><br><span class="line">linput:</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;Please input the game ID:&quot;</span>;</span><br><span class="line">	cin &gt;&gt; Pid;</span><br><span class="line">	HANDLE hProcess = <span class="built_in">OpenProcess</span>(PROCESS_ALL_ACCESS,FALSE,Pid);</span><br><span class="line">	<span class="type">long</span> hp&#123;&#125;;</span><br><span class="line">	<span class="keyword">if</span> (hProcess == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;打开失败&quot;</span>;</span><br><span class="line">		<span class="keyword">goto</span> linput;</span><br><span class="line">	&#125;</span><br><span class="line">	BOOL bRet = <span class="built_in">ReadProcessMemory</span>(hProcess, (LPCVOID)<span class="number">0x4CEF18</span>, (LPVOID)&amp;hp, <span class="built_in">sizeof</span>(hp), &amp;readByte);</span><br><span class="line">	<span class="keyword">if</span> (bRet)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;HP:&quot;</span> &lt;&lt; hp &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;游戏内存读取失败&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

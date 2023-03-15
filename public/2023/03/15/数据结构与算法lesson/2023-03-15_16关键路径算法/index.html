@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>16关键路径算法 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>16关键路径算法</h1>
+    </header>
+
+    <section>
+      <h2 id="关键路径算法（运用拓扑排序）">关键路径算法（运用拓扑排序）</h2>
+<h4 id="概念">概念</h4>
+<span id="more"></span>
+<blockquote>
+<p>AOV网：顶点表示活动</p>
+<p>AOE网：边来表示活动（带权有向无环图）顶点代表事件，权值表示活动持续的时间</p>
+<p>AOE网常常应用于工程，所以有一个开始和结束的顶点（源点和汇点）（入度/出度为0）</p>
+</blockquote>
+<p><img src="picture/%E5%85%B3%E9%94%AE%E8%B7%AF%E5%BE%84%E6%A6%82%E5%BF%B5%E5%9B%BE.png" alt=""></p>
+<blockquote>
+<p>关键路径：从源点到汇点路径最长的路径（活动的集合，所描述的是时间）</p>
+<p>例如：西天取经要等到唐僧到西天才能结束</p>
+<p>1.事件最早发生时间ETV（顶点最早发生时间）：从源点开始计算至当前事件所需时间权值之和的最小值</p>
+<p>2.事件最晚发生时间：从如果超出这个时间，就会耽误整个工期。（关键路径时间权值之和）-（从汇点回溯到当前事件所需时间权值之和）</p>
+<p>**注：**如果“事件最早发生时间”=“事件最晚发生时间”，则该事件是关键路径上的事件结点</p>
+<p>3.活动的最早开工时间：与前端事件最早发生时间一致</p>
+<p>4.活动的最晚开工时间：=后端事件的最晚发生时间-活动所需时间</p>
+</blockquote>
+<h4 id="实现思路——运用拓扑排序">实现思路——运用拓扑排序</h4>
+<blockquote>
+<p>建立一个邻接表来表示图</p>
+<p>建立关键路径上的ETV数组（初始化为0）</p>
+<p>建立关键路径上的LTV数组（初始化为汇点总时间）</p>
+<p>建立栈（入度为0的入栈，同时以该结点为入度的结点入度-1）</p>
+</blockquote>
+<p><img src="picture/%E5%85%B3%E9%94%AE%E8%B7%AF%E5%BE%84%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E5%9B%BE.png" alt=""></p>
+<blockquote>
+<p>从源点（入度为0）入栈开始</p>
+<p>进行拓扑排序</p>
+<p>（增加步骤：在结点入栈时计算对应结点ETV）</p>
+<p>（增加步骤：在结点出栈时再进入另一个栈，直至栈满）</p>
+<p>ETV数组由此计算出关键路径所需的总时间（即汇点所对应的值），中间结点只是承接来辅助计算</p>
+<p>在结点再次入栈后，进行出栈操作，出栈时遍历该结点的下一个结点，根据下一个结点的ETV-权值得到当前结点的LTV</p>
+</blockquote>
+<blockquote>
+<p>计算ETE和LTE数组：</p>
+<p>ETE=ETV</p>
+<p>LTE=活动下一个事件的LTE-活动权值</p>
+</blockquote>
+<blockquote>
+<p>如果ETE=LTE，则是关键路径</p>
+</blockquote>
+<h4 id="代码实现">代码实现</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> OK 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ERROR 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MVNum 100</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> Status;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> VerTexType;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">char</span> OtherInfo;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建栈 </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span> &#123;</span></span><br><span class="line">	<span class="type">int</span> data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span>* <span class="title">next</span>;</span></span><br><span class="line">&#125;StackNode, * StackList;</span><br><span class="line"><span class="comment">//出栈函数 </span></span><br><span class="line">StackList <span class="title function_">Pop</span><span class="params">(StackList S, <span class="type">int</span>* e)</span></span><br><span class="line">&#123;</span><br><span class="line">	StackList p;</span><br><span class="line">	p = S;</span><br><span class="line">	<span class="keyword">if</span> (!p)</span><br><span class="line">		<span class="keyword">return</span> ERROR;</span><br><span class="line">	*e = p-&gt;data;</span><br><span class="line">	S = S-&gt;next;</span><br><span class="line">	<span class="built_in">free</span>(p);</span><br><span class="line">	<span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//入栈函数： </span></span><br><span class="line">StackList <span class="title function_">Push</span><span class="params">(StackList S, <span class="type">int</span> e)</span></span><br><span class="line">&#123;</span><br><span class="line">	StackList p;</span><br><span class="line">	p = (StackNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(StackNode));</span><br><span class="line">	p-&gt;data = e;</span><br><span class="line">	p-&gt;next = S;</span><br><span class="line">	S = p;</span><br><span class="line">	<span class="keyword">return</span> S;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//边结点 </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span> &#123;</span>    <span class="comment">//链表结点</span></span><br><span class="line">	<span class="type">int</span> adjvex;           <span class="comment">//邻接表创建无向网的实现</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ArcNode</span>* <span class="title">nextarc</span>;</span>    <span class="comment">//指向下一条边的指针</span></span><br><span class="line">	OtherInfo info;       <span class="comment">//和边相关的信息</span></span><br><span class="line">&#125;ArcNode;</span><br><span class="line"></span><br><span class="line"><span class="comment">//顶点信息 </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VNode</span> &#123;</span>   <span class="comment">//头结点</span></span><br><span class="line">	VerTexType data;   <span class="comment">//顶点信息</span></span><br><span class="line">	ArcNode* firstarc;<span class="comment">//指向第一条依附该顶点的边的指针</span></span><br><span class="line">&#125;VNode, AdjList[MVNum];<span class="comment">//AdjList 表示邻接表类型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">	AdjList vertices;     <span class="comment">//邻接表头结点数组</span></span><br><span class="line">	<span class="type">int</span> vexnum, arcnum;   <span class="comment">//图的顶点数和弧数</span></span><br><span class="line">&#125;ALGraph;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> indegree[<span class="number">100</span>] = &#123; <span class="number">0</span> &#125;;<span class="comment">//结点入度的个数</span></span><br><span class="line"><span class="comment">//这里大家自行解决入度的问题 你可以创建图的时候直接创建相对应的数组</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">TopoSort</span><span class="params">(ALGraph G, <span class="type">int</span>* topo,<span class="type">int</span> *etv)</span></span><br><span class="line">&#123;</span><br><span class="line">	StackList S = <span class="literal">NULL</span>;</span><br><span class="line">	ArcNode* p;</span><br><span class="line">	<span class="comment">//先检查所有入度为0的结点并且入栈</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; G.vexnum; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!indegree[i]) &#123;</span><br><span class="line">			S = Push(S, i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> m = <span class="number">0</span>;<span class="comment">//记录拓扑序列的个数 </span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; G.vexnum; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		etv[i] = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> index = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (S)</span><br><span class="line">	&#123;</span><br><span class="line">		S = Pop(S, &amp;index);</span><br><span class="line">		<span class="comment">//紧接着跟一个进栈</span></span><br><span class="line">		topo[m] = index;</span><br><span class="line">		m++;</span><br><span class="line">		<span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> k = p-&gt;adjvex;</span><br><span class="line">			indegree[k]--;</span><br><span class="line">			<span class="keyword">if</span> (indegree[k] == <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				S = Push(S, k);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//求事件的最早发生时间</span></span><br><span class="line">			<span class="keyword">if</span> (etv[index] + (p-&gt;info) &gt; etv[k])</span><br><span class="line">			&#123;</span><br><span class="line">				etv[k] = etv[index] + (p-&gt;info);</span><br><span class="line">			&#125;</span><br><span class="line">			p = p-&gt;nextarc;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	topo[m] = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">if</span> (m &lt; G.vexnum)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//有环</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//输出拓扑序列</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">CriticalPath</span><span class="params">(ALGraph G, <span class="type">int</span>* etv, <span class="type">int</span>* ltv)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> ete, lte;<span class="comment">//活动的最早和最晚</span></span><br><span class="line">	ArcNode* p;</span><br><span class="line">	<span class="type">int</span> topo[<span class="number">99</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="keyword">if</span> (TopoSort(G,topo,etv))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; G.vexnum; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			ltv[i] = etv[G.vexnum - <span class="number">1</span>];<span class="comment">//初始化ltv</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> count = G.vexnum;</span><br><span class="line">	<span class="keyword">while</span> (count)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> gettopo = topo[--count];<span class="comment">//将拓扑序列从后往前拿出来</span></span><br><span class="line">		<span class="keyword">for</span> (p = G.vertices[gettopo].firstarc; p ;p = p-&gt;nextarc)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> k = p-&gt;adjvex;</span><br><span class="line">			<span class="keyword">if</span> (ltv[k] - (p-&gt;info) &lt; ltv[gettopo])</span><br><span class="line">			&#123;</span><br><span class="line">				ltv[gettopo] = ltv[k] - (p-&gt;info);<span class="comment">//求事件的最晚</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//求活动的最早和最晚</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; G.vexnum; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (p = G.vertices[i].firstarc; p; p = p-&gt;nextarc)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> k = p-&gt;adjvex;</span><br><span class="line">			ete = etv[i];</span><br><span class="line">			lte = ltv[k] - p-&gt;info;</span><br><span class="line">			<span class="keyword">if</span> (ete == lte)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">//输出相对应的点和边 加入到最短路径当中</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span>[n] a;</span><br><span class="line">	<span class="type">int</span> count = <span class="number">0</span>;<span class="comment">//下标</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">insert</span><span class="params">(<span class="type">int</span> val)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//摊还分析</span></span><br><span class="line">	<span class="comment">//每进行一次O(n)的操作 都会跟着N-1次的O(1)</span></span><br><span class="line">	<span class="comment">//O(1)</span></span><br><span class="line">	<span class="keyword">if</span> (count == a.length)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span>  i = <span class="number">0</span>; i &lt; a.length; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			sum = sum + a[i];</span><br><span class="line">		&#125;</span><br><span class="line">		a[<span class="number">0</span>] = sum;</span><br><span class="line">		count = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	a[count] = val;</span><br><span class="line">	count++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span>[] a, <span class="type">int</span> n, <span class="type">int</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> pos;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (a[i] == x)</span><br><span class="line">		&#123;</span><br><span class="line">			pos = i;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

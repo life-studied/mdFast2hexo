@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>4-2IP Network Protocol | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>4-2IP Network Protocol</h1>
+    </header>
+
+    <section>
+      <h2 id="4-2IP-Network-Protocol">4.2IP Network Protocol</h2>
+<h4 id="4-2-1数据报格式">4.2.1数据报格式</h4>
+<span id="more"></span>
+<blockquote>
+<p>网络层分组称为数据报。</p>
+</blockquote>
+<h5 id="1-IPv4格式">1.IPv4格式</h5>
+<blockquote>
+<p>格式如下图：</p>
+</blockquote>
+<p><img src="picture/IPv4%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F.png" alt=""></p>
+<p><strong>解释：</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>**版本号：**4bit，规定了IP协议版本。</p>
+</li>
+<li class="lvl-2">
+<p>**首部长度：**4bit，标注实际数据从哪里开始，即首部的长度。（由于IP数据报允许包含可变数量的选项）</p>
+<ul class="lvl-2">
+<li class="lvl-6">如果没有选项，则一般的数据报首部是20字节的长度</li>
+<li class="lvl-6">最大首部长度为60字节</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>**服务类型：**8bit，用于将一些不同类型的IP数据报区分开来（低延迟、高吞吐量、可靠性等）。</p>
+</li>
+<li class="lvl-2">
+<p>**数据报长度：**16bit，表示IP数据报的总长度（首部+数据），以字节为单位。理论最大值为65535。</p>
+</li>
+<li class="lvl-2">
+<p>**标识、标志与片偏移：**16+3+13bit，这三个字段与IP分片有关。</p>
+</li>
+<li class="lvl-2">
+<p>**寿命：**8bit，TTL字段保证数据报不会永远在网络中循环。每经过一台路由器，该字段的值减1。</p>
+<ul class="lvl-2">
+<li class="lvl-6">最大寿命255</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>**协议：**8bit，用于指示IP数据报的数据部分交付给哪个运输层协议。</p>
+<ul class="lvl-2">
+<li class="lvl-6">6代表TCP</li>
+<li class="lvl-6">17代表UDP</li>
+<li class="lvl-6">1代表ICMP</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>**首部检验和：**16bit，对首部中每2字节进行加和，最终结果取反。</p>
+<ul class="lvl-2">
+<li class="lvl-6">注意：每经过一次路由器都要重算，因为TTL字段变化了。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>**源IP和目标IP地址：**各占32bit。</p>
+</li>
+<li class="lvl-2">
+<p>**选项：**允许IP首部被扩展。该字段用于一些可选的报头设置，主要用于测试、调试和安全的目的。这些选项包括严格源路由（数据报必须经过指定的路由）、网际时间戳（经过每个路由器时的时间戳记录）和安全限制。</p>
+<ul class="lvl-2">
+<li class="lvl-6">使用0填充末尾保证报头长度是32位的整数倍。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>**数据：**用于存储TCP、UDP、IMCP等协议的数据。</p>
+</li>
+</ul>
+<h5 id="2-IP数据报分片">2.IP数据报分片</h5>
+<blockquote>
+<p>底层链路层协议可能不能发送过大的IP数据报，因此需要对数据报进行分片。</p>
+</blockquote>
+<h4 id="4-2-2IPv4编址">4.2.2IPv4编址</h4>
+<blockquote>
+<p>IP地址具有32位，形式为a.b.c.d/x。其中a，b，c，d代表IP地址，/x代表子网掩码的位数。</p>
+</blockquote>
+<h5 id="1-IP地址的分类">1.IP地址的分类</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>a类：以0开头，后面跟着7为作为网络地址，剩下的24位作为主机地址</p>
+</li>
+<li class="lvl-2">
+<p>b类：以10开头，后面跟着14位作为网络地址，剩下的16位作为主机地址</p>
+</li>
+<li class="lvl-2">
+<p>c类：以110开头，后面跟着21位作为网络地址，剩下的8位作为主机地址</p>
+</li>
+<li class="lvl-2">
+<p>d类：广播地址</p>
+</li>
+<li class="lvl-2">
+<p>e类：保留地址</p>
+</li>
+</ul>
+<h5 id="2-特殊地址">2.特殊地址</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>网络部分全0：表示当前网络</p>
+</li>
+<li class="lvl-2">
+<p>主机部分全0：表示当前主机</p>
+</li>
+<li class="lvl-2">
+<p>主机部分全1：向网络的所有主机广播</p>
+</li>
+<li class="lvl-2">
+<p>127.x.x.x：回环地址，从本机应用层下至IP层就回来了。用于测试</p>
+</li>
+</ul>
+<h5 id="3-内网专用IP地址">3.内网专用IP地址</h5>
+<blockquote>
+<p>一些地址在每一个内网中都有，但不会出现在公网里。路由器不对目标地址是专用地址的分组进行转发。</p>
+</blockquote>
+<p>a类：10.0.0.0~10.255.255.255						/8</p>
+<p>b类：172.16.0.0~172.31.255.255					/16</p>
+<p>c类：192.168.0.0~192.168.255.255				/24</p>
+<h5 id="4-CIDR">4.CIDR</h5>
+<blockquote>
+<p>将子网一般化，允许出现任意位数的网络地址。其实质是在大网络下划出子网。因此需要子网掩码来确认子网的网络地址。（大网络仍然根据a，b，c类划分）</p>
+</blockquote>
+<h5 id="5-DHCP（动态主机配置协议）">5.DHCP（动态主机配置协议）</h5>
+<blockquote>
+<p>用于动态配置主机的IP地址和子网掩码。要求所在网络拥有一个DHCP服务器。</p>
+</blockquote>
+<p><strong>配置过程：</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>主机广播是否存在DHCP服务器</p>
+</li>
+<li class="lvl-2">
+<p>DHCP服务器（可能存在多个）收到并广播推荐的IP地址</p>
+</li>
+<li class="lvl-2">
+<p>主机选择一个DHCP服务器，发送请求报文。（同时配置好了自己的地址）</p>
+</li>
+<li class="lvl-2">
+<p>服务器发送Ack</p>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

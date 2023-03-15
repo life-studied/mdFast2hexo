@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2网络的边缘 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2网络的边缘</h1>
+    </header>
+
+    <section>
+      <h2 id="网络的边缘">网络的边缘</h2>
+<h4 id="1-包含">1.包含</h4>
+<span id="more"></span>
+<blockquote>
+<p>主机</p>
+<p>应用进程（客户端和服务端）</p>
+</blockquote>
+<h4 id="2-模式">2.模式</h4>
+<h5 id="2-1-c-s模式">2.1 c/s模式</h5>
+<blockquote>
+<p>客户/服务器模式，是一种主从模式，主是指服务器，从是指客户端。</p>
+</blockquote>
+<p><strong>弊病：可扩展性差，当请求达到阈值时，服务处理能力断崖式下降。</strong></p>
+<h5 id="2-2-p2p模式">2.2 p2p模式</h5>
+<blockquote>
+<p>对等模式，每个节点在不同会话中担任服务器和客户端两种角色。因此请求资源和服务资源等量增加。</p>
+</blockquote>
+<h4 id="3-面向连接的服务（TCP）">3.面向连接的服务（TCP）</h4>
+<h5 id="3-1目标">3.1目标</h5>
+<blockquote>
+<p>在端系统之间传输数据</p>
+</blockquote>
+<h5 id="3-2握手">3.2握手</h5>
+<blockquote>
+<p>在数据传输之前做好准备。具体表现为两个通信主机之间建立连接状态。</p>
+</blockquote>
+<h5 id="3-3提供服务">3.3提供服务</h5>
+<h6 id="3-3-1可靠">3.3.1可靠</h6>
+<blockquote>
+<p>数据有序，确认与重传</p>
+</blockquote>
+<h6 id="3-3-2流量控制">3.3.2流量控制</h6>
+<blockquote>
+<p>发送方的数据不会淹没接收方。（双方数据处理能力有差别情况下）</p>
+</blockquote>
+<h6 id="3-3-3拥塞控制">3.3.3拥塞控制</h6>
+<blockquote>
+<p>网络核心（路由器节点）拥塞时，要求发送方降低发送速率。</p>
+</blockquote>
+<h5 id="3-4应用">3.4应用</h5>
+<blockquote>
+<p>Web：HTTP</p>
+<p>文件传送：FTP</p>
+<p>远程登录：Telnet</p>
+<p>email：SMTP</p>
+</blockquote>
+<h4 id="4-（UDP）">4.（UDP）</h4>
+<h5 id="4-1无连接服务">4.1无连接服务</h5>
+<blockquote>
+<p>无连接：没有握手</p>
+</blockquote>
+<h5 id="4-2特性">4.2特性</h5>
+<blockquote>
+<p>无连接</p>
+<p>不可靠</p>
+<p>无流量控制</p>
+<p>无拥塞控制</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

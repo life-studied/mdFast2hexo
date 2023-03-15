@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>4代理模式 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>4代理模式</h1>
+    </header>
+
+    <section>
+      <h2 id="代理模式">代理模式</h2>
+<h4 id="代理模式的定义与特点">代理模式的定义与特点</h4>
+<span id="more"></span>
+<p>代理模式的定义：由于某些原因需要给某对象提供一个代理以控制对该对象的访问。这时，访问对象不适合或者不能直接引用目标对象，代理对象作为访问对象和目标对象之间的中介。</p>
+<p>代理模式的主要优点有：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>代理模式在客户端与目标对象之间起到一个中介作用和保护目标对象的作用；</p>
+</li>
+<li class="lvl-2">
+<p>代理对象可以扩展目标对象的功能；</p>
+</li>
+<li class="lvl-2">
+<p>代理模式能将客户端与目标对象分离，在一定程度上降低了系统的耦合度，增加了程序的可扩展性</p>
+</li>
+</ul>
+<p>其主要缺点是：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>代理模式会造成系统设计中类的数量增加</p>
+</li>
+<li class="lvl-2">
+<p>在客户端和目标对象之间增加一个代理对象，会造成请求处理速度变慢；</p>
+</li>
+<li class="lvl-2">
+<p>增加了系统的复杂度；</p>
+</li>
+</ul>
+<blockquote>
+<p>那么如何解决以上提到的缺点呢？答案是可以使用动态代理方式</p>
+</blockquote>
+<h4 id="代理模式的结构与实现">代理模式的结构与实现</h4>
+<p>代理模式的结构比较简单，主要是通过定义一个继承抽象主题的代理来包含真实主题，从而实现对真实主题的访问，下面来分析其基本结构和实现方法。</p>
+<h5 id="1-模式的结构">1. 模式的结构</h5>
+<blockquote>
+<p>代理模式的主要角色如下。</p>
+</blockquote>
+<ol>
+<li class="lvl-3">
+<p>抽象主题（Subject）类：通过接口或抽象类声明真实主题和代理对象实现的业务方法。</p>
+</li>
+<li class="lvl-3">
+<p>真实主题（Real Subject）类：实现了抽象主题中的具体业务，是代理对象所代表的真实对象，是最终要引用的对象。</p>
+</li>
+<li class="lvl-3">
+<p>代理（Proxy）类：提供了与真实主题相同的接口，其内部含有对真实主题的引用，它可以访问、控制或扩展真实主题的功能。</p>
+</li>
+</ol>
+<p>其结构图如图 1 所示。</p>
+<p><img src="http://c.biancheng.net/uploads/allimg/181115/3-1Q115093011523.gif" alt="代理模式的结构图"></p>
+<blockquote>
+<p>​																	图1 代理模式的结构图</p>
+</blockquote>
+<p>在代码中，一般代理会被理解为代码增强，实际上就是在原代码逻辑前后增加一些代码逻辑，而使调用者无感知。</p>
+<p>根据代理的创建时期，代理模式分为静态代理和动态代理。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>静态：由程序员创建代理类或特定工具自动生成源代码再对其编译，在程序运行前代理类的 .class 文件就已经存在了。</p>
+</li>
+<li class="lvl-2">
+<p>动态：在程序运行时，运用反射机制动态创建而成</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 参考大话设计模式 - 代理模式</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> SAFE_DELETE</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SAFE_DELETE(p) &#123; <span class="keyword">if</span>(p)&#123;delete(p); (p)=NULL;&#125; &#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">// 代理模式</span></span><br><span class="line"><span class="comment">// 抽象类，包含功能接口</span></span><br><span class="line"><span class="comment">// 实现类，继承抽象类，并实现功能</span></span><br><span class="line"><span class="comment">// 代理类，集成抽象类，定义实现类的成员变量，通过实现类的对象，来调用具体实现功能的函数</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">// 该类仅为满足用例，可不存在</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SchoolGirl</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">setname</span><span class="params">(string name)</span> </span>&#123;</span><br><span class="line">		name_ = name;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function">string <span class="title">getname</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> name_;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	string name_;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 礼物接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CGiveGift</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">GiveDolls</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">GiveFollows</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">GiveChocolates</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 追求者类，具体实现了礼物接口</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Pursuit</span> : <span class="keyword">public</span> CGiveGift &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Pursuit</span>(SchoolGirl* schoolgirl) &#123;</span><br><span class="line">		schoolgirl_ = schoolgirl;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">GiveDolls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (schoolgirl_) &#123;</span><br><span class="line">			cout &lt;&lt; <span class="string">&quot;pursuit give dolls to &quot;</span> &lt;&lt; schoolgirl_-&gt;<span class="built_in">getname</span>() &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">GiveFollows</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (schoolgirl_) &#123;</span><br><span class="line">			cout &lt;&lt; <span class="string">&quot;pursuit give follows to &quot;</span> &lt;&lt; schoolgirl_-&gt;<span class="built_in">getname</span>() &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">GiveChocolates</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (schoolgirl_) &#123;</span><br><span class="line">			cout &lt;&lt; <span class="string">&quot;pursuit give chocolates to &quot;</span> &lt;&lt; schoolgirl_-&gt;<span class="built_in">getname</span>() &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	SchoolGirl* schoolgirl_ = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 代理类，内部定义具体实现类的对象，在继承的函数中调用</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Proxy</span> : <span class="keyword">public</span> CGiveGift &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Proxy</span>(SchoolGirl* schoolgirl) &#123;</span><br><span class="line">		pursuit_ = <span class="keyword">new</span> <span class="built_in">Pursuit</span>(schoolgirl);</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	~<span class="built_in">Proxy</span>() &#123;</span><br><span class="line">		<span class="built_in">SAFE_DELETE</span>(pursuit_);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">GiveDolls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (pursuit_) &#123;</span><br><span class="line">			pursuit_-&gt;<span class="built_in">GiveDolls</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">GiveFollows</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (pursuit_) &#123;</span><br><span class="line">			pursuit_-&gt;<span class="built_in">GiveFollows</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">GiveChocolates</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (pursuit_) &#123;</span><br><span class="line">			pursuit_-&gt;<span class="built_in">GiveChocolates</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Pursuit* pursuit_ = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	SchoolGirl* schoolgirl = <span class="keyword">new</span> <span class="built_in">SchoolGirl</span>();</span><br><span class="line">	schoolgirl-&gt;<span class="built_in">setname</span>(<span class="string">&quot;李娇娇&quot;</span>);</span><br><span class="line"> </span><br><span class="line">	<span class="comment">// 代理对象</span></span><br><span class="line">	Proxy* proxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(schoolgirl);</span><br><span class="line">	<span class="comment">// 代理对象中调用具体实现类的对象的实现方法</span></span><br><span class="line">	proxy-&gt;<span class="built_in">GiveDolls</span>();</span><br><span class="line">	proxy-&gt;<span class="built_in">GiveFollows</span>();</span><br><span class="line">	proxy-&gt;<span class="built_in">GiveChocolates</span>();</span><br><span class="line"> </span><br><span class="line">	<span class="built_in">SAFE_DELETE</span>(proxy)</span><br><span class="line">	<span class="built_in">SAFE_DELETE</span>(schoolgirl)</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在这个案例中，代理标志了追求者，追求者标志了被追求者。代理被创建时，追求者被创建。</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

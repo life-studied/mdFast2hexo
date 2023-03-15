@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>x86指令集（汇编语言基础） | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>x86指令集（汇编语言基础）</h1>
+    </header>
+
+    <section>
+      <h2 id="x86指令集（汇编语言基础）">x86指令集（汇编语言基础）</h2>
+<h4 id="指令格式：">指令格式：</h4>
+<span id="more"></span>
+<blockquote>
+<p>操作类型 结果去向，数据来源</p>
+</blockquote>
+<p>注意：数据来源可以有多个，结果去向只能有一个</p>
+<p><img src="picture/x86%E6%8C%87%E4%BB%A4%E4%B8%AD%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E8%AE%BF%E5%AD%98%E4%BB%A3%E5%8F%B7.png" alt=""></p>
+<blockquote>
+<p>数据来源与去向中，中括号是指访存（访问内存），中括号内的内容表示访问内存的地址（这个内存包括寄存器）</p>
+</blockquote>
+<p>格式有：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>常数</p>
+</li>
+<li class="lvl-2">
+<p>寄存器</p>
+</li>
+<li class="lvl-2">
+<p>寄存器+常数</p>
+</li>
+</ul>
+<p>（由此得出，寄存器内容就是指针的内容，常数就是偏移量）</p>
+<blockquote>
+<p>注意：x86规定：一条指令集中，最多只能有一个访存，剩下的只能是寄存器</p>
+<p>如果需要将内存中的数据移到另一个内存位置，需要用一个寄存器中转。</p>
+</blockquote>
+<h4 id="指令编码">指令编码</h4>
+<blockquote>
+<p>指令前端是操作码，长度为1-3个字节</p>
+<p>因此，操作一样的指令，数据部分可能不同，但第一个字节（指令的最小长度）一定一样</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

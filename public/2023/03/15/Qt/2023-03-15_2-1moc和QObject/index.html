@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2-1moc和QObject | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2-1moc和QObject</h1>
+    </header>
+
+    <section>
+      <h2 id="moc和QObject">moc和QObject</h2>
+<h4 id="元对象系统（meta-object-system）">元对象系统（meta-object-system）</h4>
+<span id="more"></span>
+<blockquote>
+<p>Qt对标准C++进行了扩展，引入了一些新的概念和功能</p>
+</blockquote>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>QObject类是所有使用元对象系统的类的基类</p>
+</li>
+<li class="lvl-2">
+<p>QObject派生的类在类的private部分声明Q_OBJEDT宏</p>
+<ul class="lvl-2">
+<li class="lvl-6">MOC才能识别并进行预处理</li>
+<li class="lvl-6">可以不用，同样能进行自动的内存管理，但最好使用</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>MOC为每个QObject的子类提供必要的代码</p>
+</li>
+</ul>
+<blockquote>
+<p>MOC（元对象编译器）是一个预处理器，将Qt的特性程序转换为标准C<ins>程序，再进行C</ins>的编译</p>
+</blockquote>
+<p><strong>注意</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>QObject不支持拷贝</p>
+<ul class="lvl-2">
+<li class="lvl-6">在基类中，将拷贝构造函数和赋值运算符重载函数设置为私有，并使用了Q_DISABLE_COPY()的宏</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>QObject对象以树结构组织自己</p>
+<ul class="lvl-2">
+<li class="lvl-6">当以另一个对象作为父对象创建QObject（即将基类初始化为该对象），这个对象会自动将自身添加到父对象的子对象列表中</li>
+<li class="lvl-6">父对象删除时，子对象自动被删除</li>
+<li class="lvl-6">可以使用findChild()和findChildren()按名称和可选类型查找对象</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;QCoreApplication&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> : <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>(QObject* parent = <span class="literal">nullptr</span>);</span><br><span class="line">    ~<span class="built_in">A</span>()&#123;<span class="built_in">qDebug</span>()&lt;&lt;<span class="keyword">this</span>&lt;&lt;<span class="string">&quot;被销毁&quot;</span>; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">A::<span class="built_in">A</span>(QObject* parent) : <span class="built_in">QObject</span>(parent)	<span class="comment">//父对象</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">qDebug</span>()&lt;&lt;<span class="keyword">this</span>&lt;&lt;<span class="string">&quot;被构造&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A objA;</span><br><span class="line">    A* objA2 = <span class="keyword">new</span> <span class="built_in">A</span>(&amp;objA);		<span class="comment">//objA2是objA的子对象</span></span><br><span class="line">    <span class="built_in">qDebug</span>()&lt;&lt;<span class="string">&quot;objA2&quot;</span>&lt;&lt;objA2;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;						<span class="comment">//程序结束，两个对象同时被销毁（父节点被回收，子节点再被回收)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

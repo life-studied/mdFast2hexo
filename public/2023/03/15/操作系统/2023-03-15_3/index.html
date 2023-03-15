@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3</h1>
+    </header>
+
+    <section>
+      <h4 id="线程">线程</h4>
+<blockquote>
+<p>操作系统能够进行运算调度的最小单位。它被包含在进程中，是进程中的实际运作单位。</p>
+</blockquote>
+<span id="more"></span>
+<h5 id="地址空间">地址空间</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>在一个非常简单的操作系统中，仅仅有一个应用程序运行在内存中。为了运行第二个应用程序，需要把第一个应用程序移除才能把第二个应用程序装入内存</p>
+</li>
+<li class="lvl-2">
+<p>复杂一些的操作系统会允许多个应用程序同时装入内存中运行。为了防止应用程序之间相互干扰，需要某种保护机制</p>
+</li>
+</ul>
+<h5 id="虚拟内存">虚拟内存</h5>
+<h4 id="文件">文件</h4>
+<blockquote>
+<p>所有io设备都以文件的形式提供</p>
+</blockquote>
+<h5 id="特殊文件">特殊文件</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>提供特殊文件时为了使IO设备看起来像文件一样</p>
+</li>
+<li class="lvl-2">
+<p>块特殊文件</p>
+<ul class="lvl-2">
+<li class="lvl-6">磁盘等</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>字特殊文件</p>
+<ul class="lvl-2">
+<li class="lvl-6">打印机、调制解调器等</li>
+</ul>
+</li>
+</ul>
+<h5 id="管道">管道</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>是一种虚文件，用于两个进程之间通信</p>
+</li>
+</ul>
+<h4 id="并发和并行">并发和并行</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>并行指两个或多个事件在同一时刻发生</p>
+</li>
+<li class="lvl-2">
+<p>并发指两个或多个事件在同一时间间隔内发生</p>
+</li>
+</ul>
+<h4 id="系统调用">系统调用</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>操作系统提供两个功能</p>
+<ul class="lvl-2">
+<li class="lvl-6">
+<p>为用户提供应用程序抽象</p>
+</li>
+<li class="lvl-6">
+<p>管理计算机资源</p>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>只有系统调用才能进入内核态，过程调用不能</p>
+</li>
+</ul>
+<h5 id="基于进程原理">基于进程原理</h5>
+<h5 id="基于文件管理">基于文件管理</h5>
+<h5 id="基于目录管理">基于目录管理</h5>
+<h4 id="操作系统结构">操作系统结构</h4>
+<h5 id="单体结构">单体结构</h5>
+<p>主程序调用服务程序，服务程序辅助实用程序调用</p>
+<p><strong>优点</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>调用任意程序都非常高效</p>
+</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>如果发生故障，很容易崩溃</p>
+</li>
+</ul>
+<h5 id="分层结构">分层结构</h5>
+<p>使用层来隔离不同的功能，每一层只能与上一层和下一层沟通</p>
+<h5 id="微内核">微内核</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>尽可能减少内核态的模块</p>
+</li>
+<li class="lvl-2">
+<p>将多出的功能放在用户区</p>
+</li>
+</ul>
+<h5 id="客户服务器模式">客户服务器模式</h5>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

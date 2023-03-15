@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2模型描述 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2模型描述</h1>
+    </header>
+
+    <section>
+      <h2 id="模型描述">模型描述</h2>
+<h4 id="一些符号">一些符号</h4>
+<span id="more"></span>
+<blockquote>
+<p>m	表示训练集的数量</p>
+<p>x	输入的值</p>
+<p>y	输出的值</p>
+<p>(x,y)	一个训练样本</p>
+<p>(x(i),y(i))	第i个训练样本</p>
+</blockquote>
+<p><img src="picture/%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.png" alt="监督学习模型"></p>
+<h4 id="一元函数">一元函数</h4>
+<h5 id="最小化问题">最小化问题</h5>
+<blockquote>
+<p>找出(h(x)-y)^2的最小值</p>
+</blockquote>
+<p><img src="picture/%E6%9C%80%E5%B0%8F%E5%8C%96%E9%97%AE%E9%A2%98%E5%85%AC%E5%BC%8F.png" alt=""></p>
+<h5 id="代价函数-平方误差函数">代价函数(平方误差函数)</h5>
+<blockquote>
+<p>数学定义</p>
+</blockquote>
+<p><img src="picture/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0.png" alt=""></p>
+<h5 id="梯度下降法">梯度下降法</h5>
+<blockquote>
+<p>步骤</p>
+</blockquote>
+<p><img src="picture/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E7%9A%84%E6%8F%8F%E8%BF%B0.png" alt=""></p>
+<blockquote>
+<p>数学定义</p>
+</blockquote>
+<p><img src="picture/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E7%9A%84%E6%95%B0%E5%AD%A6%E5%AE%9A%E4%B9%89.png" alt=""></p>
+<blockquote>
+<p>a：学习效率（百分比）（本质是每次梯度下降的跨度）</p>
+<p>注：导数随着接近局部最小值减少，从而自动减少步幅</p>
+</blockquote>
+<p><img src="picture/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E7%9A%84%E6%95%B0%E5%AD%A6%E5%AE%9E%E9%99%85%E7%AE%97%E6%B3%95.png" alt=""></p>
+<blockquote>
+<p>这是在求完偏导之后的结果</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

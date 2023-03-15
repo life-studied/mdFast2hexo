@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>32-文件操作 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>32-文件操作</h1>
+    </header>
+
+    <section>
+      <h2 id="文件操作">文件操作</h2>
+<blockquote>
+<p>C语言和C++都提供语言级别的读取文件的操作。Windows操作系统也提供API支持。</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="1-C语言">1.C语言</h4>
+<h5 id="1-如何获取文件大小">1.如何获取文件大小</h5>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">FILE* fp = fopen(<span class="string">&quot;1.txt&quot;</span>,<span class="string">&quot;r&quot;</span>);</span><br><span class="line">fseek(fp,<span class="number">0</span>,SEEK_END);				<span class="comment">//表示文件指针移动到最后（相对最后的偏移量为0）</span></span><br><span class="line"><span class="type">int</span> iLen = ftell(fp);				<span class="comment">//返回文件指针的当前位置，在该情况下是文件大小</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-读写文件函数">2.读写文件函数</h5>
+<blockquote>
+<p>写文件</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">size_t</span> __cdecl <span class="title function_">fwrite</span><span class="params">(</span></span><br><span class="line"><span class="params">    _In_reads_bytes_(_ElementSize * _ElementCount) <span class="type">void</span> <span class="type">const</span>* _Buffer,	<span class="comment">//写入数据的数组</span></span></span><br><span class="line"><span class="params">    _In_ <span class="type">size_t</span> _ElementSize,											<span class="comment">//每个数据的单位（字节）</span></span></span><br><span class="line"><span class="params">    _In_ <span class="type">size_t</span> _ElementCount,											<span class="comment">//数据大小</span></span></span><br><span class="line"><span class="params">    _Inout_ FILE* _Stream												<span class="comment">//文件指针</span></span></span><br><span class="line"><span class="params">)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//example</span></span><br><span class="line">FILE* fp = fopen(<span class="string">&quot;1.txt&quot;</span>,<span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="type">char</span> szBuf[<span class="number">1024</span>] = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="type">int</span> iLen = <span class="built_in">strlen</span>(szBuf)+<span class="number">1</span>;</span><br><span class="line">fwrite(szBuf,<span class="number">1</span>,iLen,fp);</span><br><span class="line">fclose(fp);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>读文件</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">size_t</span> <span class="title function_">fread</span><span class="params">(</span></span><br><span class="line"><span class="params">    <span class="type">void</span> *ptr, 			<span class="comment">//读入数据的数组</span></span></span><br><span class="line"><span class="params">    <span class="type">size_t</span> size, 		<span class="comment">//每个数据的单位（字节）</span></span></span><br><span class="line"><span class="params">    <span class="type">size_t</span> nmemb, 		<span class="comment">//数据大小</span></span></span><br><span class="line"><span class="params">    FILE *stream		<span class="comment">//文件指针</span></span></span><br><span class="line"><span class="params">)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//example</span></span><br><span class="line">FILE* fp = fopen(<span class="string">&quot;1.txt&quot;</span>,<span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="type">char</span> szBuf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">fseek(fp,<span class="number">0</span>,SEEK_END);				<span class="comment">//表示文件指针移动到最后（相对最后的偏移量为0）</span></span><br><span class="line"><span class="type">int</span> iLen = ftell(fp);				<span class="comment">//返回文件指针的当前位置，在该情况下是文件大小</span></span><br><span class="line">fseek(fp,<span class="number">0</span>,SEEK_SET);				<span class="comment">//将文件指针偏移回初始位置</span></span><br><span class="line">fwrite(szBuf,<span class="number">1</span>,iLen,fp);</span><br><span class="line">fclose(fp);</span><br></pre></td></tr></table></figure>
+<h4 id="2-C">2.C++</h4>
+<blockquote>
+<p>在创建对象时，构造函数里隐式地调用了open函数来打开文件。</p>
+</blockquote>
+<h5 id="1-写文件">1.写文件</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">ofstream <span class="title">ofs</span><span class="params">(<span class="string">&quot;2.txt&quot;</span>)</span></span>;</span><br><span class="line"><span class="type">char</span> szBuf[] = <span class="string">&quot;C++读取文件&quot;</span>;</span><br><span class="line">ofs.<span class="built_in">write</span>(szBuf,<span class="built_in">strlen</span>(szBuf));</span><br><span class="line">ofs.<span class="built_in">close</span>();</span><br></pre></td></tr></table></figure>
+<h5 id="2-读文件">2.读文件</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">ifstream <span class="title">ifs</span><span class="params">(<span class="string">&quot;2.txt&quot;</span>)</span></span>;</span><br><span class="line"><span class="type">char</span> szBuf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">ifs.<span class="built_in">read</span>(szBuf,<span class="number">1024</span>);</span><br><span class="line">ifs.<span class="built_in">close</span>();</span><br></pre></td></tr></table></figure>
+<h4 id="3-Windows-Api">3.Windows Api</h4>
+<h5 id="1-写文件-2">1.写文件</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">HANDLE hFile;</span><br><span class="line">hFile = <span class="built_in">CreateFile</span>(_T(<span class="string">&quot;3.txt&quot;</span>), GENERIC_WRITE, <span class="number">0</span>, <span class="literal">NULL</span>,CREATE_NEW, FILE_ATTRIBUTE_NORMAL, <span class="literal">NULL</span>);							<span class="comment">//文件不存在使用CREATE_NEW，否则使用CREATE_EXISTEN</span></span><br><span class="line"><span class="keyword">if</span> (hFile == INVALID_HANDLE_VALUE)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">TRACE</span>(<span class="string">&quot;INVALID_HANDLE_VALUE,ERRORCODE = %d&quot;</span>,<span class="built_in">GetLastError</span>());</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">DWORD dwWrites;</span><br><span class="line"><span class="built_in">WriteFile</span>(hFile, <span class="string">&quot;BingoWin32API&quot;</span>, <span class="built_in">strlen</span>(<span class="string">&quot;BingoWin32API&quot;</span>), &amp;dwWrites, <span class="literal">NULL</span>);</span><br><span class="line"><span class="built_in">TRACE</span>(<span class="string">&quot;##dwWrites = %d&quot;</span>, dwWrites);</span><br><span class="line"><span class="built_in">CloseHandle</span>(hFile);</span><br></pre></td></tr></table></figure>
+<h5 id="2-读文件-2">2.读文件</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">HANDLE hFile;</span><br><span class="line">hFile = <span class="built_in">CreateFile</span>(_T(<span class="string">&quot;3.txt&quot;</span>), GENERIC_READ, <span class="number">0</span>, <span class="literal">NULL</span>,OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, <span class="literal">NULL</span>);</span><br><span class="line"><span class="type">char</span> pBuf[<span class="number">100</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">DWORD dwReads;</span><br><span class="line"><span class="built_in">ReadFile</span>(hFile, pBuf, <span class="number">100</span>, &amp;dwReads, <span class="literal">NULL</span>);</span><br><span class="line"><span class="built_in">TRACE</span>(<span class="string">&quot;##dwReads = %d&quot;</span>, dwReads);</span><br><span class="line"><span class="built_in">CloseHandle</span>(hFile);</span><br></pre></td></tr></table></figure>
+<h4 id="4-MFC读写文件">4.MFC读写文件</h4>
+<h5 id="1-写文件-3">1.写文件</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">CFile <span class="title">file</span><span class="params">(<span class="string">&quot;4.txt&quot;</span>, CFile::modeCreate | CFile::modeWrite)</span></span>;</span><br><span class="line"><span class="type">char</span> szBuf[<span class="number">1024</span>] = <span class="string">&quot;MFC 操作文件&quot;</span>;</span><br><span class="line">file.<span class="built_in">Write</span>(szBuf, <span class="built_in">strlen</span>(szBuf));</span><br><span class="line">file.<span class="built_in">Close</span>();</span><br></pre></td></tr></table></figure>
+<h5 id="2-读文件-3">2.读文件</h5>
+<blockquote>
+<p>正常读取</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">CFile <span class="title">file</span><span class="params">(<span class="string">&quot;4.txt&quot;</span>, CFile::modeRead)</span></span>;</span><br><span class="line"><span class="type">char</span> szBuf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">file.<span class="built_in">Read</span>(szBuf, <span class="built_in">strlen</span>(szBuf));</span><br><span class="line">file.<span class="built_in">Close</span>();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>高阶操作，弹出一个选择窗口来选择文件</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">CFileDialog <span class="title">fileDlg</span><span class="params">(TRUE)</span></span>;						<span class="comment">//创建一个选择窗口对象</span></span><br><span class="line">fileDlg.m_ofn.lpstrTitle = <span class="string">&quot;Test&quot;</span>;			<span class="comment">//窗口名称</span></span><br><span class="line">fileDlg.m_ofn.lpstrFilter = <span class="string">&quot;Text File(*.txt)\0*.txt\0All Files(*.*)\0*.*\0&quot;</span>;</span><br><span class="line">												<span class="comment">//配置筛选框</span></span><br><span class="line"><span class="keyword">if</span> (IDOK == fileDlg.<span class="built_in">DoModal</span>())</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function">CFile <span class="title">file</span><span class="params">(fileDlg.GetFileName(), CFile::modeRead)</span></span>;</span><br><span class="line">	<span class="type">char</span> szBuf[<span class="number">1024</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	DWORD dwFilelen;</span><br><span class="line">	dwFilelen = file.<span class="built_in">GetLength</span>();</span><br><span class="line">	file.<span class="built_in">Read</span>(szBuf, dwFilelen);</span><br><span class="line">	file.<span class="built_in">Close</span>();</span><br><span class="line">	<span class="built_in">MessageBox</span>(szBuf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

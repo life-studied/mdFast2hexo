@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-3LaTeX命令和代码结构 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-3LaTeX命令和代码结构</h1>
+    </header>
+
+    <section>
+      <h2 id="1-3LaTeX命令和代码结构">1.3LaTeX命令和代码结构</h2>
+<h4 id="1-命令格式">1.命令格式</h4>
+<span id="more"></span>
+<blockquote>
+<p>所有的命令都以反斜杠开头。并以任意非字母符号为界限（空格，数字，标点）。</p>
+</blockquote>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\LaTeX</span></span><br><span class="line"><span class="keyword">\$</span></span><br></pre></td></tr></table></figure>
+<p>**注意：**LaTeX命令对大小写敏感。</p>
+<hr>
+<blockquote>
+<p>命令后忽略所有空格。引入空格的方法：在命令后加{}。</p>
+</blockquote>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">Shall we call ourselves</span><br><span class="line"><span class="keyword">\TeX</span> users</span><br><span class="line">or <span class="keyword">\TeX</span>&#123;&#125; users?</span><br></pre></td></tr></table></figure>
+<h4 id="2-环境">2.环境</h4>
+<blockquote>
+<p>令一些效果在局部生效，或是生成特殊的文档元素。环境用法是一对\begin和\end。</p>
+</blockquote>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\begin</span>&#123;⟨environment name⟩&#125;[⟨optional arguments⟩]&#123;⟨mandatory arguments⟩&#125;</span><br><span class="line">…</span><br><span class="line"><span class="keyword">\end</span>&#123;⟨environment name⟩&#125;</span><br></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>environment name：环境名</p>
+</li>
+<li class="lvl-2">
+<p>optional arguments：可选参数</p>
+</li>
+<li class="lvl-2">
+<p>mandatory arguments：必选参数</p>
+</li>
+</ul>
+<h4 id="3-分组">3.分组</h4>
+<blockquote>
+<p>LaTeX中，有些命令会对其后的所有内容产生作用，所以需要使用分组来限制其作用范围。</p>
+<p>LATEX 使用一对花括号 { 和 } 作为分组，在分组中使用的命令被限制在分组内，不会影响到分组外的内容。</p>
+</blockquote>
+<h4 id="4-LaTeX源代码结构">4.LaTeX源代码结构</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>开头：\documentclass 命令</p>
+</li>
+<li class="lvl-2">
+<p>导言区：在 \documentclass 和 \begin{document} 之间的位置</p>
+</li>
+</ul>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\documentclass</span>&#123;...&#125; <span class="comment">% ... 为某文档类</span></span><br><span class="line"><span class="comment">% 导言区</span></span><br><span class="line"><span class="keyword">\begin</span>&#123;document&#125;</span><br><span class="line"><span class="comment">% 正文内容</span></span><br><span class="line"><span class="keyword">\end</span>&#123;document&#125;</span><br><span class="line"><span class="comment">% 此后内容会被忽略</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

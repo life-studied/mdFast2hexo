@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3版本穿梭 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3版本穿梭</h1>
+    </header>
+
+    <section>
+      <h1>版本穿梭</h1>
+<h3 id="版本查看">版本查看</h3>
+<span id="more"></span>
+<h4 id="命令">命令</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span>		<span class="comment">//查看提交记录详细信息</span></span><br></pre></td></tr></table></figure>
+<h4 id="拓展命令">拓展命令</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line">    <span class="comment">//以一行格式显示提交记录</span></span><br><span class="line">git <span class="built_in">log</span> --oneline</span><br><span class="line">    <span class="comment">//以一行最简格式显示记录</span></span><br><span class="line">    <span class="comment">//只有后退的记录</span></span><br><span class="line">git reflog</span><br><span class="line">    <span class="comment">//一行显示，有参考记录移动步数（推荐）</span></span><br><span class="line">    <span class="comment">//HEAD@&#123;移动步数&#125;</span></span><br><span class="line">    <span class="comment">//前进与后退都有</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：多屏显示控制方式</p>
+<p>空格向下翻页</p>
+<p>b 向上翻页</p>
+<p>q 退出</p>
+</blockquote>
+<h3 id="版本移动">版本移动</h3>
+<blockquote>
+<p>方式如下：</p>
+</blockquote>
+<ol>
+<li class="lvl-3">
+<p>基于索引值（都可）</p>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git reset --hard 索引值</span><br><span class="line">    <span class="comment">//所有的都回到该版本</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li class="lvl-3">
+<p>使用^符号(只能后退)</p>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br><span class="line">    <span class="comment">//后退一步（一个^）</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li class="lvl-3">
+<p>使用~符号(只能后退)</p>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git reset --hard HEAD~<span class="number">3</span></span><br><span class="line">    <span class="comment">//后退3步</span></span><br></pre></td></tr></table></figure>
+<h4 id="基于索引值的参数问题">基于索引值的参数问题</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git help 命令名</span><br><span class="line">    <span class="comment">//查看命令的详细文档</span></span><br><span class="line">    <span class="comment">//例如：git help reset</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">--hard		<span class="comment">//改本地库，暂存区，工作区</span></span><br><span class="line">--soft		<span class="comment">//只改本地库</span></span><br><span class="line">--mixed		<span class="comment">//改本地库，暂存区</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>2-4因特网中的电子邮件 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>2-4因特网中的电子邮件</h1>
+    </header>
+
+    <section>
+      <h2 id="2-4因特网中的电子邮件">2.4因特网中的电子邮件</h2>
+<p>因特网电子邮件系统和它的关键组件：</p>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>用户代理</p>
+</li>
+<li class="lvl-2">
+<p>邮件服务器</p>
+</li>
+<li class="lvl-2">
+<p>简单邮件传输协议</p>
+</li>
+</ul>
+<hr>
+<p>过程如下：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>发送方写好邮件，交付给本地用户代理</p>
+</li>
+<li class="lvl-2">
+<p>用户代理传送给发送方的邮件服务器</p>
+</li>
+<li class="lvl-2">
+<p>再传送到接收方的邮件服务器</p>
+</li>
+<li class="lvl-2">
+<p>最后分发到接收方的邮箱中</p>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>电子邮件使用SMTP协议，建立在TCP协议之上，从发送方的邮件服务器向接收方的邮件服务器。</p>
+</blockquote>
+<p>SMTP有两部分：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>运行在发送方邮件服务器上的客户端</p>
+</li>
+<li class="lvl-2">
+<p>运行在接收方邮件服务器的服务器端</p>
+</li>
+</ul>
+<p>注意：每台服务器上这两部分都同时运行</p>
+<hr>
+<h4 id="2-4-1SMTP">2.4.1SMTP</h4>
+<blockquote>
+<p>SMTP是因特网电子邮件应用的核心，用于从发送方的邮件服务器发送报文到接收方的邮件服务器</p>
+</blockquote>
+<p>执行过程：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>客户SMTP在25号端口建立一个到服务器的TCP连接</p>
+</li>
+<li class="lvl-2">
+<p>连接建立，服务器与客户执行应用层的握手（向服务器提供双方的邮件地址）</p>
+</li>
+<li class="lvl-2">
+<p>客户发送报文</p>
+</li>
+<li class="lvl-2">
+<p>关闭TCP连接</p>
+</li>
+</ul>
+<p>**注意：**SMTP是持续连接的，所有报文都是在同一个TCP上发送</p>
+<h4 id="2-4-2与HTTP的对比">2.4.2与HTTP的对比</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>HTTP是一个拉协议（pull protocol），SMTP是一个推协议（push protocol）</p>
+</li>
+<li class="lvl-2">
+<p>SMTP要求每个报文都以7比特ASCII格式，如果包含其他字符或者二进制数据，必须按照该格式进行编码，HTTP无限制</p>
+</li>
+<li class="lvl-2">
+<p>HTTP将对象封装到每一个响应报文中，而SMTP则将所有对象放在一个报文中</p>
+</li>
+</ul>
+<h4 id="2-4-3邮件报文格式与MIME">2.4.3邮件报文格式与MIME</h4>
+<p>格式：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>首部行</p>
+<ul class="lvl-2">
+<li class="lvl-6">必须有一个From：首部行</li>
+<li class="lvl-6">必须有一个To：首部行</li>
+<li class="lvl-6">也许包含一个Subject：首部行</li>
+<li class="lvl-6">也许包含其他首部行</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>空白行（一行）</p>
+</li>
+<li class="lvl-2">
+<p>报文体（ASCII格式）</p>
+</li>
+</ul>
+<h4 id="2-4-4邮件访问协议">2.4.4邮件访问协议</h4>
+<blockquote>
+<p>SMTP用于将邮件从发送方服务器传输到接收方服务器；从用户代理传输到发送方的邮件服务器；POP3用来将邮件从接收方的邮件服务器传送到接收方的用户代理（这是一个用户代理发起的拉协议）；</p>
+</blockquote>
+<h5 id="1-POP3">1.POP3</h5>
+<blockquote>
+<p>一个简单的邮件访问协议</p>
+</blockquote>
+<p>过程：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>用户代理打开一个到邮件服务器端口110上的TCP连接，POP3开始工作</p>
+</li>
+<li class="lvl-2">
+<p>第一阶段：特许</p>
+<ul class="lvl-2">
+<li class="lvl-6">用户代理发送用户名和口令鉴别用户</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>第二阶段：事物处理</p>
+<ul class="lvl-2">
+<li class="lvl-6">用户代理取回报文</li>
+<li class="lvl-6">可选
+<ul class="lvl-4">
+<li class="lvl-10">对报文做删除标记</li>
+<li class="lvl-10">取消报文删除标记</li>
+<li class="lvl-10">获取邮件的统计信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>第三阶段：更新阶段</p>
+<ul class="lvl-2">
+<li class="lvl-6">结束POP3会话</li>
+<li class="lvl-6">邮件服务器删除被标记为删除的报文</li>
+</ul>
+</li>
+</ul>
+<p>注意：标记删除还会区分设备</p>
+<h5 id="2-IMAP">2.IMAP</h5>
+<blockquote>
+<p>为了解决POP3能在远程创建邮件文件夹并为报文指派文件夹的方法，IMAP出现了</p>
+</blockquote>
+<p>IMAP服务器把每个报文与一个文件夹联系起来</p>
+<p>过程：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>报文到达服务器，与收件人INBOX文件夹相关联</p>
+</li>
+<li class="lvl-2">
+<p>用户能</p>
+<ul class="lvl-2">
+<li class="lvl-6">创建文件夹</li>
+<li class="lvl-6">移动邮件到另一个文件夹</li>
+<li class="lvl-6">查询邮件</li>
+</ul>
+</li>
+</ul>
+<p>注意：</p>
+<p>IMAP服务器维护了IMAP会话的用户状态信息</p>
+<p>用户能自主选择接收报文的一部分</p>
+<h5 id="3-基于Web的电子邮件">3.基于Web的电子邮件</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>用户代理是浏览器</p>
+</li>
+<li class="lvl-2">
+<p>邮件服务器与浏览器之间使用HTTP协议</p>
+</li>
+<li class="lvl-2">
+<p>邮件服务器之间使用SMTP协议</p>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>15插入数据 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>15插入数据</h1>
+    </header>
+
+    <section>
+      <h2 id="插入数据">插入数据</h2>
+<blockquote>
+<p>插入行到数据库表中。</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="1-数据插入">1.数据插入</h4>
+<blockquote>
+<p>插入有几种方式</p>
+<p>1.插入完整的行</p>
+<p>2.插入行的一部分</p>
+<p>3.插入某些查询的结果</p>
+</blockquote>
+<h5 id="1-1插入完整的行">1.1插入完整的行</h5>
+<blockquote>
+<p>要求指定表名和插入行中的值。使用INSERT INTO指出表名，用values子句给出值。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INSERT INTO Customers(cust_id,</span><br><span class="line">                     cust_contact,</span><br><span class="line">                     cust_email,</span><br><span class="line">                     cust_name,</span><br><span class="line">                     cust_adress,</span><br><span class="line">                     cust_city,</span><br><span class="line">                     cust_state,</span><br><span class="line">                     cust_zip)</span><br><span class="line">Values(&#x27;10000001&#x27;,</span><br><span class="line">      NULL,</span><br><span class="line">      NULL,</span><br><span class="line">      &#x27;Toy Land&#x27;,</span><br><span class="line">      &#x27;123 Any Street&#x27;,</span><br><span class="line">      &#x27;New York&#x27;,</span><br><span class="line">      &#x27;NY&#x27;,</span><br><span class="line">      &#x27;1111&#x27;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>可以省略Custmers中的列名，但那样必须按照表的顺序填写value值。而写明列名可以不按照表顺序来。</p>
+</blockquote>
+<p><strong>注：如果不给出列名，都必须给出所有列的值</strong></p>
+<p>（如果主键是自增的，则可以省略主键值）</p>
+<h5 id="1-2插入检索出的数据">1.2插入检索出的数据</h5>
+<blockquote>
+<p>INSERT INTO</p>
+<p>SELECT关键字</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INSERT INTO Customers(cust_id,</span><br><span class="line">                     cust_contact,</span><br><span class="line">                     cust_email,</span><br><span class="line">                     cust_name,</span><br><span class="line">                     cust_adress,</span><br><span class="line">                     cust_city,</span><br><span class="line">                     cust_state,</span><br><span class="line">                     cust_zip)</span><br><span class="line">SELECT cust_id,</span><br><span class="line">					 cust_contact,</span><br><span class="line">                     cust_email,</span><br><span class="line">                     cust_name,</span><br><span class="line">                     cust_adress,</span><br><span class="line">                     cust_city,</span><br><span class="line">                     cust_state,</span><br><span class="line">                     cust_zip</span><br><span class="line">From CustNew;</span><br></pre></td></tr></table></figure>
+<h4 id="2-从一个表复制到另一个表">2.从一个表复制到另一个表</h4>
+<blockquote>
+<p>SELECT INTO语句</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">INTO CustCopy</span><br><span class="line">From Customers;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

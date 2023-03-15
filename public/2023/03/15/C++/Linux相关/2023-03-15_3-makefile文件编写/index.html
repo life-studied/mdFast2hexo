@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3-makefile文件编写 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3-makefile文件编写</h1>
+    </header>
+
+    <section>
+      <h2 id="makefile文件编写">makefile文件编写</h2>
+<h5 id="1-格式">1.格式</h5>
+<span id="more"></span>
+<blockquote>
+<p>自上而下地完成整个项目的编译</p>
+</blockquote>
+<p>目标文件:需要文件</p>
+<p>​	command</p>
+<h5 id="2-案例">2.案例</h5>
+<blockquote>
+<p>自上而下地完成</p>
+</blockquote>
+<p>首先创建文件makefile</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">math.exe:main.o add.o sub.o</span></span><br><span class="line">	g++ main.o add.o sub.o -o math.exe</span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">	g++ -c main.c -o main.o</span><br><span class="line"><span class="section">add.o:add.c</span></span><br><span class="line">	g++ -c add.c -o add.o</span><br><span class="line"><span class="section">sub.o:sub.c</span></span><br><span class="line">	g++ -c sub.c -o sub.o</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f *.o math.exe</span><br></pre></td></tr></table></figure>
+<h5 id="3-使用makefile">3.使用makefile</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make		#自下而上地执行makefile命令</span><br><span class="line">make clean	#执行clean标签命令</span><br></pre></td></tr></table></figure>
+<h5 id="4-简化写法">4.简化写法</h5>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">math.exe:main.o add.o sub.o</span></span><br><span class="line">	g++ *.o -o <span class="variable">$@</span></span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">	g++ -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f *.o math.exe</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>$@代指目标文件名</p>
+</li>
+<li class="lvl-2">
+<p>*.o代指所有.o文件</p>
+</li>
+<li class="lvl-2">
+<p>$&lt;代指对每一个需要的文件进行遍历命令</p>
+</li>
+</ul>
+<h5 id="5-创建变量与使用变量">5.创建变量与使用变量</h5>
+<blockquote>
+<p>好处，便于修改（本例可以将gcc修改为g++）</p>
+</blockquote>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">CC = gcc</span><br><span class="line"></span><br><span class="line"><span class="section">math.exe:main.o add.o sub.o</span></span><br><span class="line">	<span class="variable">$(CC)</span> main.o add.o sub.o -o math.exe</span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> -c main.c -o main.o</span><br><span class="line"><span class="section">add.o:add.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> -c add.c -o add.o</span><br><span class="line"><span class="section">sub.o:sub.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> -c sub.c -o sub.o</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f *.o math.exe</span><br></pre></td></tr></table></figure>
+<h5 id="6-makefile编译多个可执行文件">6.makefile编译多个可执行文件</h5>
+<blockquote>
+<p>makefile只执行第一条语句，并根据第一条语句的依赖，执行后续生成这些依赖的语句。</p>
+</blockquote>
+<p>如下语句，只会生成main_max，不会生成main_min</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">main_max:main_max.o find_max.o				#执行</span></span><br><span class="line">	gcc main_max.o find_max.o -o main_max</span><br><span class="line"></span><br><span class="line"><span class="section">main_min:main_min.o find_min.o				#不执行</span></span><br><span class="line">	gcc main_min.o find_min.o -o main_min</span><br><span class="line">	</span><br><span class="line"><span class="section">main_max.o:main_max.c						#执行</span></span><br><span class="line">	gcc -c main_max.c -o main_max.o</span><br><span class="line"></span><br><span class="line"><span class="section">find_max.o:find_max.c						#执行	</span></span><br><span class="line">	gcc -c find_max.c -o find_max.o</span><br><span class="line">	</span><br><span class="line"><span class="section">main_min.o:main_min.c						#不执行</span></span><br><span class="line">	gcc -c main_min.c -o main_min.o</span><br><span class="line">	</span><br><span class="line"><span class="section">find_min.o:find_min.c						#不执行</span></span><br><span class="line">	gcc -c find_min.c -o find_min.o</span><br></pre></td></tr></table></figure>
+<p>解决方法：使用<strong>all</strong>指令，将两个最终可执行文件作为all的依赖</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">all:main_max main_min						#第一步执行</span></span><br><span class="line"></span><br><span class="line"><span class="section">main_max:main_max.o find_max.o				#执行</span></span><br><span class="line">	gcc main_max.o find_max.o -o main_max</span><br><span class="line"></span><br><span class="line"><span class="section">main_min:main_min.o find_min.o				#执行</span></span><br><span class="line">	gcc main_min.o find_min.o -o main_min</span><br><span class="line">	</span><br><span class="line"><span class="section">main_max.o:main_max.c						#执行</span></span><br><span class="line">	gcc -c main_max.c -o main_max.o</span><br><span class="line"></span><br><span class="line"><span class="section">find_max.o:find_max.c						#执行	</span></span><br><span class="line">	gcc -c find_max.c -o find_max.o</span><br><span class="line">	</span><br><span class="line"><span class="section">main_min.o:main_min.c						#执行</span></span><br><span class="line">	gcc -c main_min.c -o main_min.o</span><br><span class="line">	</span><br><span class="line"><span class="section">find_min.o:find_min.c						#执行</span></span><br><span class="line">	gcc -c find_min.c -o find_min.o</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

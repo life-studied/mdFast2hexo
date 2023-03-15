@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-7数组和关联数组 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-7数组和关联数组</h1>
+    </header>
+
+    <section>
+      <h2 id="1-7数组和关联数组">1.7数组和关联数组</h2>
+<blockquote>
+<p>数组允许脚本利用索引将数据集合保存为独立的条目。</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<ul class="lvl-1">
+<li class="lvl-2">
+<p>普通数组（int-&gt;数据）</p>
+</li>
+<li class="lvl-2">
+<p>关联数组（即map 字符串-&gt;数据）</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="1-7-1-预备知识">1.7.1 预备知识</h4>
+<p>Bash4.0开始支持关联数组。</p>
+<h4 id="1-7-2-实战演练">1.7.2 实战演练</h4>
+<blockquote>
+<p>定义普通数组的方式有很多种</p>
+</blockquote>
+<h5 id="1-单行定义">1.单行定义</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">array_var=(test1 test2 test3 test4 test5)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">这些值会存储在以0为起始索引的连续位置上</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-键值对定义">2.键值对定义</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">array_var[0]=&quot;test1&quot;</span><br><span class="line">array_var[1]=&quot;test2&quot;</span><br><span class="line">array_var[2]=&quot;test3&quot;</span><br><span class="line">array_var[3]=&quot;test4&quot;</span><br><span class="line">array_var[4]=&quot;test5&quot;</span><br></pre></td></tr></table></figure>
+<h5 id="3-打印特定索引的元素内容">3.打印特定索引的元素内容</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo $&#123;array_var[0]&#125;</span><br><span class="line"></span><br><span class="line">index=5</span><br><span class="line">echo $&#123;array_var[index]&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-打印整个数组">4.打印整个数组</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo $&#123;array_var[*]&#125;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">or</span></span><br><span class="line">echo $&#123;array_var[@]&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="5-打印数组长度">5.打印数组长度</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo $&#123;#array_var[*]&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-7-3-补充内容">1.7.3 补充内容</h4>
+<h5 id="1-定义关联数组">1.定义关联数组</h5>
+<blockquote>
+<p>首先，需要使用声明语句将一个变量定义为关联数组：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">declare -A ass_array	#声明ass_array为关联数组</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>添加元素</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ass_array=([index1]=val1 [index2]=val2)		#使用行内“索引-值”列表</span><br><span class="line"></span><br><span class="line">ass_array[index1]=val1 		#使用独立的“索引-值”</span><br><span class="line">ass_array[index2]=val2</span><br></pre></td></tr></table></figure>
+<h5 id="2-列出数组索引">2.列出数组索引</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo $&#123;!ass_array[*]&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3-使用数组元素">3.使用数组元素</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;Apple costs $&#123;fruit_value[apple]&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

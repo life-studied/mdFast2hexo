@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>14-1包含对象成员的类 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>14-1包含对象成员的类</h1>
+    </header>
+
+    <section>
+      <h2 id="包含对象成员的类">包含对象成员的类</h2>
+<h4 id="14-1-1-valarray类简介">14.1.1 valarray类简介</h4>
+<span id="more"></span>
+<blockquote>
+<p>在头文件valarray中，用于处理数值的类。</p>
+</blockquote>
+<p><strong>声明一个valarray对象</strong></p>
+<blockquote>
+<p>在标识符valarray后加上一对&lt;&gt;，中间写上所需处理的数据类型，后面补上对象名。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">valarray&lt;<span class="type">int</span>&gt; v1;			<span class="comment">//创建一个int型的valarray对象</span></span><br><span class="line"><span class="function">valarray&lt;<span class="type">double</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">5</span>)</span></span>;		<span class="comment">//创建一个double型的长度为5的对象</span></span><br><span class="line"><span class="function">valarray&lt;<span class="type">int</span>&gt; <span class="title">v2</span><span class="params">(gpa,<span class="number">4</span>)</span></span>;	<span class="comment">//创建一个int型的对象并导入gpa数组，长度为4</span></span><br></pre></td></tr></table></figure>
+<p><strong>方法</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">operator</span>[]()	<span class="comment">//访问元素</span></span><br><span class="line"><span class="built_in">size</span>()			<span class="comment">//返回元素数</span></span><br><span class="line"><span class="built_in">sum</span>()			<span class="comment">//返回元素总和</span></span><br><span class="line"><span class="built_in">max</span>()			<span class="comment">//返回最大元素</span></span><br><span class="line"><span class="built_in">min</span>()			<span class="comment">//返回最小元素</span></span><br></pre></td></tr></table></figure>
+<h4 id="14-1-2-Student类的设计">14.1.2 Student类的设计</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;valarray&gt;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">typedef</span> std::valarray&lt;<span class="type">double</span>&gt; ArrayDb;		<span class="comment">//在类方法和友元函数中可以使用，外部不能使用</span></span><br><span class="line">    std::string name;</span><br><span class="line">    ArrayDb scores;</span><br><span class="line">    <span class="function">std::ostream &amp; <span class="title">arr_out</span><span class="params">(std::ostream &amp; os)</span> <span class="type">const</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Student</span>() : <span class="built_in">name</span>(<span class="string">&quot;Null Student&quot;</span>), <span class="built_in">scores</span>()&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Student</span><span class="params">(<span class="type">const</span> std::string &amp; s)</span>		<span class="comment">//关闭隐式转换</span></span></span><br><span class="line"><span class="function">        : name(s), scores()&#123;</span>&#125;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Student</span><span class="params">(<span class="type">int</span> n)</span> : name(<span class="string">&quot;Nully&quot;</span>), scores(n) &#123;</span>&#125;</span><br><span class="line">    <span class="built_in">Student</span>(<span class="type">const</span> std::string &amp; s, <span class="type">int</span> n) </span><br><span class="line">        : <span class="built_in">name</span>(s), <span class="built_in">scores</span>(n)&#123;&#125;</span><br><span class="line">    <span class="built_in">Student</span>(<span class="type">const</span> std::string &amp; s, <span class="type">const</span> ArrayDb &amp; a)</span><br><span class="line">        : <span class="built_in">name</span>(s), <span class="built_in">scores</span>(a)&#123;&#125;</span><br><span class="line">    <span class="built_in">Student</span>(<span class="type">const</span> <span class="type">char</span> * str, <span class="type">const</span> <span class="type">double</span> * pd, <span class="type">int</span> n)</span><br><span class="line">        : <span class="built_in">name</span>(s), <span class="built_in">scores</span>(pd, n)&#123;&#125;</span><br><span class="line">    ~<span class="built_in">Student</span>()&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">double</span> <span class="title">Average</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="function"><span class="type">const</span> std::string &amp; <span class="title">Name</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">    <span class="type">double</span> &amp; <span class="keyword">operator</span>[](<span class="type">int</span> i);</span><br><span class="line">    <span class="type">double</span> <span class="keyword">operator</span>[](<span class="type">int</span> i) <span class="type">const</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">friend</span> std::istream &amp; <span class="keyword">operator</span>&gt;&gt;(std::istream &amp; is,</span><br><span class="line">                                    Student &amp; stu);</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> std::istream &amp; <span class="title">getline</span><span class="params">(std::istream &amp; is,</span></span></span><br><span class="line"><span class="params"><span class="function">                                    Student &amp; stu)</span></span>;</span><br><span class="line">    <span class="keyword">friend</span> std::ostream &amp; <span class="keyword">operator</span>&lt;&lt;(std::ostream &amp; os,</span><br><span class="line">                                    Student &amp; stu);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

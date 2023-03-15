@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>5-3 透明色彩法 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>5-3 透明色彩法</h1>
+    </header>
+
+    <section>
+      <h2 id="透明色彩法">透明色彩法</h2>
+<blockquote>
+<p>可以在贴图时，设置某种颜色为透明色的函数</p>
+</blockquote>
+<span id="more"></span>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">TransparentBlt</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in] HDC  hdcDest,			<span class="comment">//目标设备环境句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  xoriginDest,		<span class="comment">//目标矩形左上角x坐标</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  yoriginDest,		<span class="comment">//目标矩形左上角y坐标</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  wDest,				<span class="comment">//目标矩形的宽度</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  hDest,				<span class="comment">//目标矩形的高度</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] HDC  hdcSrc,				<span class="comment">//源设备环境的句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  xoriginSrc,			<span class="comment">//源矩形左上角x坐标</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  yoriginSrc,			<span class="comment">//源矩形左上角y坐标</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  wSrc,				<span class="comment">//源矩形的宽度</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] <span class="type">int</span>  hSrc,				<span class="comment">//源矩形的高度</span></span></span></span><br><span class="line"><span class="params"><span class="function">  [in] UINT crTransparent		<span class="comment">//指定为透明色的RGB颜色值</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//example</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;Msing32.lib&quot;</span>)</span></span><br><span class="line"><span class="built_in">TransparentBlt</span>(g_hdc, <span class="number">500</span>, <span class="number">120</span>, <span class="number">350</span>, <span class="number">350</span>, g_mdc, <span class="number">0</span>, <span class="number">0</span>, <span class="number">350</span>, <span class="number">350</span>, <span class="built_in">GRB</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>));	<span class="comment">//黑色为透明色</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

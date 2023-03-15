@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>构建核心注入代码 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>构建核心注入代码</h1>
+    </header>
+
+    <section>
+      <h2 id="构建核心注入代码">构建核心注入代码</h2>
+<h4 id="1-INJECT-h">1.INJECT.h</h4>
+<span id="more"></span>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="title">int</span> <span class="params">(WINAPI* _LoadLibrary)</span><span class="params">(<span class="type">wchar_t</span>* dllName)</span></span>;		<span class="comment">//指向LoadLibrary的函数指针</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_REMOTE_DATA</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">wchar_t</span> dllName[<span class="number">0xff</span>];		<span class="comment">//dll路径</span></span><br><span class="line">	_LoadLibrary f_LoadLibrary;</span><br><span class="line">&#125;* PREMOTE_DATA;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">INJECT</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">BOOL <span class="title">StartProcess</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">		<span class="type">const</span> <span class="type">wchar_t</span>* GameExe,</span></span></span><br><span class="line"><span class="params"><span class="function">		<span class="type">const</span> <span class="type">wchar_t</span>* GamePath,</span></span></span><br><span class="line"><span class="params"><span class="function">		<span class="type">wchar_t</span>* GameCmds,</span></span></span><br><span class="line"><span class="params"><span class="function">		PROCESS_INFORMATION* LPinfo</span></span></span><br><span class="line"><span class="params"><span class="function">	)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">void</span>* <span class="title">ImageLoad</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span>* filename)</span></span>;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">UnloadImage</span><span class="params">(<span class="type">void</span>* _data)</span></span>;</span><br><span class="line">	<span class="function">DWORD <span class="title">GetEntryPoint</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span>* filename)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//分配远程空间内存</span></span><br><span class="line">	<span class="function">BOOL <span class="title">CreateRemoteData</span><span class="params">(HANDLE hProcess, <span class="type">const</span> <span class="type">wchar_t</span>* dllName)</span></span>;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">CodeRemoteData</span><span class="params">(PREMOTE_DATA _data, <span class="type">const</span> <span class="type">wchar_t</span>* dllName)</span></span>;		<span class="comment">//编码远程参数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="2-INJECT-cpp">2.INJECT.cpp</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;pch.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;INJECT.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> _stdcall <span class="title">INJECTCode</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> address = <span class="number">0xCCCCCCCC</span>;				<span class="comment">//创建一个指针指向LoadLibrary的dll，此处的0xCCCCCCC只是一个象征，被编译后的字节码会再次进行替换</span></span><br><span class="line">	PREMOTE_DATA p = (PREMOTE_DATA)address;</span><br><span class="line">	p-&gt;<span class="built_in">f_LoadLibrary</span>(p-&gt;dllName);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">INJECT::StartProcess</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span>* GameExe, <span class="type">const</span> <span class="type">wchar_t</span>* GamePath, <span class="type">wchar_t</span>* GameCmds, PROCESS_INFORMATION* LPinfo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	STARTUPINFO si&#123;&#125;;					<span class="comment">//获取进程信息的结构体</span></span><br><span class="line">	si.cb = <span class="built_in">sizeof</span>(si);					<span class="comment">//必须要 no why</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">CreateProcess</span>(						<span class="comment">//固定格式</span></span><br><span class="line">		GameExe,</span><br><span class="line">		GameCmds,</span><br><span class="line">		<span class="literal">NULL</span>, <span class="literal">NULL</span>, TRUE,</span><br><span class="line">		CREATE_SUSPENDED,</span><br><span class="line">		<span class="literal">NULL</span>,</span><br><span class="line">		GamePath,</span><br><span class="line">		&amp;si,</span><br><span class="line">		LPinfo</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">INJECT::UnloadImage</span><span class="params">(<span class="type">void</span>* _data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">delete</span>[] _data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">DWORD <span class="title">INJECT::GetEntryPoint</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span>* filename)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">void</span>* image = <span class="built_in">ImageLoad</span>(filename);</span><br><span class="line"></span><br><span class="line">	IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)image;</span><br><span class="line">	<span class="type">unsigned</span> PEAddress = dosHeader-&gt;e_lfanew + <span class="built_in">unsigned</span>(image);</span><br><span class="line"></span><br><span class="line">	IMAGE_NT_HEADERS* ntHeader = (IMAGE_NT_HEADERS*)PEAddress;</span><br><span class="line">	DWORD dEntryPoint = ntHeader-&gt;OptionalHeader.AddressOfEntryPoint;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">UnloadImage</span>(image);</span><br><span class="line">	<span class="keyword">return</span> dEntryPoint;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">BOOL <span class="title">INJECT::CreateRemoteData</span><span class="params">(HANDLE hProcess, <span class="type">const</span> <span class="type">wchar_t</span>* dllName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LPVOID adrRemote = <span class="built_in">VirtualAllocEx</span>(hProcess, <span class="number">0</span>, <span class="number">0x3000</span>, MEM_COMMIT, PAGE_EXECUTE_READWRITE);</span><br><span class="line">	<span class="comment">//写入远程代码</span></span><br><span class="line">	SIZE_T lwt;</span><br><span class="line">	LPVOID adrRemoteData = <span class="built_in">LPVOID</span>((<span class="type">unsigned</span>)adrRemote + <span class="number">0x2000</span>);</span><br><span class="line">	_REMOTE_DATA remoteData&#123;&#125;;</span><br><span class="line">	<span class="built_in">CodeRemoteData</span>(&amp;remoteData, dllName);</span><br><span class="line">	<span class="built_in">WriteProcessMemory</span>(hProcess, adrRemoteData, &amp;remoteData, <span class="built_in">sizeof</span>(remoteData), &amp;lwt);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//修正远程代码</span></span><br><span class="line">	<span class="type">char</span> _code[<span class="number">0x200</span>];</span><br><span class="line">	<span class="built_in">memcpy</span>(_code, INJECTCode, <span class="built_in">sizeof</span>(_code));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">0x100</span>; i++)			<span class="comment">//</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">unsigned</span>* pcode = (<span class="type">unsigned</span>*)(&amp;_code[i]);</span><br><span class="line">		<span class="keyword">if</span> (pcode[<span class="number">0</span>] == <span class="number">0xCCCCCCCC</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			pcode[<span class="number">0</span>] = (<span class="type">unsigned</span>)adrRemoteData;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">WriteProcessMemory</span>(hProcess, adrRemote, _code, <span class="number">0x200</span>, &amp;lwt);</span><br><span class="line">	DWORD dwThreadId;</span><br><span class="line">	HANDLE remoteHd1 = <span class="built_in">CreateRemoteThread</span>(hProcess, <span class="literal">NULL</span>, <span class="number">0</span>, (LPTHREAD_START_ROUTINE)adrRemote, <span class="literal">NULL</span>, <span class="number">0</span>, &amp;dwThreadId);</span><br><span class="line">	<span class="built_in">WaitForSingleObject</span>(remoteHd1, INFINITE);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">INJECT::CodeRemoteData</span><span class="params">(PREMOTE_DATA _data, <span class="type">const</span> <span class="type">wchar_t</span>* dllName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">short</span> length&#123;&#125;;</span><br><span class="line">	<span class="keyword">for</span> (length = <span class="number">0</span>; dllName[length]; length++);</span><br><span class="line"></span><br><span class="line">	HMODULE hKernel = <span class="built_in">LoadLibrary</span>(_T(<span class="string">&quot;kernel32.dll&quot;</span>));</span><br><span class="line">	_data-&gt;f_LoadLibrary = (_LoadLibrary)<span class="built_in">GetProcAddress</span>(hKernel, <span class="string">&quot;LoadLibraryW&quot;</span>);</span><br><span class="line">	<span class="built_in">memcpy</span>(_data-&gt;dllName, dllName, (length + <span class="number">1</span>) * <span class="number">2</span>);		<span class="comment">//wchar_t 2字节</span></span><br><span class="line">	<span class="comment">/*CString wTxt;</span></span><br><span class="line"><span class="comment">	wTxt.Format(L&quot;%X&quot;, _data-&gt;f_LoadLibrary);</span></span><br><span class="line"><span class="comment">	AfxMessageBox(wTxt);*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">INJECT::ImageLoad</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span>* filename)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">std::ifstream <span class="title">streamReader</span><span class="params">(filename, std::ios::binary)</span></span>;</span><br><span class="line">	streamReader.<span class="built_in">seekg</span>(<span class="number">0</span>, std::ios::end);		<span class="comment">//游标移到文件结尾</span></span><br><span class="line">	<span class="type">unsigned</span> filesize = streamReader.<span class="built_in">tellg</span>();			<span class="comment">//获取游标当前位置 - 文件开始位置，此处为文件大小</span></span><br><span class="line">	<span class="type">char</span>* _data = <span class="keyword">new</span> <span class="type">char</span>[filesize];					<span class="comment">//分配内存</span></span><br><span class="line">	streamReader.<span class="built_in">seekg</span>(<span class="number">0</span>, std::ios::beg);		<span class="comment">//跳转回开始</span></span><br><span class="line">	streamReader.<span class="built_in">read</span>(_data, filesize);		<span class="comment">//读取文件</span></span><br><span class="line">	streamReader.<span class="built_in">close</span>();</span><br><span class="line">	<span class="keyword">return</span> _data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

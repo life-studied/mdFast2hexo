@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>19-线程同步：事件对象 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>19-线程同步：事件对象</h1>
+    </header>
+
+    <section>
+      <h2 id="线程同步：事件对象">线程同步：事件对象</h2>
+<h4 id="事件">事件</h4>
+<span id="more"></span>
+<p>事件对象也属于内核对象，它包含以下三个成员：</p>
+<p>● 使用计数；</p>
+<p>● 用于指明该事件是一个自动重置的事件还是一个人工重置的事件的布尔值；</p>
+<p>● 用于指明该事件处于已通知状态还是未通知状态的布尔值。</p>
+<h4 id="1-创建事件CreateEvent函数">1.创建事件CreateEvent函数</h4>
+<blockquote>
+<p>将一个句柄变为一个事件的标志，设置该事件的初始信号。</p>
+</blockquote>
+<p>参数：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">HANDLE <span class="title">CreateEvent</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">LPSECURITY_ATTRIBUTES lpEventAttributes, 	<span class="comment">// 安全属性</span></span></span></span><br><span class="line"><span class="params"><span class="function">BOOL bManualReset, 							<span class="comment">// 复位方式 TRUE 必须用 ResetEvent 手动复原 FALSE自动还原为无信号状态</span></span></span></span><br><span class="line"><span class="params"><span class="function">BOOL bInitialState, 						<span class="comment">// 初始状态 TRUE 初始状态为有信号状态 FALSE无信号状态</span></span></span></span><br><span class="line"><span class="params"><span class="function">LPCTSTR lpName 								<span class="comment">//对象名称 NULL 无名的事件对象</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>使用：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">hEvent = <span class="built_in">CreateEvent</span>(<span class="literal">NULL</span>, TRUE, FALSE, <span class="literal">NULL</span>);</span><br><span class="line"><span class="comment">//NUll 默认的安全符 手动 FALSE 初始状态为无信号状态</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-设置事件信号为有信号SetEvent函数">2.设置事件信号为有信号SetEvent函数</h4>
+<blockquote>
+<p>传入一个事件句柄，将该事件设置为有信号（可用）。</p>
+</blockquote>
+<p>参数：事件句柄</p>
+<h4 id="3-设置事件信号为无信号ResetEvent函数">3.设置事件信号为无信号ResetEvent函数</h4>
+<blockquote>
+<p>传入一个事件句柄，将该事件设置为无信号（不可用）。</p>
+</blockquote>
+<p>参数：事件句柄</p>
+<h4 id="4-请求事件对象函数WaitForSingleObject">4.请求事件对象函数WaitForSingleObject</h4>
+<blockquote>
+<p>线程通过调用 WaitForSingleObject 函数请求事件对象，阻塞等待事件，直到有信号。</p>
+</blockquote>
+<p><strong>案例</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;process.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> str[<span class="number">100</span>];</span><br><span class="line">HANDLE hEvent;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">unsigned</span> WINAPI <span class="title">NumberOfAs</span><span class="params">(<span class="type">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> i, cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">WaitForSingleObject</span>(hEvent, INFINITE);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; str[i] != <span class="number">0</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (str[i] == <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			cnt++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;NumberOfAs %d&quot;</span>, cnt);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">unsigned</span> WINAPI	<span class="title">NumberOfOthers</span><span class="params">(<span class="type">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> i, cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; str[i] != <span class="number">0</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (str[i] != <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			cnt++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;NumberOfOthers %d&quot;</span>, cnt);</span><br><span class="line">	<span class="built_in">SetEvent</span>(hEvent);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE hThread1, hThread2;</span><br><span class="line">	<span class="built_in">fputs</span>(<span class="string">&quot;Input string:\n&quot;</span>,stdout);</span><br><span class="line">	<span class="built_in">fgets</span>(str, <span class="number">100</span>, stdin);</span><br><span class="line">	hEvent = <span class="built_in">CreateEvent</span>(<span class="literal">NULL</span>, TRUE, FALSE, <span class="literal">NULL</span>);</span><br><span class="line">	</span><br><span class="line">	hThread1 = (HANDLE)_beginthreadex(<span class="literal">NULL</span>, <span class="number">0</span>, NumberOfAs, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line">	hThread2 = (HANDLE)_beginthreadex(<span class="literal">NULL</span>, <span class="number">0</span>, NumberOfOthers, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">WaitForSingleObject</span>(hThread1, INFINITE);</span><br><span class="line">	<span class="built_in">WaitForSingleObject</span>(hThread2, INFINITE);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">CloseHandle</span>(hEvent);</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

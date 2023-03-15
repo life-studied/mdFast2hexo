@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>6Git分支 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>6Git分支</h1>
+    </header>
+
+    <section>
+      <h2 id="Git分支">Git分支</h2>
+<h4 id="1-查看分支">1.查看分支</h4>
+<span id="more"></span>
+<h5 id="命令">命令</h5>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git branch -v	<span class="comment">//带参数-v</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-创建分支">2.创建分支</h4>
+<h5 id="命令-2">命令</h5>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git branch 分支名	<span class="comment">//创建一个分支</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-切换分支">3.切换分支</h4>
+<h5 id="命令-3">命令</h5>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git checkout 分支名	<span class="comment">//切换一个分支</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-合并分支">4.合并分支</h4>
+<blockquote>
+<p>先切换到主分支</p>
+<p>再将内容合并进来</p>
+</blockquote>
+<h5 id="命令-4">命令</h5>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git merge 分支名	<span class="comment">//将另一个分支内容合并进当前分支</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-解决冲突">5.解决冲突</h4>
+<blockquote>
+<p>先合并分支</p>
+</blockquote>
+<blockquote>
+<p>进入冲突解决状态</p>
+</blockquote>
+<blockquote>
+<p>编辑文件中删去多余符号后编辑至所需状态</p>
+</blockquote>
+<blockquote>
+<p>提交文件至工作区以结束冲突状态</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;fix the bug&quot;</span>	<span class="comment">//提交分支</span></span><br></pre></td></tr></table></figure>
+<h6 id="注：此处提交不能带文件名，但需要提交修改日志">注：此处提交不能带文件名，但需要提交修改日志</h6>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

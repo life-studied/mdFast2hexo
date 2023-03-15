@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>8-5 函数模板 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>8-5 函数模板</h1>
+    </header>
+
+    <section>
+      <h2 id="8-5-函数模板">8.5 函数模板</h2>
+<h4 id="8-5-1介绍">8.5.1介绍</h4>
+<span id="more"></span>
+<p>通过将类型隐式传入函数，编译器自动生成该类型的函数</p>
+<h4 id="8-5-2使用案例">8.5.2使用案例</h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Anytype&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Swap</span><span class="params">(Anytype &amp;a,Anytype &amp;b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Anytype temp;</span><br><span class="line">    temp=a;</span><br><span class="line">    a=b;</span><br><span class="line">    b=temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//格式：template &lt;typename 使用的模板参数名称&gt;</span></span><br><span class="line"><span class="comment">//参数列表(使用的模板参数名称 形参...)</span></span><br></pre></td></tr></table></figure>
+<h4 id="8-5-3模板的局限性">8.5.3模板的局限性</h4>
+<p>如果某些类型不支持某些运算，则模板将无法使用</p>
+<p>例如：</p>
+<p>对数组进行=赋值</p>
+<p>对结构进行&gt;比较</p>
+<h4 id="8-5-4显式具体化">8.5.4显式具体化</h4>
+<p>在模板之外，针对某些特定类型的匹配的函数时，将直接选用该函数。</p>
+<h5 id="优先级">优先级</h5>
+<p>常规函数&gt;具体化函数&gt;模板函数</p>
+<h5 id="语法">语法</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="function"><span class="type">void</span> <span class="title">Swap</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="type">void</span> <span class="built_in">Swap</span>&lt;<span class="type">int</span>&gt;(<span class="type">int</span>,<span class="type">int</span>);		<span class="comment">//声明模板参数为int</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>等价的写法，<int>只是便于阅读，可省略</p>
+</blockquote>
+<h5 id="用法案例">用法案例</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Swap</span><span class="params">(T &amp;a,T &amp;b)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="function"><span class="type">void</span> <span class="title">Swap</span><span class="params">(job &amp;a,job &amp;b)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Swap</span><span class="params">(T &amp;a,T &amp;b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    T temp;</span><br><span class="line">    temp=a;</span><br><span class="line">    a=b;</span><br><span class="line">    b=temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="function"><span class="type">void</span> <span class="title">Swap</span><span class="params">(job &amp;a,job &amp;b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    temp=a.money;</span><br><span class="line">    a.money=b.money;</span><br><span class="line">    b.money=temp;</span><br><span class="line">    <span class="type">double</span> temp2;</span><br><span class="line">    temp2=a.floor;</span><br><span class="line">    a.floor=b.floor;</span><br><span class="line">    b.floor=temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="8-5-5显式实例化">8.5.5显式实例化</h4>
+<p>根据参数类型进行实例化称为隐式实例化</p>
+<p>而显式实例化是指将模板的参数类型指定</p>
+<h5 id="语法-2">语法</h5>
+<p>在声明所需的种类——用&lt;&gt;指示类型，并在声明前加上关键字template：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> <span class="type">void</span> <span class="built_in">Swap</span>&lt;<span class="type">int</span>&gt;(<span class="type">int</span>,<span class="type">int</span>);<span class="comment">//template后无&lt;&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="使用">使用</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Swap</span>&lt;<span class="type">int</span>&gt;(i,j);</span><br></pre></td></tr></table></figure>
+<h4 id="8-5-6一些问题的解决">8.5.6一些问题的解决</h4>
+<h5 id="函数中变量类型不定">函数中变量类型不定</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T1,<span class="keyword">class</span> T2&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ft</span><span class="params">(T1 x,T2 y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    ?type? xpy=x+y;<span class="comment">//xpy的类型不能确定</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决办法（c++11）:关键字decltype</p>
+<h6 id="语法-3">语法</h6>
+<p>decltype(expression) var</p>
+<blockquote>
+<p>注：</p>
+<p>1.expression可以为变量、表达式、函数返回类型（不会实际调用函数）</p>
+<p>2.decltype(expression)代表一个类型声明符，可用typedef来简写，例如：typedef decltype(x+y) xytype;</p>
+</blockquote>
+<h6 id="例子">例子</h6>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T1,<span class="keyword">class</span> T2&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ft</span><span class="params">(T1 x,T2 y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">decltype</span>(x+y) xpy=x+y;<span class="comment">//xpy的类型不能确定</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="函数返回值不确定">函数返回值不确定</h5>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T1</span>,<span class="keyword">class</span> <span class="title class_">T2</span>&gt;</span><br><span class="line">?type? <span class="built_in">gt</span>(T1 x,T2 y)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> x+y;<span class="comment">//返回值的类型不确定</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决办法（c++11）:后置返回值类型并配合decltype使用</p>
+<p>（aoto新的用法）</p>
+<h6 id="语法-4">语法</h6>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">h</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span>-&gt;<span class="type">double</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="例子-2">例子</h6>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T1,<span class="keyword">class</span> T2&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">gt</span><span class="params">(T1 x,T2 y)</span>-&gt;<span class="title">decltype</span><span class="params">(x+y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> x+y;<span class="comment">//返回值的类型不确定</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

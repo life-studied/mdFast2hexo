@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>15-从操作系统层面理解线程 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>15-从操作系统层面理解线程</h1>
+    </header>
+
+    <section>
+      <h2 id="从操作系统层面理解线程">从操作系统层面理解线程</h2>
+<h4 id="补充内容：内核对象">补充内容：内核对象</h4>
+<span id="more"></span>
+<blockquote>
+<p>1.创建：内核对象通过 API 来创建，每个内核对象是一个数据结构，它对应一块内存，由操作系统内核分配，并且只能由操作系统内核访问。在此数据结构中少数成员如安全描述符和使用计数是所有对象都有的，但其他大多数成员都是不同类型的对象特有的。内核对象的数据结构只能由操作系统提供的 API 访问，应用程序在内存中不能访问。调用创建内核对象的函数后，该函数会返回一个句柄，它标识了所创建的对象。它可以由进程的任何线程使用。</p>
+<p>2.常见的内核对象 : 进程、线程、文件，存取符号对象、事件对象、文件对象、作业对象、互斥对象、管道对象、等待计时器对象，邮件槽对象，信号对象</p>
+</blockquote>
+<h4 id="1-主线程和子线程的声明周期">1.主线程和子线程的声明周期</h4>
+<h5 id="1-1主线程和子线程的结束时间">1.1主线程和子线程的结束时间</h5>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>主线程：在main函数返回时结束</p>
+</li>
+<li class="lvl-2">
+<p>子线程：相应函数结束或者在main结束时被强行结束</p>
+</li>
+</ul>
+<blockquote>
+<p>即main函数结束后，整个进程终止，同时终止其包含的所有线程</p>
+</blockquote>
+<h5 id="1-2使用WaitForSingleObject函数来等待一个内核对象变为已通知状态">1.2使用WaitForSingleObject函数来等待一个内核对象变为已通知状态</h5>
+<blockquote>
+<p>使用该函数，传入相应内核对象的句柄，主线程将阻塞等待该内核对象结束。</p>
+</blockquote>
+<p>参数：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>hHandle：指明内核对象的句柄</p>
+</li>
+<li class="lvl-2">
+<p>dwMilliseconds：等待时间（通常使用INFINITE宏表示一直等待）</p>
+</li>
+</ul>
+<p>核心代码：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> wr;</span><br><span class="line">HANDLE hThread = (HANDLE)_beginthreadex(<span class="literal">NULL</span>, <span class="number">0</span>, ThreadFun,(<span class="type">void</span>*)&amp;iParam, <span class="number">0</span>, &amp;dwThreadID);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ((wr = <span class="built_in">WaitForSingleObject</span>(hThread, INFINITE)) == WAIT_FAILED)		<span class="comment">//主线程阻塞在此处</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;thread wait error&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="1-3使用WaitForMultipleObjects函数来等待一组内核对象变为已通知状态（多线程阻塞）">1.3使用WaitForMultipleObjects函数来等待一组内核对象变为已通知状态（多线程阻塞）</h5>
+<p>参数：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>nCount：监测的句柄个数</p>
+</li>
+<li class="lvl-2">
+<p>lpHandles：监测的句柄的数组</p>
+</li>
+<li class="lvl-2">
+<p>bWaitAll：TRUE表示等待所有的内核对象发出信号， FALSE表示任意一个内核对象发出信号</p>
+</li>
+<li class="lvl-2">
+<p>dwMilliseconds：等待时间（通常使用INFINITE宏表示一直等待）</p>
+</li>
+</ul>
+<p><strong>案例</strong></p>
+<blockquote>
+<p>本示例开启50个线程，一半用来对全局变量num++500000次，一半用来对全局变量num–500000次，主线程阻塞等待所有线程执行完毕，才会停止。但是最终num不等于0（线程不同步导致对象被多次引用）</p>
+</blockquote>
+<p><img src="picture/%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%90%8C%E6%AD%A5.png" alt=""></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;process.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NUM_THREAD 50</span></span><br><span class="line"><span class="function"><span class="type">unsigned</span> WINAPI <span class="title">threadInc</span><span class="params">(<span class="type">void</span>* arg)</span></span>;</span><br><span class="line"><span class="function"><span class="type">unsigned</span> WINAPI <span class="title">threadDes</span><span class="params">(<span class="type">void</span>* arg)</span></span>;</span><br><span class="line"><span class="type">long</span> <span class="type">long</span> num = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE tHandles[NUM_THREAD];</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;sizeof long long: %d \n&quot;</span>, <span class="built_in">sizeof</span>(<span class="type">long</span> <span class="type">long</span>));</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; NUM_THREAD; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (i % <span class="number">2</span>)</span><br><span class="line">			tHandles[i] = (HANDLE)_beginthreadex(<span class="literal">NULL</span>, <span class="number">0</span>, threadInc, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			tHandles[i] = (HANDLE)_beginthreadex(<span class="literal">NULL</span>, <span class="number">0</span>, threadDes, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">WaitForMultipleObjects</span>(NUM_THREAD, tHandles, TRUE, INFINITE);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;result: %lld \n&quot;</span>, num);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">unsigned</span> WINAPI <span class="title">threadInc</span><span class="params">(<span class="type">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">500000</span>; i++)</span><br><span class="line">		num += <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">unsigned</span> WINAPI <span class="title">threadDes</span><span class="params">(<span class="type">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">500000</span>; i++)</span><br><span class="line">		num -= <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

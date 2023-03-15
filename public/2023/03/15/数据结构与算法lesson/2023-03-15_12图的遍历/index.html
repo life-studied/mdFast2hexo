@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>12图的遍历 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>12图的遍历</h1>
+    </header>
+
+    <section>
+      <h2 id="图的遍历">图的遍历</h2>
+<h4 id="DFS">DFS</h4>
+<span id="more"></span>
+<blockquote>
+<p>递归（前中后序）或者栈实现</p>
+</blockquote>
+<blockquote>
+<p>缺点：不能保证找到的是最近的点</p>
+</blockquote>
+<blockquote>
+<p>优点：</p>
+<p>适用于搜索全部解或者必须走到最深处才能查找到解</p>
+<p>空间上不需要额外空间</p>
+<p>不需要保存搜索中的状态</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//为了判断顶点是否被访问，专门定义一个对应的数组来存储访问信息</span></span><br><span class="line"><span class="type">int</span> Visit[MAXN]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">DFSTraverse</span><span class="params">(Graph G,<span class="type">int</span> i)</span>	<span class="comment">//对连通分量进行深度搜索</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//如果需要输出，在此进行</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;G.n;j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(G.arcnum[i][j] &amp;&amp; !Visit[j])		<span class="comment">//既要有边，也要没被访问</span></span><br><span class="line">        &#123;</span><br><span class="line">            Visit[j]=<span class="number">1</span>;</span><br><span class="line">            DFSTraverse[G,j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">DFS</span><span class="params">(Graph G)</span>		<span class="comment">//对整个图进行深搜</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//邻接矩阵&amp;&amp;无向图情况</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G.n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!Visit[i])	<span class="comment">//如果没有被访问过</span></span><br><span class="line">        &#123;</span><br><span class="line">            Visit[i]=<span class="number">1</span>;	<span class="comment">//设置</span></span><br><span class="line">            DFSTraverse(G,i);</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="BFS">BFS</h4>
+<blockquote>
+<p>队列（层序遍历）</p>
+</blockquote>
+<blockquote>
+<p>缺点：需要持续性防止重复操作</p>
+</blockquote>
+<blockquote>
+<p>优点：只要找到就是最近的点</p>
+<p>适用于搜索最近解或一个解</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> Visit[MAX]=&#123;<span class="number">0</span>&#125;;			<span class="comment">//访问数组</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">BFSTraverse</span><span class="params">(MGraph G)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//对于每一个未被访问的结点调用广度搜索</span></span><br><span class="line">    Queue *Q;	<span class="comment">//先建立一个队列</span></span><br><span class="line">    INitQueue(&amp;Q);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;G.vexnum;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!Visit[i])</span><br><span class="line">        &#123;</span><br><span class="line">            Visit[i]=<span class="number">1</span>;</span><br><span class="line">            <span class="comment">//如果需要输出，在此进行</span></span><br><span class="line">            EnQueue(&amp;Q,G.vexs[i]);	<span class="comment">//把第一个结点入队</span></span><br><span class="line">            <span class="keyword">while</span>(!QueueEmpty(Q))		<span class="comment">//只要队列不空</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="type">int</span> u;		<span class="comment">//根据队列取出的是什么</span></span><br><span class="line">                DeQueue(&amp;Q,&amp;u);	<span class="comment">//元素出队</span></span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="picture/%E6%B7%B1%E6%90%9C%E5%92%8C%E5%B9%BF%E6%90%9C%E7%9A%84%E5%9B%BE%E7%A4%BA.png" alt=""></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

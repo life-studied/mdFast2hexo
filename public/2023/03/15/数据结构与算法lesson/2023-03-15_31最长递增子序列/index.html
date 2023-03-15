@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>31最长递增子序列 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>31最长递增子序列</h1>
+    </header>
+
+    <section>
+      <h2 id="最长递增子序列">最长递增子序列</h2>
+<blockquote>
+<p>动态规划的公式：</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>dp[i] = 1 + max( dp[j] )</p>
+<p>其中0 &lt;= j &lt; i  &amp;&amp; arr[j] &lt; arr[i]</p>
+</blockquote>
+<p>方法1：</p>
+<p>备忘录</p>
+<blockquote>
+<p>使用递归树，递归终止条件为返回1</p>
+</blockquote>
+<p>方法2：</p>
+<p>动态规划表</p>
+<blockquote>
+<p>for循环找前面符合条件的最小值。</p>
+</blockquote>
+<p>方法3：</p>
+<p>动态规划+二分（1h20m）</p>
+<blockquote>
+<p>一个一个数字扩充进可能的最长序列，不停维护这个序列</p>
+</blockquote>
+<blockquote>
+<p>贪婪思想：如果上升子序列的结尾越小，遍历后一个数字接上去的可能性就越大。</p>
+<p>步骤：</p>
+<p>如果加入的新数字比活动序列中的最小元素还要小，创建一个新序列并维护它。</p>
+<p>如果比所有活动的序列都要大，复制一个目前最长的序列，添加到末尾。</p>
+<p>如果介于之间的，替换末尾元素，删除等长序列。</p>
+</blockquote>
+<blockquote>
+<p>优化：使用辅助数组仅记录末尾数字，数字的个数等于所得的最长递增子序列。</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

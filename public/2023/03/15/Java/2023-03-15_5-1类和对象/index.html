@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>5-1类和对象 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>5-1类和对象</h1>
+    </header>
+
+    <section>
+      <h2 id="5-1类和对象">5.1类和对象</h2>
+<blockquote>
+<p>所有使用类定义的变量都是引用变量</p>
+</blockquote>
+<span id="more"></span>
+<h4 id="5-1-1定义类">5.1.1定义类</h4>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">[修饰符] <span class="keyword">class</span> <span class="title class_">classname</span></span><br><span class="line">&#123;</span><br><span class="line">    constructers...;</span><br><span class="line">    </span><br><span class="line">    member elements...;</span><br><span class="line">    </span><br><span class="line">    member methods...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>修饰符：</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>public</p>
+</li>
+<li class="lvl-2">
+<p>final</p>
+</li>
+<li class="lvl-2">
+<p>abstract</p>
+</li>
+</ul>
+<p><strong>类名：</strong></p>
+<blockquote>
+<p><strong>可读性：<strong>类名必须是由一个或多个有意义的单词连缀而成的，每个单词</strong>首字母大写</strong>，其他字母全部小写</p>
+</blockquote>
+<p><strong>成员：</strong></p>
+<blockquote>
+<p>包含三种最常见的成员：<strong>构造器</strong>、<strong>成员变量</strong>和<strong>方法</strong>，每种成员都可以定义零个或多个。</p>
+<p><code>static</code>修饰的成员不能访问没有 <code>static</code> 修饰的成员</p>
+</blockquote>
+<h5 id="1-定义成员变量">1.定义成员变量</h5>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">[修饰符] 类型 成员变量名 [=默认值] ;</span><br></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>**修饰符：**修饰符可以省略，也可以是 public、protected、private、static 、final。其中 public、protected、private 最多只能出现其中之一，可以与 static final 组合起来修饰成员变量。</p>
+</li>
+<li class="lvl-2">
+<p>**类型：**类型可以是 Java 允许的任何数据类型，包括基本类型和引用类型</p>
+</li>
+<li class="lvl-2">
+<p>**成员变量名：**从程序可读性角度来看，成员变量名应该由一个或多个有意义的单词连缀而成，第一个单词首字母小写，后面每个单词首字母大写，其他字母全部小写</p>
+</li>
+<li class="lvl-2">
+<p>**默认值：**定义成员变量还可以指定 个可边的默认值</p>
+</li>
+</ul>
+<h5 id="2-定义方法">2.定义方法</h5>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">[修饰符] 方法返回值 类型 方法名(形参列表)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//语句</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>修饰符：public、protected、private、static、final、abstract，其中 public、protected、private三个最多只能出现其中之一。final、abstract最多只能出现其中之一 ，它们都能和static组合起来修饰方法。</p>
+</li>
+</ul>
+<h5 id="3-定义构造器">3.定义构造器</h5>
+<blockquote>
+<p>当类没有构造器时，系统会提供一个默认构造器</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">[修饰符] 构造器名(形参列表)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//语句</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>修饰符：修饰符可以省略，也可以是 public、protected、private 其中之一。</p>
+</li>
+<li class="lvl-2">
+<p>构造器名：构造器名必须和类名相同</p>
+</li>
+</ul>
+<h4 id="5-1-2对象的产生和使用">5.1.2对象的产生和使用</h4>
+<blockquote>
+<p>创建对象的根本途径是构造器，通过 new 关键字来调用某个类的构造器即可创建这个类的实例。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Person p;			<span class="comment">//定义一个引用</span></span><br><span class="line">p = <span class="keyword">new</span> <span class="title class_">Person</span>();	<span class="comment">//创建实例并分配给引用</span></span><br><span class="line"></span><br><span class="line"><span class="type">Person</span> <span class="variable">p</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br></pre></td></tr></table></figure>
+<h5 id="定义对象变量和使用">定义对象变量和使用</h5>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">	<span class="comment">// 访问 name 实例变量，直接为该变量赋值</span></span><br><span class="line">p.name = <span class="string">&quot;李刚&quot;</span>;</span><br><span class="line">	<span class="comment">// 调用 say ()方法，声明 say ()方法时定义了一个形参</span></span><br><span class="line">	<span class="comment">// 调用该方法必须为形参指定一个值</span></span><br><span class="line">p.say(<span class="string">&quot;Java 语言很简单，学习很容易&quot;</span>); </span><br><span class="line">	<span class="comment">// 直接输出 name 实例变量，将输出李刚</span></span><br><span class="line">System.out.println(p.name);</span><br></pre></td></tr></table></figure>
+<h4 id="5-1-3对象、引用和指针">5.1.3对象、引用和指针</h4>
+<blockquote>
+<p>Java中的引用就是C的指针的封装。</p>
+</blockquote>
+<h4 id="5-1-4对象的this引用">5.1.4对象的this引用</h4>
+<blockquote>
+<p>this关键字总是指向调用该方法的对象。和C++一样。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用this</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThisInConstructor</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> foo;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ThisInConstructor</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">this</span>.foo = <span class="number">6</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">ThisInConstructor</span>().foo);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回this</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ReturnThis</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> age;</span><br><span class="line">	<span class="keyword">public</span> ReturnThis <span class="title function_">grow</span><span class="params">()</span> </span><br><span class="line">    &#123;</span><br><span class="line">        age++ ; </span><br><span class="line">        <span class="comment">// return this 返回调用该方法的对象</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">ReturnThis</span> <span class="variable">rt</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReturnThis</span>() ; </span><br><span class="line">        <span class="comment">// 可以连续调用同 个方法</span></span><br><span class="line">        rt.grow() </span><br><span class="line">            .grow() </span><br><span class="line">            .grow(); </span><br><span class="line">        System.out.println(<span class="string">&quot;rt的 age 成员变量值是 :&quot;</span> + rt.age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

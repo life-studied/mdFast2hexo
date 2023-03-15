@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+    <header class='PageTitle'>
+        <h1>{ 特性 }</h1>
+    </header>
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/GO/%E7%89%B9%E6%80%A7/2023-03-15_goroutine%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B/">goroutine使用案例</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/GO/">GO</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/GO/%E7%89%B9%E6%80%A7/">特性</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="goroutine使用案例">goroutine使用案例</h2>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add</span><span class="params">(x, y <span class="type">int</span>, ch <span class="keyword">chan</span> <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Println(x, <span class="string">&quot;+&quot;</span>, y, <span class="string">&quot;=&quot;</span>, x+y)</span><br><span class="line">	ch &lt;- <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	chs := <span class="built_in">make</span>([]<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">100</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">		chs[i] = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line">		<span class="keyword">go</span> Add(i, i, chs[i])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">		&lt;-chs[i]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/GO/%E7%89%B9%E6%80%A7/2023-03-15_map%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B/">map使用案例</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/GO/">GO</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/GO/%E7%89%B9%E6%80%A7/">特性</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="map使用案例">map使用案例</h2>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//test map</span></span><br><span class="line"><span class="comment">//1.create map</span></span><br><span class="line"><span class="comment">//2.query map</span></span><br><span class="line"><span class="comment">//3.delete map</span></span><br><span class="line"><span class="comment">//4.use struct</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> PersonInfo <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID      <span class="type">string</span></span><br><span class="line">	Name    <span class="type">string</span></span><br><span class="line">	Address <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">FindPerson</span><span class="params">(fID <span class="type">string</span>, sheet <span class="keyword">map</span>[<span class="type">string</span>]PersonInfo)</span></span> &#123;</span><br><span class="line">	person, ok := sheet[fID]</span><br><span class="line">	<span class="keyword">if</span> ok &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Found Person:&quot;</span>, person.Name, <span class="string">&quot;ID:&quot;</span>,</span><br><span class="line">			person.ID, <span class="string">&quot;Address:&quot;</span>, person.Address)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Did not find the Person, ID:&quot;</span>, fID)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> personDB <span class="keyword">map</span>[<span class="type">string</span>]PersonInfo</span><br><span class="line">	personDB = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]PersonInfo)</span><br><span class="line"></span><br><span class="line">	personDB[<span class="string">&quot;12345&quot;</span>] = PersonInfo&#123;<span class="string">&quot;12345&quot;</span>, <span class="string">&quot;Tom&quot;</span>, <span class="string">&quot;Room 2003&quot;</span>&#125;</span><br><span class="line">	personDB[<span class="string">&quot;1&quot;</span>] = PersonInfo&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;Jay&quot;</span>, <span class="string">&quot;Room 2005&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">	FindPerson(<span class="string">&quot;1234&quot;</span>, personDB)</span><br><span class="line">	FindPerson(<span class="string">&quot;12345&quot;</span>, personDB)</span><br><span class="line">	<span class="built_in">delete</span>(personDB, <span class="string">&quot;12345&quot;</span>)</span><br><span class="line">	FindPerson(<span class="string">&quot;12345&quot;</span>, personDB)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/GO/%E7%89%B9%E6%80%A7/2023-03-15_%E6%8E%A5%E5%8F%A3/">接口</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/GO/">GO</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/GO/%E7%89%B9%E6%80%A7/">特性</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="接口">接口</h2>
+<p>接口可以看作两部分</p>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/GO/%E7%89%B9%E6%80%A7/2023-03-15_%E6%8E%A5%E5%8F%A3/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/GO/%E7%89%B9%E6%80%A7/2023-03-15_%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%EF%BC%88flag%E5%8C%85%EF%BC%89/">命令行参数设置（flag包）</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/GO/">GO</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/GO/%E7%89%B9%E6%80%A7/">特性</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="命令行参数设置（flag包）">命令行参数设置（flag包）</h2>
+<h4 id="案例">案例</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/GO/%E7%89%B9%E6%80%A7/2023-03-15_%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%EF%BC%88flag%E5%8C%85%EF%BC%89/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

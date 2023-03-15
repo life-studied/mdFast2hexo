@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>27-进程间通信：邮槽 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>27-进程间通信：邮槽</h1>
+    </header>
+
+    <section>
+      <h2 id="进程间通信：邮槽">进程间通信：邮槽</h2>
+<blockquote>
+<p>使用邮槽通信的进程分为服务端和客户端。邮槽由服务端创建，在创建时需要指定邮槽名，创建后服务端得到邮槽的句柄。在邮槽创建后，客户端可以通过邮槽名打开邮槽，在获得句柄后可以向邮槽写入消息。</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>邮槽通信是单向的，只有服务端才能从邮槽中读取消息，客户端只能写入消息。消息是先入先出的。客户端先写入的消息在服务端先被读取。通过邮槽通信的数据可以是任意格式的，但是一条消息不能大于 424 字节。</p>
+<p>邮槽除了在本机内进行进程间通信外，在主机间也可以通信。但是在主机间进行邮槽通信，数据通过网络传播时使用的是数据报协议(UDP)，所以是一种不可靠的通信。通过网络进行邮槽通信时，客户端必须知道服务端的主机名或域名。</p>
+</blockquote>
+<h4 id="1-服务端创建邮槽的函数CreateMailslot">1.服务端创建邮槽的函数<code>CreateMailslot</code></h4>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">LPCTSTR szSlotName = <span class="built_in">TEXT</span>(<span class="string">&quot;\\\\.\\mailslot\\Mymailslot&quot;</span>);</span><br><span class="line">HANDLE hSlot = <span class="built_in">CreateMailslot</span>(</span><br><span class="line">    szSlotName,</span><br><span class="line">    <span class="number">0</span>, <span class="comment">// no maximum message size</span></span><br><span class="line">    MAILSLOT_WAIT_FOREVER, <span class="comment">// no time-out for operations</span></span><br><span class="line">    <span class="literal">NULL</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h4 id="2-客户端获取邮槽的函数CreateFile">2.客户端获取邮槽的函数<code>CreateFile</code></h4>
+<blockquote>
+<p>根据约定好的邮槽名，将邮槽作为一个文件打开</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">LPCTSTR szSlotName = TEXT(&quot;\\\\.\\mailslot\\Mymailslot&quot;);</span><br><span class="line">HANDLE hMailSlot =</span><br><span class="line">CreateFile(szSlotName, FILE_GENERIC_WRITE,</span><br><span class="line">FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,NULL );</span><br></pre></td></tr></table></figure>
+<h4 id="3-案例">3.案例</h4>
+<blockquote>
+<p>服务端</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnSlot</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// &quot;\\\\.\\mailslot\\Mymailslot \\.\mailslot\Mymailslot</span></span><br><span class="line">    <span class="comment">// 1 创建一个邮槽</span></span><br><span class="line">    LPCTSTR szSlotName = <span class="built_in">TEXT</span>(<span class="string">&quot;\\\\.\\mailslot\\Mymailslot&quot;</span>);</span><br><span class="line">    HANDLE hSlot = <span class="built_in">CreateMailslot</span>(szSlotName,</span><br><span class="line">    <span class="number">0</span>, <span class="comment">// no maximum message size</span></span><br><span class="line">    MAILSLOT_WAIT_FOREVER, <span class="comment">// no time-out for operations</span></span><br><span class="line">    <span class="literal">NULL</span>); <span class="comment">// default security</span></span><br><span class="line">    <span class="keyword">if</span> (hSlot == INVALID_HANDLE_VALUE)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">TRACE</span>(<span class="string">&quot;CreateMailslot failed with %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2 读取数据</span></span><br><span class="line">    <span class="type">char</span> szBuf[<span class="number">100</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">    DWORD dwRead;</span><br><span class="line">    <span class="built_in">TRACE</span>(<span class="string">&quot;Begin ReadFile&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">ReadFile</span>(hSlot, szBuf, <span class="number">100</span>, &amp;dwRead, <span class="literal">NULL</span>))			<span class="comment">//阻塞直到邮槽中有数据</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;读取数据失败&quot;</span>));</span><br><span class="line">        <span class="built_in">CloseHandle</span>(hSlot);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">TRACE</span>(<span class="string">&quot;End ReadFile&quot;</span>);</span><br><span class="line">    <span class="built_in">MessageBox</span>((CStringW)szBuf);</span><br><span class="line">    <span class="built_in">CloseHandle</span>(hSlot);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>客户端</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CChildView::OnSend</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个文件句柄</span></span><br><span class="line">    LPCTSTR szSlotName = <span class="built_in">TEXT</span>(<span class="string">&quot;\\\\.\\mailslot\\Mymailslot&quot;</span>);</span><br><span class="line">    HANDLE hMailSlot =</span><br><span class="line">    <span class="built_in">CreateFile</span>(szSlotName, FILE_GENERIC_WRITE,</span><br><span class="line">    FILE_SHARE_READ, <span class="literal">NULL</span>, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,<span class="literal">NULL</span> );</span><br><span class="line">    <span class="keyword">if</span> (hMailSlot == INVALID_HANDLE_VALUE)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">TRACE</span>(<span class="string">&quot;CreateFile failed with %d\n&quot;</span>, <span class="built_in">GetLastError</span>());</span><br><span class="line">    	<span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//写入数据</span></span><br><span class="line">    <span class="type">char</span> szBuf[] = <span class="string">&quot;Bingo is handsome&quot;</span>;</span><br><span class="line">    DWORD dwWrite;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">WriteFile</span>(hMailSlot, szBuf, <span class="built_in">strlen</span>(szBuf) + <span class="number">1</span>, &amp;dwWrite, <span class="literal">NULL</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">MessageBox</span>(_T(<span class="string">&quot;写入数据失败&quot;</span>));</span><br><span class="line">        <span class="built_in">CloseHandle</span>(hMailSlot);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">CloseHandle</span>(hMailSlot);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3FTP | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>3FTP</h1>
+    </header>
+
+    <section>
+      <h2 id="FTP">FTP</h2>
+<blockquote>
+<p>文件传输协议</p>
+</blockquote>
+<span id="more"></span>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>向远程主机上传输文件，或从远程主机上接收文件</p>
+</li>
+<li class="lvl-2">
+<p>客户端/服务器模式</p>
+<ul class="lvl-2">
+<li class="lvl-6">客户端：发起传输的一方</li>
+<li class="lvl-6">服务器：远程主机</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>ftp：RFC 959</p>
+</li>
+<li class="lvl-2">
+<p>ftp服务器：端口号为21</p>
+</li>
+</ul>
+<h4 id="控制连接与数据分开">控制连接与数据分开</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>FTP客户端与FTP服务器通过端口21联系，并使用FTP作为传输协议</p>
+</li>
+<li class="lvl-2">
+<p>客户端通过控制制造连接获得身份确认</p>
+</li>
+<li class="lvl-2">
+<p>客户端通过控制连接发送命令浏览远程目录</p>
+</li>
+<li class="lvl-2">
+<p>收到一个文件传输命令时，服务器打开一个到客户端的远程连接（通过连接用户的20端口发送数据）</p>
+</li>
+<li class="lvl-2">
+<p>一个文件传输完成后，服务器关闭连接</p>
+</li>
+<li class="lvl-2">
+<p>服务器打开第二个TCP数据连接用来传输另一个文件</p>
+</li>
+<li class="lvl-2">
+<p>控制连接：out of bound（带外，指不在原有的21号端口，而是开辟新的20号端口作为连接）传输</p>
+</li>
+<li class="lvl-2">
+<p>FTP服务器维护用户连接的状态信息：当前路径，用户账户与控制连接对应。</p>
+</li>
+</ul>
+<h4 id="注意">注意</h4>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>FTP是有状态的连接</p>
+</li>
+<li class="lvl-2">
+<p>FTP将控制命令与数据传输分开在两个端口（连接）上传输</p>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

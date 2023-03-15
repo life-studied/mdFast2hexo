@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_3-6%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E5%8E%9F%E7%90%86/">3-6拥塞控制原理</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/">书本：计算机网络：自顶向下方法笔记</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="3-6拥塞控制原理">3.6拥塞控制原理</h2>
+<h4 id="3-6-1拥塞原因与代价">3.6.1拥塞原因与代价</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_3-6%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E5%8E%9F%E7%90%86/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_3-7TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/">3-7TCP拥塞控制</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/">书本：计算机网络：自顶向下方法笔记</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="3-7TCP拥塞控制">3.7TCP拥塞控制</h2>
+<blockquote>
+<p>方法：通过发送方所感知的网络拥塞程度来限制发送速率。</p>
+</blockquote>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_3-7TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_4-1%E5%AF%BC%E8%AE%BA/">4-1导论</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/">书本：计算机网络：自顶向下方法笔记</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="4-1导论">4.1导论</h2>
+<h4 id="4-1-1-一些概念">4.1.1.一些概念</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_4-1%E5%AF%BC%E8%AE%BA/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_4-2IP%20Network%20Protocol/">4-2IP Network Protocol</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/">书本：计算机网络：自顶向下方法笔记</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="4-2IP-Network-Protocol">4.2IP Network Protocol</h2>
+<h4 id="4-2-1数据报格式">4.2.1数据报格式</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E4%B9%A6%E6%9C%AC%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%9A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/2023-03-15_4-2IP%20Network%20Protocol/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%95%99%E7%A8%8B%E9%93%BE%E6%8E%A5/2023-03-15_%E6%95%99%E7%A8%8B%E9%93%BE%E6%8E%A5/">教程链接</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%95%99%E7%A8%8B%E9%93%BE%E6%8E%A5/">教程链接</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/leacock1991/article/details/111713017">(14条消息) 一文打尽设计模式(C<ins>实现)_墨1024的博客-CSDN博客_c</ins> 设计模式</a></p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/2023-03-15_1%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%AE%80%E4%BB%8B%E4%B8%8EUML/">1设计模式简介与UML</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="设计模式简介与UML">设计模式简介与UML</h2>
+<h3 id="1-设计模式">1.设计模式</h3>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/2023-03-15_1%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%AE%80%E4%BB%8B%E4%B8%8EUML/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_1%E8%8A%82%E5%A5%8F/">1节奏</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/">乐理</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="节奏">节奏</h2>
+<h4 id="基本概念">基本概念</h4>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_1%E8%8A%82%E5%A5%8F/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_2%E9%92%A2%E7%90%B4%E9%94%AE%E7%9B%98/">2钢琴键盘</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/">乐理</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="钢琴键盘">钢琴键盘</h2>
+<blockquote>
+<p>1.左边低，右边高</p>
+</blockquote>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_2%E9%92%A2%E7%90%B4%E9%94%AE%E7%9B%98/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_3C%E5%A4%A7%E8%B0%83/">3C大调</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/">乐理</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="C大调">C大调</h2>
+<blockquote>
+<p>调：一套和谐的模式</p>
+</blockquote>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_3C%E5%A4%A7%E8%B0%83/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_4%E9%9F%B3%E7%A8%8B/">4音程</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+    2023-03-15
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/">乐理</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="音程">音程</h2>
+<blockquote>
+<p>两个音之间的高低关系(根据半音的数量来确定)</p>
+</blockquote>
+        
+          <div class="more-link">
+            <a href="/2023/03/15/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/2023-03-15_4%E9%9F%B3%E7%A8%8B/#more">Read On »</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+  <section id="nav-wrapper">
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/35/">« prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><a class="extend next" rel="next" href="/page/37/">next »</a>
+    </nav>
+  </section>
+
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

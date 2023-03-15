@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1-2矩阵和数组 | Yunyin&#39;s blog</title>
+  
+    <link rel="icon" href="/assert/C++.jpg">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/background.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/C++.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Yunyin&#39;s blog</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>1-2矩阵和数组</h1>
+    </header>
+
+    <section>
+      <h2 id="矩阵和数组">矩阵和数组</h2>
+<h4 id="数组创建">数组创建</h4>
+<span id="more"></span>
+<p><strong>单行数组</strong></p>
+<p>使用[]括起来的，使用逗号（或空格）分隔的一行数字</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>多行数组</strong></p>
+<p>使用分号分割各行数字的数组</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>;<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>;<span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<h5 id="其它方法">其它方法</h5>
+<p>使用zeros、ones或rand等函数</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">z=<span class="built_in">zeros</span>(<span class="number">5</span>,<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="矩阵和数组运算">矩阵和数组运算</h4>
+<p><strong>加减</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">a=[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>;<span class="number">4</span> <span class="number">5</span> <span class="number">6</span>;<span class="number">7</span> <span class="number">8</span> <span class="number">9</span>];</span><br><span class="line">a=a+<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结果为每个数都加上10</p>
+</blockquote>
+<p><strong>函数</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sin</span>(a);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结果为每个值都取sin</p>
+</blockquote>
+<p><strong>转置</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">a&#x27;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用‘表示转置</p>
+</blockquote>
+<p><strong>乘法</strong></p>
+<p>矩阵乘法</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">a=a*a;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>直接使用*即可</p>
+</blockquote>
+<p>注：逆矩阵使用inv(a)表示</p>
+<p>元素乘法</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">a=a.*a;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用.*运算符</p>
+</blockquote>
+<p><strong>其余元素计算</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">a.^<span class="number">3</span>;</span><br><span class="line">a./<span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>分别使用.运算符形式</p>
+</blockquote>
+<h4 id="串联">串联</h4>
+<p>将多个矩阵使用[]串联运算符，可以连接在一起</p>
+<p><strong>水平串联</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">A=[a,a];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用逗号分隔</p>
+</blockquote>
+<p><strong>垂直串联</strong></p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">A=[a;a];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用；分隔</p>
+</blockquote>
+<h4 id="复数">复数</h4>
+<blockquote>
+<p>复数包含实部和虚部，虚部使用i或j表示</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">c=[<span class="number">3</span>+<span class="number">4</span><span class="built_in">i</span>,<span class="number">4</span>+<span class="number">3</span><span class="built_in">j</span>;-<span class="built_in">i</span>,<span class="number">10</span><span class="built_in">j</span>];</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-03-14T16:00:00.000Z" itemprop="datePublished">
+              2023-03-15
+            </time>
+          </div>
+          
+      </section>
+    
+    
+      <section>
+        <div id="disqus_thread"></div>
+        <script>
+          window.disqus_config = function () {
+            this.page.url = window.location.toString()
+            this.page.identifier = window.location.pathname
+          }
+          if (typeof DISQUS === 'undefined') {
+            (function() { // DON'T EDIT BELOW THIS LINE
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YunyinBlog.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+            })();
+          } else {
+            DISQUS.reset({
+                reload: true,
+                config: window.disqus_config
+            })
+          }
+        </script>
+      </section>
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - Yunyin </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
