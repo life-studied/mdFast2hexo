@@ -17,6 +17,6 @@ find . -type f -name "*.md" | while read file; do
     echo "Renamed $file to $new_filename"
   fi
   # 在每个.md文件的第一行插入<!--more-->
-  sed -i '5i <!--more-->' "$file"
-  echo "add more tag in $file"
+  sed -i '5i <!--more-->' "$new_filename"
+  echo "add more tag in $new_filename"
 done
