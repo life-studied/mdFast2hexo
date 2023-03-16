@@ -46,5 +46,6 @@ function find_md_files() {
 
 # 在当前目录下的source/_posts目录中查找.md文件并插入<!--more-->
 find_md_files "source/_posts"
-
 echo "插入完成！"
+
+hexo g &> Errorlog.txt
