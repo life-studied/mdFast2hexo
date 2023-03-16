@@ -9,7 +9,7 @@ rm -rf $target_dir/*
 echo "清理完成！"
 
 # 复制源目录下的所有文件及其子文件到目标目录下
-cp -r "$source_dir"/* "$target_dir"
+cp -r -p "$source_dir"/* "$target_dir"
 echo "copy completed!"
 
 # 遍历当前目录下所有 .md 文件
