@@ -48,4 +48,4 @@ function find_md_files() {
 find_md_files "source/_posts"
 echo "插入完成！"
 
-hexo g &> Errorlog.txt
+hexo g 2> Errorlog.txt
