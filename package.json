@@ -23,7 +23,7 @@
     "hexo-renderer-markdown-it": "^7.0.0",
     "hexo-renderer-stylus": "^2.1.0",
     "hexo-server": "^3.0.0",
-    "hexo-theme-landscape": "^0.0.3",
+    "hexo-theme-landscape": "^1.0.0",
     "markdown-it-checkbox": "^1.1.0",
     "markdown-it-expandable": "^1.0.2",
     "markdown-it-imsize": "^2.0.1"
